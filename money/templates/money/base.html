@@ -1,0 +1,128 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% load static %}
+{% load i18n %}
+
+{% load bootstrap4 %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="{% static 'system/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'system/font/fontawesome/css/all.min.css' %}">
+
+    <script src="{% static 'system/js/jquery-3.4.1.min.js' %}"></script>
+
+    {% block head %}{% endblock %}
+
+    <title>{% block title %}{{ NAME }}{% endblock %}</title>
+  </head>
+  <body>
+
+<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light shadow-sm mb-3">
+  <div class="container">
+    <a href="{% url 'main:home' %}" class="navbar-brand mr-4">
+      <i class="fas fa-piggy-bank mr-2"></i>
+      {{ NAME }}
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav mr-auto">
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+            <i class="fas fa-user-circle fa-fw"></i>
+            {{ user }}
+          </a>
+          <div class="dropdown-menu dropdown-menu-right">
+            {% if user.is_superuser %}
+            <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans 'Administration' %}</a>
+            {% endif %}
+          </div>
+        </li>
+      </ul>
+    </div><!-- #nav -->
+  </div><!-- container -->
+</nav>
+
+<div class="container">
+  {% if messages %}
+  {% for x in messages %}
+  <div class="{{ x|bootstrap_message_classes }}">
+    {{ x }}
+    <button type="button" class="close" data-dismiss="alert">
+      <span>&times;</span>
+    </button>
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>
+
+<div class="container mb-5">
+  <nav class="text-muted mb-1">
+    {% block breadcrumb %}{% endblock %}
+  </nav>
+
+  <div class="d-flex flex-wrap mb-3">
+    <div class="flex-fill mb-2">
+      <h2 id="heading" class="mb-0">{% block heading %}{% endblock %}</h2>
+    </div>
+    <div class="flex-fill align-self-end mb-2">
+      <div class="text-right">
+        {% block actions %}{% endblock %}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      {% block content_full %}{% endblock %}
+    </div>
+    <div class="col-lg-9 mb-4">
+      {% block content %}{% endblock %}
+    </div>
+    <div class="col-lg-3 mb-4">
+      {% block sidebar %}{% endblock %}
+    </div>
+  </div>
+</div>
+
+<footer class="fixed-bottom bg-light">
+  <div class="container mt-1 mb-1">
+    <div class="d-flex justify-content-between text-muted">
+      <div class="text-truncate">
+        <span class="mr-2">N Money {{ VERSION }}</span>
+        <span class="mr-2">&copy; 2020</span>
+        Takeshi Nakamura
+      </div>
+      <div>
+        <a href="#" id="goto-top" class="text-muted"><i class="fas fa-angle-double-up"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="{% static 'system/js/bootstrap.bundle.min.js' %}"></script>
+
+{% block js %}{% endblock %}
+
+<script>
+$(function() {
+  $('#goto-top').click(function (e) {
+    e.preventDefault();
+    $('html, body').animate({ scrollTop: 0 }, 300);
+  });
+});
+</script>
+
+  </body>
+</html>

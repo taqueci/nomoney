@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from . import version
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -67,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'config.context_processors.site_values',
             ],
         },
     },
@@ -133,6 +135,9 @@ LOCALE_PATHS = (
 FY_START_MONTH = 4
 FY_START_DAY = 1
 
+VERSION = version.VERSION
+
+NAME = 'N Money'
 
 try:
     from .local_settings import *
