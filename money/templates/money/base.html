@@ -47,6 +47,17 @@
             {{ user }}
           </a>
           <div class="dropdown-menu dropdown-menu-right">
+            <form name="lang" method="post" action="{% url 'set_language' %}">
+              {% csrf_token %}
+              <input name="next" type="hidden" value="{{ request.get_full_path }}">
+              {% if LANGUAGE_CODE == 'ja' %}
+              <input type="hidden" name="language" value="en">
+              <a class="dropdown-item" href="javascript:lang.submit()">English</a>
+              {% else %}
+              <input type="hidden" name="language" value="ja">
+              <a class="dropdown-item" href="javascript:lang.submit()">Japanese</a>
+              {% endif %}
+            </form>
             {% if user.is_superuser %}
             <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans 'Administration' %}</a>
             {% endif %}
