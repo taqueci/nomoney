@@ -26,7 +26,7 @@
 
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light shadow-sm mb-3">
   <div class="container">
-    <a href="{% url 'main:home' %}" class="navbar-brand mr-4">
+    <a href="{% url 'money:home' %}" class="navbar-brand mr-4">
       <i class="fas fa-piggy-bank mr-2"></i>
       {{ NAME }}
     </a>
@@ -64,6 +64,7 @@
             {% if user.is_superuser %}
             <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans 'Administration' %}</a>
             {% endif %}
+            <a class="dropdown-item" href="{% url 'system:logout' %}">{% trans 'Logout' %}</a>
           </div>
         </li>
       </ul>

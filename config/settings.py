@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'system.middleware.auth.AuthMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -133,8 +134,17 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'money', 'locale'),
 )
 
+LOGIN_URL = 'system:login'
+LOGIN_REDIRECT_URL = 'money:home'
+LOGOUT_URL = 'system:logout'
+LOGOUT_REDIRECT_URL = 'system:login'
+
 # Number of digits for filter initcomma
 NUMBER_GROUPING = 3
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 FY_START_MONTH = 4
 FY_START_DAY = 1

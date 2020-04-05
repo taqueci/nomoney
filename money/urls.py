@@ -3,7 +3,7 @@
 from django.urls import path
 from .views import home, journals, reports
 
-app_name = 'main'
+app_name = 'money'
 
 urlpatterns = [
     path('journals/', journals.index, name='journals'),
