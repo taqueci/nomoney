@@ -1,0 +1,33 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% extends 'money/base.html' %}
+
+{% load i18n %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}{% trans 'Reports' %} | {{ NAME }}{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'money:home' %}">{% trans 'Home' %}</a>
+&raquo;
+{% trans 'Reports' %}
+{% endblock %}
+
+{% block heading %}{% trans 'Report list' %}{% endblock %}
+
+{% block actions %}
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block content_full %}
+{% endblock %}
+
+{% block js %}
+{% endblock %}

@@ -1,7 +1,7 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
 from django.urls import path
-from .views import home, journals
+from .views import home, journals, reports
 
 app_name = 'main'
 
@@ -11,6 +11,9 @@ urlpatterns = [
     path('journals/<id>', journals.show, name='journal'),
     path('journals/<id>/edit', journals.edit, name='edit_journal'),
     path('journals/<id>/destroy', journals.destroy, name='destroy_journal'),
+
+    path('reports/', reports.index, name='reports'),
+    path('reports/<id>', reports.show, name='report'),
 
     path('', home.index, name='home'),
 ]

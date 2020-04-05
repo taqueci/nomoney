@@ -1,0 +1,325 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% extends 'money/base.html' %}
+
+{% load humanize %}
+{% load i18n %}
+
+{% load html %}
+{% load url %}
+{% load value %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}{% trans 'Report' %} | {{ NAME }}{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'money:home' %}">{% trans 'Home' %}</a>
+&raquo;
+<a href="{% url 'money:reports' %}">{% trans 'Reports' %}</a>
+&raquo;
+{% trans 'Display' %}
+{% endblock %}
+
+{% block heading %}{{ page.base.start }} - {{ page.base.end }}{% endblock %}
+
+{% block actions %}
+<div class="d-block d-lg-none">
+  <div class="btn-group btn-group-sm">
+    <a class="btn btn-outline-secondary px-4" href="?{% url_params start=page.prev.start|date:'Y-m-d' end=page.prev.end|date:'Y-m-d' %}" data-toggle="tooltip" data-title="{% trans 'Previous chart' %}"><i class="fas fa-chevron-left"></i></a>
+    <a class="btn btn-outline-secondary px-4" href="?{% url_params start=page.next.start|date:'Y-m-d' end=page.next.end|date:'Y-m-d' %}" data-toggle="tooltip" data-title="{% trans 'Next chart' %}"><i class="fas fa-chevron-right"></i></a>
+  </div>
+</div><!-- .d-lg-none -->
+{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+  <div class="col">
+
+<h3>{% trans 'Summary' %}</h3>
+
+<div class="d-flex flex-wrap">
+
+<div class="d-flex flex-wrap align-items-stretch mr-5">
+  <div class="d-flex flex-column justify-content-between">
+    <div class="text-center">
+      <span class="badge badge-secondary">{% trans 'Incoming' %}</span>
+    </div>
+    <div class="h5 text-center">{{ summary.income|default:'0'|intcomma }}</div>
+  </div>
+  <div class="h5 align-self-end mx-2">-</div>
+  <div class="d-flex flex-column justify-content-between">
+    <div class="text-center">
+      <span class="badge badge-secondary">{% trans 'Outgoing' %}</span>
+    </div>
+    <div class="h5 text-center">{{ summary.expense|default:'0'|intcomma }}</div>
+  </div>
+  <div class="h5 align-self-end mx-2">=</div>
+  <div class="d-flex flex-column justify-content-between">
+    <div class="text-center mb-1">
+      <span class="badge badge-secondary">{% trans 'Balance' %}</span>
+    </div>
+    <div class="h4 text-center">
+      {% if summary.balance < 0 %}
+      <span class=" text-danger">
+        <i class="fas fa-exclamation-triangle"></i>
+        {{ summary.balance|default:'0'|intcomma }}
+      </span>
+      {% else %}
+      <span class=" text-success">
+        {{ summary.balance|default:'0'|intcomma }}
+      </span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="d-flex flex-wrap align-items-stretch">
+  <div class="d-flex flex-column justify-content-between">
+    <div class="text-center">
+      <span class="badge badge-secondary">{% trans 'Assets' %}</span>
+    </div>
+    <div class="h5 text-center">{{ summary.asset|default:'0'|intcomma }}</div>
+  </div>
+  <div class="h5 align-self-end mx-2">-</div>
+  <div class="d-flex flex-column justify-content-between">
+    <div class="text-center">
+      <span class="badge badge-secondary">{% trans 'Liabilities' %}</span>
+    </div>
+    <div class="h5 text-center">{{ summary.liability|default:'0'|intcomma }}</div>
+  </div>
+  <div class="h5 align-self-end mx-2">=</div>
+  <div class="d-flex flex-column justify-content-between">
+    <div class="text-center mb-1">
+      <span class="badge badge-secondary">{% trans 'Net assets' %}</span>
+    </div>
+    <div class="h4 text-center">
+      {% if summary.net < 0 %}
+      <span class=" text-danger">
+        <i class="fas fa-exclamation-triangle"></i>
+        {{ summary.net|default:'0'|intcomma }}
+      </span>
+      {% else %}
+      <span class=" text-success">
+        {{ summary.net|default:'0'|intcomma }}
+      </span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+</div><!-- .d-flex -->
+
+  </div><!-- .col -->
+</div><!-- .row -->
+<div class="row">
+  <div class="col-lg-6">
+
+<h3>{% trans 'Incoming' %}</h3>
+
+<div class="d-flex justify-content-end mb-2">
+  <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+    <label class="btn btn-outline-secondary px-3 active">
+      <input type="radio" name="incoming" data-group=".group-incoming" data-target="incoming-doughnut" autocomplete="off" checked>
+      <i class="fas fa-chart-pie fa-fw"></i>
+    </label>
+    <label class="btn btn-outline-secondary px-3">
+      <input type="radio" name="incoming" data-group=".group-incoming" data-target="incoming-table" autocomplete="off">
+      <i class="fas fa-table fa-fw"></i>
+    </label>
+  </div>
+</div>
+
+<div id="incoming-doughnut" class="group-incoming">
+  <canvas id="incoming-canvas" width="400" height="400"></canvas>
+  <div class="alert alert-warning my-3 d-none">
+    <i class="fas fa-exclamation-triangle"></i> {% trans 'No data' %}
+  </div>
+</div>
+
+<div id="incoming-table" class="group-incoming" style="display: none">
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>{% trans 'Account' %}</th>
+      <th>{% trans 'Amount' %}</th>
+      <th>%</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for x in incoming %}
+    <tr>
+      <td>{{ x.credit__name }}</td>
+      <td align="right">{{ x.sum|intcomma }}</td>
+      <td align="right">{{ x.sum|value_percent:summary.income|floatformat:1 }}</td>
+      <td class="px-2">
+        <span data-toggle="tooltip" data-title="{% trans 'More information' %}"><a href="{% url 'main:journals' %}?{% url_params credit=x.credit__id %}"><i class="fas fa-list fa-fw"></i></a></span>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</div><!-- #incoming-table -->
+
+  </div><!-- .col-lg-6 -->
+  <div class="col-lg-6">
+
+<h3>{% trans 'Outgoing' %}</h3>
+
+<div class="d-flex justify-content-end mb-2">
+  <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+    <label class="btn btn-outline-secondary px-3 active">
+      <input type="radio" name="outgoing" data-group=".group-outgoing" data-target="outgoing-doughnut" autocomplete="off" checked>
+      <i class="fas fa-chart-pie fa-fw"></i>
+    </label>
+    <label class="btn btn-outline-secondary px-3">
+      <input type="radio" name="outgoing" data-group=".group-outgoing" data-target="outgoing-table" autocomplete="off">
+      <i class="fas fa-table fa-fw"></i>
+    </label>
+  </div>
+</div>
+
+<div id="outgoing-doughnut" class="group-outgoing">
+  <canvas id="outgoing-canvas" width="400" height="400"></canvas>
+  <div class="alert alert-warning my-3 d-none">
+    <i class="fas fa-exclamation-triangle"></i> {% trans 'No data' %}
+  </div>
+</div>
+
+<div id="outgoing-table" class="group-outgoing" style="display: none">
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>{% trans 'Account' %}</th>
+      <th>{% trans 'Amount' %}</th>
+      <th>%</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for x in outgoing %}
+    <tr>
+      <td>{{ x.debit__name }}</td>
+      <td align="right">{{ x.sum|intcomma }}</td>
+      <td align="right">{{ x.sum|value_percent:summary.expense|floatformat:1 }}</td>
+      <td class="px-2">
+        <span data-toggle="tooltip" data-title="{% trans 'More information' %}"><a href="{% url 'main:journals' %}?{% url_params debit=x.debit__id %}"><i class="fas fa-list fa-fw"></i></a></span>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</div><!-- #outgoing-table -->
+
+  </div><!-- .col -->
+</div><!-- .row -->
+{% endblock %}
+
+{% block sidebar %}
+<div class="btn-group d-flex mb-5">
+  <a class="btn btn-light w-100" href="?{% url_params start=page.prev.start|date:'Y-m-d' end=page.prev.end|date:'Y-m-d' %}" data-toggle="tooltip" data-title="{% trans 'Previous chart' %}"><i class="fas fa-chevron-left"></i></a>
+  <a class="btn btn-light w-100" href="?{% url_params start=page.next.start|date:'Y-m-d' end=page.next.end|date:'Y-m-d' %}" data-toggle="tooltip" data-title="{% trans 'Next chart' %}"><i class="fas fa-chevron-right"></i></a>
+</div>
+
+<h5 class="border-bottom pb-2 mb-3"><i class="fas fa-sliders-h fa-fw"></i> {% trans 'Setting' %}</h5>
+
+<form class="mb-5">
+
+<div class="form-group">
+  <label>{% trans 'Start date' %}</label>
+  <div id="filter-start" class="input-group date datetimepicker" data-target-input="nearest">
+    <input type="text" name="start" value="{% url_param_value 'start' %}" class="form-control datetimepicker-input" data-target="#filter-start" />
+    <div class="input-group-append" data-target="#filter-start" data-toggle="datetimepicker">
+      <div class="input-group-text"><i class="fas fa-calendar fa-fw"></i></div>
+    </div>
+  </div>
+</div>
+
+<div class="form-group">
+  <label>{% trans 'End date' %}</label>
+  <div id="filter-end" class="input-group date datetimepicker" data-target-input="nearest">
+    <input type="text" name="end" value="{% url_param_value 'end' %}" class="form-control datetimepicker-input" data-target="#filter-end" />
+    <div class="input-group-append" data-target="#filter-end" data-toggle="datetimepicker">
+      <div class="input-group-text"><i class="fas fa-calendar fa-fw"></i></div>
+    </div>
+  </div>
+</div>
+
+<button type="submit" class="btn btn-primary mt-2"><i class="fas fa-check fa-fw"></i> {% trans 'Submit' %}</button>
+
+</form>
+{% endblock %}
+
+{% block content_full %}
+{% endblock %}
+
+{% block js %}
+{% include 'money/js_moment.html' %}
+{% include 'money/js_datetimepicker.html' %}
+{% include 'money/js_chartjs.html' %}
+{{ data_doughnut_incoming|json_script:'doughnut-data-incoming' }}
+{{ data_doughnut_outgoing|json_script:'doughnut-data-outgoing' }}
+<script>
+$(function() {
+  $('[data-toggle="tooltip"]').tooltip();
+
+  $('.datetimepicker').datetimepicker({format: 'YYYY-MM-DD'});
+
+  $('input[type="radio"]').on('click', function() {
+    var group = $(this).data('group');
+    var target = $(this).data('target');
+
+    $(group).each(function() {
+      if ($(this).attr('id') === target) $(this).show();
+      else $(this).hide();
+    });
+  });
+});
+
+// Incoming doughnut chart
+$(function() {
+  var d = document.getElementById('doughnut-data-incoming').textContent;
+  var ctx = document.getElementById('incoming-canvas').getContext('2d');
+  var data =  JSON.parse(d);
+
+  if (data.datasets[0].data.length > 0) {
+    var chart = new Chart(ctx, {
+      type: 'doughnut',
+      options: {
+        maintainAspectRatio: false
+      },
+      data: data
+    });
+  } else {
+    $('#incoming-canvas').hide();
+    $('#incoming-doughnut div.alert').removeClass('d-none');
+  }
+});
+
+// Outgoing doughnut chart
+$(function() {
+  var d = document.getElementById('doughnut-data-outgoing').textContent;
+  var ctx = document.getElementById('outgoing-canvas').getContext('2d');
+  var data =  JSON.parse(d);
+
+  if (data.datasets[0].data.length > 0) {
+    var chart = new Chart(ctx, {
+      type: 'doughnut',
+      options: {
+        maintainAspectRatio: false
+      },
+      data: data
+    });
+  } else {
+    $('#outgoing-canvas').hide();
+    $('#outgoing-doughnut div.alert').removeClass('d-none');
+  }
+});
+</script>
+{% endblock %}
