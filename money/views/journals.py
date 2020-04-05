@@ -2,7 +2,7 @@
 
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 
@@ -17,6 +17,7 @@ INDEX_SORTABLE_FIELDS = (
     'id', 'date', 'debit', 'credit', 'amount', 'summary',
 )
 
+POPULAR_ACCOUNT_NUM = 12
 
 def index(request):
     n = request.GET.get('page')
@@ -80,8 +81,15 @@ def new(request):
 
     account = Account.objects.all()
 
+    popular_account = Journal.objects.values(
+        'debit__id', 'debit__name', 'credit__id', 'credit__name',
+    ).annotate(
+        debit_num=Count('debit__id'), credit_num=Count('credit__id')
+    ).order_by('-debit_num', '-credit_num')[:POPULAR_ACCOUNT_NUM]
+
     return render(request, 'money/journals/new.html', {
         'debit': account, 'credit': account,
+        'popular_account': popular_account,
     })
 
 
@@ -108,9 +116,16 @@ def edit(request, id):
 
     account = Account.objects.all()
 
+    popular_account = Journal.objects.values(
+        'debit__id', 'debit__name', 'credit__id', 'credit__name',
+    ).annotate(
+        debit_num=Count('debit__id'), credit_num=Count('credit__id')
+    ).order_by('-debit_num', '-credit_num')[:POPULAR_ACCOUNT_NUM]
+
     return render(request, 'money/journals/edit.html', {
         'object': obj,
         'debit': account, 'credit': account,
+        'popular_account': popular_account,
     })
 
 
