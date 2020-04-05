@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 from ..forms import JournalForm
 from ..models import Account, Journal
-from .shared import pagination
+from .shared import account, pagination
 
 
 INDEX_PER_PAGE = 20
@@ -79,7 +79,7 @@ def new(request):
 
         return redirect(request.GET.get('next', 'main:journals'))
 
-    account = Account.objects.all()
+    grouped_account = account.grouped_objects()
 
     popular_account = Journal.objects.values(
         'debit__id', 'debit__name', 'credit__id', 'credit__name',
@@ -88,8 +88,7 @@ def new(request):
     ).order_by('-debit_num', '-credit_num')[:POPULAR_ACCOUNT_NUM]
 
     return render(request, 'money/journals/new.html', {
-        'debit': account, 'credit': account,
-        'popular_account': popular_account,
+        'account': grouped_account, 'popular_account': popular_account,
     })
 
 
@@ -114,7 +113,7 @@ def edit(request, id):
 
         return redirect(request.GET.get('next', 'main:journals'))
 
-    account = Account.objects.all()
+    grouped_account = account.grouped_objects()
 
     popular_account = Journal.objects.values(
         'debit__id', 'debit__name', 'credit__id', 'credit__name',
@@ -124,8 +123,7 @@ def edit(request, id):
 
     return render(request, 'money/journals/edit.html', {
         'object': obj,
-        'debit': account, 'credit': account,
-        'popular_account': popular_account,
+        'account': grouped_account, 'popular_account': popular_account,
     })
 
 

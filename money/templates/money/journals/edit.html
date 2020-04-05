@@ -62,8 +62,12 @@
   <label class="col-sm-3 col-form-label">{% trans 'Debit' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
     <select name="debit" class="form-control">
-      {% for x in debit %}
-      <option value="{{ x.id }}" {% html_selected_if_eq object.debit.id x.id %}>{{ x.name }}</option>
+      {% for x in account %}
+      <optgroup label="{{ x.name }}">
+        {% for y in x.data %}
+        <option value="{{ y.id }}" {% html_selected_if_eq object.debit.id y.id %}>{{ y.name }}</option>
+        {% endfor %}
+      </optgroup>
       {% endfor %}
     </select>
   </div>
@@ -73,8 +77,12 @@
   <label class="col-sm-3 col-form-label">{% trans 'Credit' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
     <select name="credit" class="form-control">
-      {% for x in credit %}
-      <option value="{{ x.id }}" {% html_selected_if_eq object.credit.id x.id %}>{{ x.name }}</option>
+      {% for x in account %}
+      <optgroup label="{{ x.name }}">
+        {% for y in x.data %}
+        <option value="{{ y.id }}" {% html_selected_if_eq object.credit.id y.id %}>{{ y.name }}</option>
+        {% endfor %}
+      </optgroup>
       {% endfor %}
     </select>
   </div>
