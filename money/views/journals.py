@@ -2,6 +2,7 @@
 
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 
@@ -22,6 +23,8 @@ def index(request):
     sort = request.GET.get('sort')
     order = request.GET.get('order')
 
+    f_keyword = request.GET.get('keyword')
+
     f_start = request.GET.get('start')
     f_end = request.GET.get('end')
 
@@ -31,6 +34,12 @@ def index(request):
     account = Account.objects.all()
 
     q = Journal.objects.filter(disabled=False)
+
+    if f_keyword:
+        q = q.filter(
+            Q(summary__contains=f_keyword) |
+            Q(note__icontains=f_keyword)
+        )
 
     if f_start:
         q = q.filter(date__gte=f_start)

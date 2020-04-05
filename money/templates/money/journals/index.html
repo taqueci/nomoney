@@ -133,6 +133,16 @@
 <form id="filter" method="get" action="{% url 'main:journals' %}">
 
 <div class="form-group">
+  <label>{% trans 'Keyword' %}</label>
+  <div class="input-group">
+    <input type="text" name="keyword" value="{% url_param_value 'keyword' %}" class="form-control">
+    <div class="input-group-append">
+      <span class="input-group-text"><i class="fas fa-search fa-fw"></i></span>
+    </div>
+  </div>
+</div>
+
+<div class="form-group">
   <label>{% trans 'Start date' %}</label>
   <div id="filter-start" class="input-group date datetimepicker" data-target-input="nearest">
     <input type="text" name="start" value="{% url_param_value 'start' %}" class="form-control datetimepicker-input" data-target="#filter-start" />

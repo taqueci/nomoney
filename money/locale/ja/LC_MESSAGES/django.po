@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-05 12:12+0900\n"
+"POT-Creation-Date: 2020-04-05 12:47+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,8 +45,8 @@ msgstr "年度"
 #: money/templates/money/base.html:40
 #: money/templates/money/journals/edit.html:17
 #: money/templates/money/journals/edit.html:22
-#: money/templates/money/journals/index.html:16
-#: money/templates/money/journals/index.html:21
+#: money/templates/money/journals/index.html:17
+#: money/templates/money/journals/index.html:22
 #: money/templates/money/journals/new.html:17
 #: money/templates/money/journals/new.html:22
 #: money/templates/money/journals/show.html:21
@@ -58,7 +58,7 @@ msgid "Administration"
 msgstr "管理"
 
 #: money/templates/money/journals/edit.html:20
-#: money/templates/money/journals/index.html:19
+#: money/templates/money/journals/index.html:20
 #: money/templates/money/journals/new.html:20
 #: money/templates/money/journals/show.html:19
 msgid "Home"
@@ -70,37 +70,42 @@ msgid "Edit"
 msgstr "編集"
 
 #: money/templates/money/journals/edit.html:45
-#: money/templates/money/journals/index.html:36
-#: money/templates/money/journals/index.html:95
+#: money/templates/money/journals/index.html:39
+#: money/templates/money/journals/index.html:86
+#: money/templates/money/journals/index.html:166
 #: money/templates/money/journals/new.html:43
-#: money/templates/money/journals/show.html:51
+#: money/templates/money/journals/show.html:51 money/templatetags/journal.py:61
 msgid "Debit"
 msgstr "貸方"
 
 #: money/templates/money/journals/edit.html:56
-#: money/templates/money/journals/index.html:37
-#: money/templates/money/journals/index.html:104
+#: money/templates/money/journals/index.html:40
+#: money/templates/money/journals/index.html:87
+#: money/templates/money/journals/index.html:175
 #: money/templates/money/journals/new.html:54
-#: money/templates/money/journals/show.html:54
+#: money/templates/money/journals/show.html:54 money/templatetags/journal.py:65
 msgid "Credit"
 msgstr "借方"
 
 #: money/templates/money/journals/edit.html:67
-#: money/templates/money/journals/index.html:35
+#: money/templates/money/journals/index.html:38
+#: money/templates/money/journals/index.html:85
 #: money/templates/money/journals/new.html:65
 #: money/templates/money/journals/show.html:57
 msgid "Date"
 msgstr "日付"
 
 #: money/templates/money/journals/edit.html:79
-#: money/templates/money/journals/index.html:38
+#: money/templates/money/journals/index.html:41
+#: money/templates/money/journals/index.html:88
 #: money/templates/money/journals/new.html:77
 #: money/templates/money/journals/show.html:60
 msgid "Amount"
 msgstr "金額"
 
 #: money/templates/money/journals/edit.html:86
-#: money/templates/money/journals/index.html:40
+#: money/templates/money/journals/index.html:43
+#: money/templates/money/journals/index.html:89
 #: money/templates/money/journals/new.html:84
 #: money/templates/money/journals/show.html:63
 msgid "Summary"
@@ -124,36 +129,45 @@ msgstr "送信"
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: money/templates/money/journals/index.html:24
+#: money/templates/money/journals/index.html:25
 msgid "Journal list"
 msgstr "記録リスト"
 
-#: money/templates/money/journals/index.html:27
+#: money/templates/money/journals/index.html:28
 #: money/templates/money/journals/new.html:24
 msgid "New"
 msgstr "新規"
 
-#: money/templates/money/journals/index.html:55
+#: money/templates/money/journals/index.html:58
+#: money/templates/money/journals/index.html:115
 msgid "Edit journal"
 msgstr "記録の編集"
 
-#: money/templates/money/journals/index.html:58
+#: money/templates/money/journals/index.html:61
+#: money/templates/money/journals/index.html:116
 msgid "More information"
 msgstr "詳細情報"
 
-#: money/templates/money/journals/index.html:70
+#: money/templates/money/journals/index.html:131
 msgid "Filter"
 msgstr "フィルター"
 
-#: money/templates/money/journals/index.html:75
+#: money/templates/money/journals/index.html:136
+#: money/templatetags/journal.py:51
+msgid "Keyword"
+msgstr "キーワード"
+
+#: money/templates/money/journals/index.html:146
+#: money/templatetags/journal.py:54
 msgid "Start date"
 msgstr "開始日"
 
-#: money/templates/money/journals/index.html:85
+#: money/templates/money/journals/index.html:156
+#: money/templatetags/journal.py:57
 msgid "End date"
 msgstr "終了日"
 
-#: money/templates/money/journals/index.html:114
+#: money/templates/money/journals/index.html:185
 msgid "Reset"
 msgstr "リセット"
 
@@ -185,42 +199,42 @@ msgstr "更新日"
 msgid "Are you sure you want to delete?"
 msgstr "本当に削除しますか?"
 
-#: money/templatetags/journal.py:16
+#: money/templatetags/journal.py:17
 msgid "Incoming"
 msgstr "収入"
 
-#: money/templatetags/journal.py:18
+#: money/templatetags/journal.py:19
 msgid "Outgoing"
 msgstr "支出"
 
-#: money/templatetags/journal.py:20
+#: money/templatetags/journal.py:21
 msgid "Repayment"
 msgstr "返済"
 
-#: money/templatetags/journal.py:22
+#: money/templatetags/journal.py:23
 msgid "Other"
 msgstr "その他"
 
-#: money/views/journals.py:65
+#: money/views/journals.py:74
 msgid "New journal has been successfully created"
 msgstr "新しい記録の作成に成功しました"
 
-#: money/views/journals.py:68
+#: money/views/journals.py:77
 msgid "Failed to create journal"
 msgstr "記録の作成に失敗しました"
 
-#: money/views/journals.py:93
+#: money/views/journals.py:102
 msgid "The journal has been successfully updated"
 msgstr "記録の更新に成功しました"
 
-#: money/views/journals.py:96
+#: money/views/journals.py:105
 msgid "Failed to update journal"
 msgstr "記録の更新に失敗しました"
 
-#: money/views/journals.py:114
+#: money/views/journals.py:123
 msgid "The journal has been successfully deleted"
 msgstr "記録の削除に成功しました"
 
-#: money/views/journals.py:117
+#: money/views/journals.py:126
 msgid "Failed to delete journal"
 msgstr "記録の削除に失敗しました"

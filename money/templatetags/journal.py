@@ -41,10 +41,14 @@ def journal_category_badge_class(obj):
 def journal_filter_items(request):
     item = []
 
+    f_keyword = request.GET.get('keyword')
     f_start = request.GET.get('start')
     f_end = request.GET.get('end')
     f_debit = list(request.GET.getlist('debit'))
     f_credit = list(request.GET.getlist('credit'))
+
+    if f_keyword:
+        item.append({'key': _('Keyword'), 'value': f_keyword})
 
     if f_start:
         item.append({'key': _('Start date'), 'value': f_start})
