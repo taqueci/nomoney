@@ -38,6 +38,7 @@
       <th><a href="?{% url_params_sort 'amount' %}">{% trans 'Amount' %}</a></th>
       <th></th>
       <th><a href="?{% url_params_sort 'summary' %}">{% trans 'Summary' %}</a></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -50,6 +51,9 @@
       <td align="right">{{ x.amount|intcomma }}</td>
       <td><span class="{{ x|journal_category_badge_class }}">{{ x|journal_category_text }}</span></td>
       <td>{{ x.summary }}</td>
+      <td class="px-2">
+        <span data-toggle="tooltip" data-title="{% trans 'More information' %}"><a href="{% url 'money:journal' x.id %}"><i class="fas fa-list-alt fa-fw"></i></a></span>
+      </td>
     </tr>
     {% endfor %}
   </tbody>
@@ -118,6 +122,8 @@
 {% include 'money/js_select2.html' %}
 <script>
 $(function() {
+  $('[data-toggle="tooltip"]').tooltip();
+
   $('.datetimepicker').datetimepicker({format: 'YYYY-MM-DD'});
   $('.select2').select2();
 

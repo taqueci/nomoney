@@ -2,7 +2,7 @@
 
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 
 from ..forms import JournalForm
@@ -73,6 +73,14 @@ def new(request):
 
     return render(request, 'money/journals/new.html', {
         'debit': account, 'credit': account,
+    })
+
+
+def show(request, id):
+    obj = get_object_or_404(Journal, pk=id)
+
+    return render(request, 'money/journals/show.html', {
+        'object': obj
     })
 
 

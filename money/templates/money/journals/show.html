@@ -1,0 +1,85 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% extends 'money/base.html' %}
+
+{% load humanize %}
+{% load i18n %}
+
+{% load html %}
+{% load url %}
+
+{% load journal %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}{% trans 'Journal' %} | {{ NAME }}{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'money:home' %}">{% trans 'Home' %}</a>
+&raquo;
+<a href="{% url 'money:journals' %}">{% trans 'Journals' %}</a>
+&raquo;
+#{{ object.id }}
+{% endblock %}
+
+{% block heading %}{{ object.summary }}{% endblock %}
+
+{% block actions %}
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block content_full %}
+<div class="row">
+  <div class="col-lg-6">
+
+<dl class="row mb-2">
+  <dt class="col-4">ID</dt>
+  <dd class="col-8">{{ object.id }}</dd>
+
+  <dt class="col-4">{% trans 'Debit' %}</dt>
+  <dd class="col-8">{{ object.debit.name }}</dd>
+
+  <dt class="col-4">{% trans 'Credit' %}</dt>
+  <dd class="col-8">{{ object.credit.name }}</dd>
+
+  <dt class="col-4">{% trans 'Date' %}</dt>
+  <dd class="col-8">{{ object.date|date:'Y-m-d' }}</dd>
+
+  <dt class="col-4">{% trans 'Amount' %}</dt>
+  <dd class="col-8">{{ object.amount|intcomma }} <span class="{{ object|journal_category_badge_class }}">{{ object|journal_category_text }}</span></dd>
+
+  <dt class="col-4">{% trans 'Summary' %}</dt>
+  <dd class="col-8">{{ object.summary }}</dd>
+</dl>
+
+  </div><!-- .col-lg-6 -->
+  <div class="col-lg-6">
+
+<dl class="row mb-2">
+  <dt class="col-4">{% trans 'Note' %}</dt>
+  <dd class="col-8">{{ object.note|default:'-'|linebreaksbr }}</dd>
+</dl>
+
+<dl class="row mb-2">
+  <dt class="col-4">{% trans 'Author' %}</dt>
+  <dd class="col-8">{{ object.author }}</dd>
+
+  <dt class="col-4">{% trans 'Created on' %}</dt>
+  <dd class="col-8">{{ object.created }}</dd>
+
+  <dt class="col-4">{% trans 'Updated on' %}</dt>
+  <dd class="col-8">{{ object.updated }}</dd>
+</dl>
+
+  </div><!-- .col-lg-6 -->
+</div><!-- .row -->
+{% endblock %}
+
+{% block js %}
+{% endblock %}
