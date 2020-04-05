@@ -38,7 +38,7 @@
       <th><a href="?{% url_params_sort 'amount' %}">{% trans 'Amount' %}</a></th>
       <th></th>
       <th><a href="?{% url_params_sort 'summary' %}">{% trans 'Summary' %}</a></th>
-      <th></th>
+      <th colspan="2"></th>
     </tr>
   </thead>
   <tbody>
@@ -51,6 +51,9 @@
       <td align="right">{{ x.amount|intcomma }}</td>
       <td><span class="{{ x|journal_category_badge_class }}">{{ x|journal_category_text }}</span></td>
       <td>{{ x.summary }}</td>
+      <td class="px-2">
+        <span data-toggle="tooltip" data-title="{% trans 'Edit journal' %}"><a href="{% url 'main:edit_journal' x.id %}?next={{ request.get_full_path|urlencode }}"><i class="fas fa-edit fa-fw"></i></a></span>
+      </td>
       <td class="px-2">
         <span data-toggle="tooltip" data-title="{% trans 'More information' %}"><a href="{% url 'money:journal' x.id %}"><i class="fas fa-list-alt fa-fw"></i></a></span>
       </td>

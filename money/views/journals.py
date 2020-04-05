@@ -84,6 +84,27 @@ def show(request, id):
     })
 
 
+def edit(request, id):
+    obj = get_object_or_404(Journal, pk=id)
+
+    if request.method == 'POST':
+        if update(request, obj):
+            messages.success(
+                request, _('The journal has been successfully updated')
+            )
+        else:
+            messages.error(request, _('Failed to update journal'))
+
+        return redirect(request.GET.get('next', 'main:journals'))
+
+    account = Account.objects.all()
+
+    return render(request, 'money/journals/edit.html', {
+        'object': obj,
+        'debit': account, 'credit': account,
+    })
+
+
 def create(request):
     form = JournalForm(request.POST)
 
@@ -91,6 +112,17 @@ def create(request):
         obj = form.save(commit=False)
         obj.author = request.user
         obj.save()
+
+        return True
+
+    return False
+
+
+def update(request, obj):
+    form = JournalForm(request.POST, instance=obj)
+
+    if form.is_valid():
+        form.save()
 
         return True
 
