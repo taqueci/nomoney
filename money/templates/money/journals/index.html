@@ -1,0 +1,59 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% extends 'money/base.html' %}
+
+{% load humanize %}
+{% load i18n %}
+
+{% load url %}
+
+{% load journal %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}{% trans 'Journals' %} | {{ NAME }}{% endblock %}
+
+{% block breadcrumb %}
+{% trans 'Home' %}
+&raquo;
+{% trans 'Journals' %}
+{% endblock %}
+
+{% block heading %}{% trans 'Journal list' %}{% endblock %}
+
+{% block content %}
+<table class="table">
+  <thead>
+    <tr>
+      <th><a href="?{% url_params_sort 'id' %}">#</a></th>
+      <th><a href="?{% url_params_sort 'date' %}">{% trans 'Date' %}</a></th>
+      <th><a href="?{% url_params_sort 'debit' %}">{% trans 'Debit' %}</a></th>
+      <th><a href="?{% url_params_sort 'debit' %}">{% trans 'Credit' %}</a></th>
+      <th><a href="?{% url_params_sort 'amount' %}">{% trans 'Amount' %}</a></th>
+      <th></th>
+      <th><a href="?{% url_params_sort 'summary' %}">{% trans 'Summary' %}</a></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for x in page %}
+    <tr>
+      <td align="right">{{ x.id }}</td>
+      <td>{{ x.date|date:'Y-m-d' }}</td>
+      <td>{{ x.debit.name }}</td>
+      <td>{{ x.credit.name }}</td>
+      <td align="right">{{ x.amount|intcomma }}</td>
+      <td><span class="{{ x|journal_category_badge_class }}">{{ x|journal_category_text }}</span></td>
+      <td>{{ x.summary }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% include 'money/pagination.html' %}
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block content_full %}
+{% endblock %}

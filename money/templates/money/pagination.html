@@ -1,0 +1,62 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% load url %}
+
+<nav class="d-inline-block mb-4">
+<ul class="pagination">
+  {% if page.has_previous %}
+  <li class="page-item">
+    <a class="page-link" href="?{% url_params page=page.previous_page_number %}">
+      &lsaquo;
+    </a>
+  </li>
+  {% endif %}
+
+  {% if page.number > 3 %}
+  <li class="page-item">
+    <a class="page-link" href="?{% url_params page=1 %}">1</a>
+  </li>
+  {% endif %}
+
+  {% if page.number > 4 %}
+  <li class="page-item"><span class="page-link">...</span></li>
+  {% endif %}
+
+  {# FIXME: Do not use loop #}
+  {% for link_page in page.paginator.page_range %}
+  {% if link_page == page.number %}
+  <li class="page-item active">
+    <a class="page-link" href="?{% url_params page=link_page %}">
+      {{ link_page }}
+    </a>
+  </li>
+  {% elif link_page < page.number|add:3 and link_page > page.number|add:-3 %}
+  <li class="page-item">
+    <a class="page-link" href="?{% url_params page=link_page %}">
+      {{ link_page }}
+    </a>
+  </li>
+  {% endif %}
+  {% endfor %}
+
+  {% if page.number < page.paginator.num_pages|add:-3 %}
+  <li class="page-item"><span class="page-link">...</span></li>
+  {% endif %}
+
+  {% if page.number < page.paginator.num_pages|add:-2 %}
+  <li class="page-item">
+    <a class="page-link" href="?{% url_params page=page.paginator.num_pages %}">
+      {{ page.paginator.num_pages}}
+    </a>
+  </li>
+  {% endif%}
+
+  {% if page.has_next %}
+  <li class="page-item">
+    <a class="page-link" href="?{% url_params page=page.next_page_number %}">
+      &rsaquo;
+    </a>
+  </li>
+  {% endif %}
+</ul>
+</nav>

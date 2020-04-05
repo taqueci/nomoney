@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'system',
     'money',
 ]
@@ -131,6 +132,9 @@ AUTH_USER_MODEL = 'system.User'
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'money', 'locale'),
 )
+
+# Number of digits for filter initcomma
+NUMBER_GROUPING = 3
 
 FY_START_MONTH = 4
 FY_START_DAY = 1
