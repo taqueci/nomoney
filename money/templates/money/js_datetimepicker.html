@@ -1,0 +1,40 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'system/css/tempusdominus-bootstrap-4.min.css' %}">
+
+<style type="text/css">
+  .datepicker-days table th {
+    border-top: none;
+    border-bottom: none;
+  }
+  .datepicker-days table td {
+    border-top: none;
+  }
+</style>
+
+<script src="{% static 'system/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+
+<script>
+$.fn.datetimepicker.Constructor.Default =
+  $.extend({}, $.fn.datetimepicker.Constructor.Default, {
+    format: 'YYYY-MM-DD HH:mm:ss',
+    buttons: {
+      showToday: false,
+      showClear: false,
+      showClose: true
+    },
+    icons: {
+      time: 'fas fa-clock',
+      date: 'fas fa-calendar',
+      up: 'fas fa-arrow-up',
+      down: 'fas fa-arrow-down',
+      previous: 'fas fa-chevron-left',
+      next: 'fas fa-chevron-right',
+      today: 'fas fa-calendar-check-o',
+      clear: 'fas fa-trash',
+      close: 'fas fa-check'
+    }
+  });
+</script>

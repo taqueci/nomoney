@@ -1,0 +1,20 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'system/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'system/css/select2-bootstrap4.min.css' %}">
+
+<style type="text/css">
+  .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__choice__remove {
+    float: right;
+  }
+
+  .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__choice {
+    padding-left: 5px;
+    white-space: normal;
+  }
+</style>
+
+<script src="{% static 'system/js/select2.min.js' %}"></script>
+<script>$.fn.select2.defaults.set('theme', 'bootstrap4');</script>

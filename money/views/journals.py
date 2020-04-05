@@ -3,7 +3,7 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render
 
-from ..models import Journal
+from ..models import Account, Journal
 from .shared import pagination
 
 
@@ -19,7 +19,27 @@ def index(request):
     sort = request.GET.get('sort')
     order = request.GET.get('order')
 
+    f_start = request.GET.get('start')
+    f_end = request.GET.get('end')
+
+    f_debit = list(request.GET.getlist('debit'))
+    f_credit = list(request.GET.getlist('credit'))
+
+    account = Account.objects.all()
+
     q = Journal.objects.filter(disabled=False)
+
+    if f_start:
+        q = q.filter(date__gte=f_start)
+
+    if f_end:
+        q = q.filter(date__lte=f_end)
+
+    if f_debit:
+        q = q.filter(debit__in=f_debit)
+
+    if f_credit:
+        q = q.filter(credit__in=f_credit)
 
     if sort and (sort in INDEX_SORTABLE_FIELDS):
         q = q.order_by('-' + sort if order and (order == 'desc') else sort)
@@ -30,5 +50,6 @@ def index(request):
     page = pagination.page(paginator, n)
 
     return render(request, 'money/journals/index.html', {
-        'page': page
+        'page': page,
+        'debit': account, 'credit': account,
     })

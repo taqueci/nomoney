@@ -5,6 +5,7 @@
 {% load humanize %}
 {% load i18n %}
 
+{% load html %}
 {% load url %}
 
 {% load journal %}
@@ -53,7 +54,71 @@
 {% endblock %}
 
 {% block sidebar %}
+<div class="mb-5">
+
+<h5 class="border-bottom pb-2 mb-3"><i class="fas fa-filter fa-fw"></i> {% trans 'Filter' %}</h5>
+
+<form id="filter" method="get" action="{% url 'main:journals' %}">
+
+<div class="form-group">
+  <label>{% trans 'Start date' %}</label>
+  <div id="filter-start" class="input-group date datetimepicker" data-target-input="nearest">
+    <input type="text" name="start" value="{% url_param_value 'start' %}" class="form-control datetimepicker-input" data-target="#filter-start" />
+    <div class="input-group-append" data-target="#filter-start" data-toggle="datetimepicker">
+      <div class="input-group-text"><i class="fas fa-calendar fa-fw"></i></div>
+    </div>
+  </div>
+</div>
+
+<div class="form-group">
+  <label>{% trans 'End date' %}</label>
+  <div id="filter-end" class="input-group date datetimepicker" data-target-input="nearest">
+    <input type="text" name="end" value="{% url_param_value 'end' %}" class="form-control datetimepicker-input" data-target="#filter-end" />
+    <div class="input-group-append" data-target="#filter-end" data-toggle="datetimepicker">
+      <div class="input-group-text"><i class="fas fa-calendar fa-fw"></i></div>
+    </div>
+  </div>
+</div>
+
+<div class="form-group">
+  <label>{% trans 'Debit' %}</label>
+  <select name="debit" class="form-control select2" multiple="multiple" size="1">
+    {% for x in debit %}
+    <option value="{{ x.id }}" {% html_selected_by_query_list 'debit' x.id %} style="visibility: hidden">{{ x.name }}</option>
+    {% endfor %}
+  </select>
+</div>
+
+<div class="form-group">
+  <label>{% trans 'Credit' %}</label>
+  <select name="credit" class="form-control select2" multiple="multiple" size="1">
+    {% for x in credit %}
+    <option value="{{ x.id }}" {% html_selected_by_query_list 'credit' x.id %} style="visibility: hidden">{{ x.name }}</option>
+    {% endfor %}
+  </select>
+</div>
+
+</form>
+
+<a class="btn btn-secondary mt-2" href="{% url 'main:journals' %}"><i class="fas fa-ban"></i> {% trans 'Reset' %}</a>
+
+</div>
 {% endblock %}
 
 {% block content_full %}
+{% endblock %}
+
+{% block js %}
+{% include 'money/js_moment.html' %}
+{% include 'money/js_datetimepicker.html' %}
+{% include 'money/js_select2.html' %}
+<script>
+$(function() {
+  $('.datetimepicker').datetimepicker({format: 'YYYY-MM-DD'});
+  $('.select2').select2();
+
+  $('#filter').change(function() { $('#filter').submit() });
+  $('#filter').on('hide.datetimepicker', function() { $('#filter').submit() });
+});
+</script>
 {% endblock %}
