@@ -27,6 +27,11 @@
 
 {% block actions %}
 <a href="{% url 'money:edit_journal' object.id %}?next={{ request.get_full_path|urlencode }}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-edit fa-fw"></i> {% trans 'Edit' %}</a>
+
+<form method="post" action="{% url 'main:destroy_journal' object.id %}" class="d-inline" onSubmit="return confirmDelete()">
+  {% csrf_token %}
+  <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-trash fa-fw"></i> {% trans 'Delete' %}</button>
+</form>
 {% endblock %}
 
 {% block content %}
@@ -83,4 +88,9 @@
 {% endblock %}
 
 {% block js %}
+<script>
+function confirmDelete() {
+  return confirm("{% trans 'Are you sure you want to delete?' %}");
+}
+</script>
 {% endblock %}

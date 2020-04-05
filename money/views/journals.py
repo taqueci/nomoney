@@ -105,6 +105,20 @@ def edit(request, id):
     })
 
 
+def destroy(request, id):
+    obj = get_object_or_404(Journal, pk=id)
+
+    if request.method == 'POST':
+        if delete(request, obj):
+            messages.success(
+                request, _('The journal has been successfully deleted')
+            )
+        else:
+            messages.error(request, _('Failed to delete journal'))
+
+    return redirect('main:journals')
+
+
 def create(request):
     form = JournalForm(request.POST)
 
@@ -127,3 +141,10 @@ def update(request, obj):
         return True
 
     return False
+
+
+def delete(request, obj):
+    obj.disabled = True
+    obj.save()
+
+    return True
