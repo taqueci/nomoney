@@ -125,7 +125,7 @@
     {% if request.GET.next %}
     <a href="{{ request.GET.next }}" class="btn btn-secondary"><i class="fas fa-ban fa-fw"></i> {% trans 'Cancel' %}</a>
     {% else %}
-    <a href="{% url 'main:journals' %}" class="btn btn-secondary"><i class="fas fa-ban fa-fw"></i> {% trans 'Cancel' %}</a>
+    <a href="{% url 'money:journals' %}" class="btn btn-secondary"><i class="fas fa-ban fa-fw"></i> {% trans 'Cancel' %}</a>
     {% endif %}
   </div>
 </div>

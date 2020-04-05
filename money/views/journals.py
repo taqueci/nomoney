@@ -77,7 +77,7 @@ def new(request):
         else:
             messages.error(request, _('Failed to create journal'))
 
-        return redirect(request.GET.get('next', 'main:journals'))
+        return redirect(request.GET.get('next', 'money:journals'))
 
     grouped_account = account.grouped_objects()
 
@@ -111,7 +111,7 @@ def edit(request, id):
         else:
             messages.error(request, _('Failed to update journal'))
 
-        return redirect(request.GET.get('next', 'main:journals'))
+        return redirect(request.GET.get('next', 'money:journals'))
 
     grouped_account = account.grouped_objects()
 
@@ -138,7 +138,7 @@ def destroy(request, id):
         else:
             messages.error(request, _('Failed to delete journal'))
 
-    return redirect('main:journals')
+    return redirect('money:journals')
 
 
 def create(request):

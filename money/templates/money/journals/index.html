@@ -55,7 +55,7 @@
       <td><span class="{{ x|journal_category_badge_class }}">{{ x|journal_category_text }}</span></td>
       <td>{{ x.summary }}</td>
       <td class="px-2">
-        <span data-toggle="tooltip" data-title="{% trans 'Edit journal' %}"><a href="{% url 'main:edit_journal' x.id %}?next={{ request.get_full_path|urlencode }}"><i class="fas fa-edit fa-fw"></i></a></span>
+        <span data-toggle="tooltip" data-title="{% trans 'Edit journal' %}"><a href="{% url 'money:edit_journal' x.id %}?next={{ request.get_full_path|urlencode }}"><i class="fas fa-edit fa-fw"></i></a></span>
       </td>
       <td class="px-2">
         <span data-toggle="tooltip" data-title="{% trans 'More information' %}"><a href="{% url 'money:journal' x.id %}"><i class="fas fa-list-alt fa-fw"></i></a></span>
@@ -130,7 +130,7 @@
 
 <h5 class="border-bottom pb-2 mb-3"><i class="fas fa-filter fa-fw"></i> {% trans 'Filter' %}</h5>
 
-<form id="filter" method="get" action="{% url 'main:journals' %}">
+<form id="filter" method="get" action="{% url 'money:journals' %}">
 
 <div class="form-group">
   <label>{% trans 'Keyword' %}</label>
@@ -182,7 +182,7 @@
 
 </form>
 
-<a class="btn btn-secondary mt-2" href="{% url 'main:journals' %}"><i class="fas fa-ban"></i> {% trans 'Reset' %}</a>
+<a class="btn btn-secondary mt-2" href="{% url 'money:journals' %}"><i class="fas fa-ban"></i> {% trans 'Reset' %}</a>
 
 </div>
 {% endblock %}
