@@ -1,8 +1,11 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
+from django.contrib import messages
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.utils.translation import gettext_lazy as _
 
+from ..forms import JournalForm
 from ..models import Account, Journal
 from .shared import pagination
 
@@ -53,3 +56,34 @@ def index(request):
         'page': page,
         'debit': account, 'credit': account,
     })
+
+
+def new(request):
+    if request.method == 'POST':
+        if create(request):
+            messages.success(
+                request, _('New journal has been successfully created')
+            )
+        else:
+            messages.error(request, _('Failed to create journal'))
+
+        return redirect(request.GET.get('next', 'main:journals'))
+
+    account = Account.objects.all()
+
+    return render(request, 'money/journals/new.html', {
+        'debit': account, 'credit': account,
+    })
+
+
+def create(request):
+    form = JournalForm(request.POST)
+
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.author = request.user
+        obj.save()
+
+        return True
+
+    return False
