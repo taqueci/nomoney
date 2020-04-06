@@ -13,8 +13,10 @@ def fy(date=None, month=4, day=1):
 
 
 def range_next_prev(start, end):
-    s = datetime.datetime.strptime(start, '%Y-%m-%d')
-    e = datetime.datetime.strptime(end, '%Y-%m-%d')
+    today = datetime.datetime.now()
+
+    s = datetime.datetime.strptime(start, '%Y-%m-%d') if start else today
+    e = datetime.datetime.strptime(end, '%Y-%m-%d') if end else today
 
     delta = e - s
     days = delta.days + 1
@@ -67,3 +69,20 @@ def _date_for_month(src, dest):
         return dest.replace(day=_last_day_of_month(dest))
     else:
         return dest
+
+
+def period(year, month=None, week=None):
+    if week is not None:
+        s = datetime.datetime.strptime(f'{year}-W{week-1}-1',
+                                       "%Y-W%W-%w").date()
+        e = s + datetime.timedelta(days=6.9)
+
+        return (s, e)
+
+    if month is not None:
+        s = datetime.date(year, month, 1)
+        e = datetime.date(year, month, _last_day_of_month(s))
+
+        return (s, e)
+
+    return (datetime.date(year, 1, 1), datetime.date(year, 12, 31))

@@ -6,9 +6,35 @@ from django.shortcuts import render
 from ..models import Journal
 from .shared import chart, date, value
 
+INDEX_NUM = 7
+
 
 def index(request):
-    return render(request, 'money/reports/index.html', {})
+    q = Journal.objects.filter(disabled=False)
+
+    annual = q.values('year').annotate(
+        income=Sum('income'), expense=Sum('expense'),
+        balance=F('income')-F('expense')
+    ).order_by('-year')[:INDEX_NUM]
+
+    monthly = q.values('year', 'month').annotate(
+        income=Sum('income'), expense=Sum('expense'),
+        balance=F('income')-F('expense')
+    ).order_by('-year', '-month')[:INDEX_NUM]
+
+    weekly = q.values('year', 'month', 'week').annotate(
+        income=Sum('income'), expense=Sum('expense'),
+        balance=F('income')-F('expense')
+    ).order_by('-year', '-month', '-week')[:INDEX_NUM]
+
+    daily = q.values('date').annotate(
+        income=Sum('income'), expense=Sum('expense'),
+        balance=F('income')-F('expense')
+    ).order_by('-date')[:INDEX_NUM]
+
+    return render(request, 'money/reports/index.html', {
+        'annual': annual, 'monthly': monthly, 'weekly': weekly, 'daily': daily,
+    })
 
 
 def show(request, id):

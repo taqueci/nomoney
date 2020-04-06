@@ -3,6 +3,8 @@
 import os
 from django import template
 
+from ..views.shared import date
+
 register = template.Library()
 
 
@@ -34,5 +36,17 @@ def url_params_sort(context, key):
         query['order'] = 'desc'
     else:
         query['order'] = 'asc'
+
+    return query.urlencode()
+
+
+@register.simple_tag(takes_context=True)
+def url_params_period(context, **kwargs):
+    query = context['request'].GET.copy()
+
+    s, e = date.period(kwargs['year'], kwargs.get('month'), kwargs.get('week'))
+
+    query['start'] = s.strftime('%Y-%m-%d')
+    query['end'] = e.strftime('%Y-%m-%d')
 
     return query.urlencode()
