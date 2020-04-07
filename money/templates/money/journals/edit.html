@@ -92,7 +92,7 @@
   <label class="col-sm-3 col-form-label">{% trans 'Date' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
     <div id="date" class="input-group date datetimepicker" data-target-input="nearest">
-      <input type="text" name="date" value="{% now 'Y-m-d' %}" class="form-control datetimepicker-input" data-target="#date" />
+      <input type="text" name="date" value="{{ object.date|date:'Y-m-d' }}" class="form-control datetimepicker-input" data-target="#date" />
       <div class="input-group-append" data-target="#date" data-toggle="datetimepicker">
         <div class="input-group-text"><i class="fas fa-calendar fa-fw"></i></div>
       </div>
