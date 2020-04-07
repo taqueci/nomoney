@@ -28,6 +28,8 @@
 {% block actions %}
 <a href="{% url 'money:edit_journal' object.id %}?next={{ request.get_full_path|urlencode }}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-edit fa-fw"></i> {% trans 'Edit' %}</a>
 
+<a href="{% url 'money:new_journal' %}?{% url_params base=object.id next=request.get_full_path|urlencode %}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-copy fa-fw"></i> {% trans 'Copy' %}</a>
+
 <form method="post" action="{% url 'money:destroy_journal' object.id %}" class="d-inline" onSubmit="return confirmDelete()">
   {% csrf_token %}
   <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-trash fa-fw"></i> {% trans 'Delete' %}</button>

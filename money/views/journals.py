@@ -3,6 +3,7 @@
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 
@@ -79,6 +80,8 @@ def new(request):
 
         return redirect(request.GET.get('next', 'money:journals'))
 
+    v_base = request.GET.get('base')
+
     grouped_account = account.grouped_objects()
 
     popular_account = Journal.objects.values(
@@ -87,7 +90,10 @@ def new(request):
         debit_num=Count('debit__id'), credit_num=Count('credit__id')
     ).order_by('-debit_num', '-credit_num')[:POPULAR_ACCOUNT_NUM]
 
+    default = get_object_or_404(Journal, pk=v_base) if v_base else {}
+
     return render(request, 'money/journals/new.html', {
+        'object': default,
         'account': grouped_account, 'popular_account': popular_account,
     })
 
