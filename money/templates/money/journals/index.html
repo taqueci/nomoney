@@ -26,9 +26,17 @@
 
 {% block actions %}
 <a href="{% url 'money:new_journal' %}?next={{ request.get_full_path|urlencode }}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-plus fa-fw"></i> {% trans 'New' %}</a>
+
+<div class="d-inline d-lg-none">
+<a href="#filter" class="btn btn-outline-secondary btn-sm"><i class="fas fa-filter fa-fw"></i> {% trans 'Filter' %}</a>
+</div>
 {% endblock %}
 
 {% block content %}
+<div class="d-flex justify-content-end mb-2">
+  <span class="badge badge-pill badge-light">{% trans 'Total' %} {{ total|intcomma }}</span>
+</div>
+
 <div class="d-none d-lg-block">
 
 <table class="table">

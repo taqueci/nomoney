@@ -64,7 +64,7 @@ def index(request):
     page = pagination.page(paginator, n)
 
     return render(request, 'money/journals/index.html', {
-        'page': page,
+        'page': page, 'total': paginator.count,
         'debit': account, 'credit': account,
     })
 
