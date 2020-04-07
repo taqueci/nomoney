@@ -41,10 +41,29 @@
 <form method="post">
   {% csrf_token %}
 
-<div class="d-flex justify-content-end mb-3">
+<div class="d-flex flex-wrap justify-content-end mb-1">
+
+<div class="btn-group btn-group-sm btn-group-toggle mb-2" data-toggle="buttons">
+  <label class="btn btn-outline-secondary">
+    <input type="radio" name="category" value="1" autocomplete="off">
+    {% trans 'Incoming' %}
+  </label>
+  <label class="btn btn-outline-secondary">
+    <input type="radio" name="category" value="2" autocomplete="off">
+    {% trans 'Outgoing' %}
+  </label>
+  <label class="btn btn-outline-secondary">
+    <input type="radio" name="category" value="3" autocomplete="off">
+    {% trans 'Repayment' %}
+  </label>
+  <label class="btn btn-outline-secondary active">
+    <input type="radio" name="category" value="0" autocomplete="off" checked>
+    {% trans 'Other' %}
+  </label>
+</div>
 
 {% if popular_account %}
-<div class="dropdown">
+<div class="dropdown ml-2 mb-2">
   <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
     {% trans 'Popular account' %}
   </button>
@@ -133,6 +152,19 @@
 </div>
 
 </form>
+
+<div style="display: none">
+  <select id="account-select">
+    {% for x in account %}
+    <optgroup label="{{ x.name }}" data-entry="{{ x.entry }}">
+      {% for y in x.data %}
+      <option value="{{ y.id }}">{{ y.name }}</option>
+      {% endfor %}
+    </optgroup>
+    {% endfor %}
+  </select>
+</div>
+
 {% endblock %}
 
 {% block js %}
@@ -147,6 +179,38 @@ $(function() {
 
     $('select[name="debit"]').val($(this).data('debit'));
     $('select[name="credit"]').val($(this).data('credit'));
+  });
+
+  $('input[name="category"]').on('click', function() {
+    var entry = $(this).val();
+
+    var debit = $('select[name="debit"]');
+    var credit = $('select[name="credit"]');
+
+    debit.children().remove();
+    credit.children().remove();
+
+    if (entry == 1) {
+      $('#account-select optgroup').each(function() {
+        if ($(this).data('entry') === 1)  $(this).clone().appendTo(debit);
+        if ($(this).data('entry') === 3)  $(this).clone().appendTo(credit);
+      });
+    } else if (entry == 2) {
+      $('#account-select optgroup').each(function() {
+        if ($(this).data('entry') === 4)  $(this).clone().appendTo(debit);
+        if ($(this).data('entry') === 1)  $(this).clone().appendTo(credit);
+        if ($(this).data('entry') === 2)  $(this).clone().appendTo(credit);
+      });
+    } else if (entry == 3) {
+      $('#account-select optgroup').each(function() {
+        if ($(this).data('entry') === 2)  $(this).clone().appendTo(debit);
+        if ($(this).data('entry') === 1)  $(this).clone().appendTo(credit);
+        if ($(this).data('entry') === 2)  $(this).clone().appendTo(credit);
+      });
+    } else {
+      $('#account-select').children().clone().appendTo(debit);
+      $('#account-select').children().clone().appendTo(credit);
+    }
   });
 });
 </script>
