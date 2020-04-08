@@ -177,12 +177,31 @@ $(function() {
   $('#popular a').on('click', function(e) {
     e.preventDefault();
 
-    $('select[name="debit"]').val($(this).data('debit'));
-    $('select[name="credit"]').val($(this).data('credit'));
+    var debit = $('select[name="debit"]');
+    var credit = $('select[name="credit"]');
+
+    debit.children().remove();
+    credit.children().remove();
+
+    $('#account-select').children().clone().appendTo(debit);
+    $('#account-select').children().clone().appendTo(credit);
+
+    debit.val($(this).data('debit'));
+    credit.val($(this).data('credit'));
   });
 
   $('input[name="category"]').on('click', function() {
-    var entry = $(this).val();
+    var CATEGORY_INCOMING = 1;
+    var CATEGORY_OUTGOING = 2;
+    var CATEGORY_LIABILITY = 3;
+
+    var ENTRY_ASSET = 1;
+    var ENTRY_LIABILITY = 2;
+    var ENTRY_INCOME = 3;
+    var ENTRY_EXPENSE = 4;
+    var ENTRY_EQUITY = 5;
+
+    var category = $(this).val();
 
     var debit = $('select[name="debit"]');
     var credit = $('select[name="credit"]');
@@ -190,22 +209,28 @@ $(function() {
     debit.children().remove();
     credit.children().remove();
 
-    if (entry == 1) {
+    if (category == CATEGORY_INCOMING) {
       $('#account-select optgroup').each(function() {
-        if ($(this).data('entry') === 1)  $(this).clone().appendTo(debit);
-        if ($(this).data('entry') === 3)  $(this).clone().appendTo(credit);
+        var entry = $(this).data('entry');
+
+        if (entry == ENTRY_ASSET) $(this).clone().appendTo(debit);
+        if (entry == ENTRY_INCOME) $(this).clone().appendTo(credit);
       });
-    } else if (entry == 2) {
+    } else if (category == CATEGORY_OUTGOING) {
       $('#account-select optgroup').each(function() {
-        if ($(this).data('entry') === 4)  $(this).clone().appendTo(debit);
-        if ($(this).data('entry') === 1)  $(this).clone().appendTo(credit);
-        if ($(this).data('entry') === 2)  $(this).clone().appendTo(credit);
+        var entry = $(this).data('entry');
+
+        if (entry == ENTRY_EXPENSE) $(this).clone().appendTo(debit);
+        if (entry == ENTRY_ASSET) $(this).clone().appendTo(credit);
+        if (entry == ENTRY_LIABILITY) $(this).clone().appendTo(credit);
       });
-    } else if (entry == 3) {
+    } else if (category == CATEGORY_LIABILITY) {
       $('#account-select optgroup').each(function() {
-        if ($(this).data('entry') === 2)  $(this).clone().appendTo(debit);
-        if ($(this).data('entry') === 1)  $(this).clone().appendTo(credit);
-        if ($(this).data('entry') === 2)  $(this).clone().appendTo(credit);
+        var entry = $(this).data('entry');
+
+        if (entry == ENTRY_LIABILITY) $(this).clone().appendTo(debit);
+        if (entry == ENTRY_ASSET) $(this).clone().appendTo(credit);
+        if (entry == ENTRY_LIABILITY) $(this).clone().appendTo(credit);
       });
     } else {
       $('#account-select').children().clone().appendTo(debit);

@@ -1,5 +1,7 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
+import datetime
+
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
@@ -90,7 +92,9 @@ def new(request):
         debit_num=Count('debit__id'), credit_num=Count('credit__id')
     ).order_by('-debit_num', '-credit_num')[:POPULAR_ACCOUNT_NUM]
 
-    default = get_object_or_404(Journal, pk=v_base) if v_base else {}
+    default = get_object_or_404(Journal, pk=v_base) if v_base else {
+        'date': datetime.date.today()
+    }
 
     return render(request, 'money/journals/new.html', {
         'object': default,
