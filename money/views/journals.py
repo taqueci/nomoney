@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 
 from ..forms import JournalForm
-from ..models import Account, Journal
+from ..models import Account, Journal, Template
 from .shared import account, pagination
 
 
@@ -82,6 +82,7 @@ def new(request):
 
         return redirect(request.GET.get('next', 'money:journals'))
 
+    v_template = request.GET.get('template')
     v_base = request.GET.get('base')
 
     grouped_account = account.grouped_objects()
@@ -92,12 +93,18 @@ def new(request):
         debit_num=Count('debit__id'), credit_num=Count('credit__id')
     ).order_by('-debit_num', '-credit_num')[:POPULAR_ACCOUNT_NUM]
 
-    default = get_object_or_404(Journal, pk=v_base) if v_base else {
+    template = Template.objects.filter(disabled=False).order_by('-rank')
+
+    default = _template(v_template) if v_template else {
         'date': datetime.date.today()
     }
 
+    if v_base:
+        default = get_object_or_404(Journal, pk=v_base)
+        default.date = datetime.date.today()
+
     return render(request, 'money/journals/new.html', {
-        'object': default,
+        'object': default, 'template': template,
         'account': grouped_account, 'popular_account': popular_account,
     })
 
@@ -180,3 +187,37 @@ def delete(request, obj):
     obj.save()
 
     return True
+
+
+def _template(pk):
+    obj = get_object_or_404(Template, pk=pk)
+
+    obj.date = _template_date(obj.date)
+    obj.summary = _template_text(obj.summary)
+    obj.note = _template_text(obj.note)
+
+    return obj
+
+
+def _template_date(str):
+    try:
+        d = datetime.datetime.strptime(_template_text(str), '%Y-%m-%d').date()
+    except ValueError:
+        d = ''
+
+    return d
+
+
+def _template_text(text):
+    if not text:
+        return ''
+
+    now = datetime.date.today()
+
+    for x in (
+        '%a', '%A', '%w', '%d', '%b', '%B', '%m', '%y', '%Y', '%j', '%U', '%W',
+        '%c', '%x',
+    ):
+        text = text.replace(x, now.strftime(x))
+
+    return text

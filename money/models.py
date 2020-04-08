@@ -88,3 +88,26 @@ class Journal(models.Model):
         self.week = self.date.isocalendar()[1]
 
         super(Journal, self).save(*args, **kwargs)
+
+
+class Template(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(null=True, blank=True)
+
+    debit = models.ForeignKey(
+        Account, on_delete=models.DO_NOTHING, related_name='template_debit'
+    )
+    credit = models.ForeignKey(
+        Account, on_delete=models.DO_NOTHING, related_name='template_credit'
+    )
+
+    date = models.CharField(max_length=255, null=True, blank=True)
+    amount = models.IntegerField(null=True, blank=True)
+    summary = models.CharField(max_length=255, null=True, blank=True)
+    note = models.TextField(null=True, blank=True)
+
+    rank = models.IntegerField(default=0)
+    disabled = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name

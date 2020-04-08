@@ -43,6 +43,19 @@
 </div>
 {% endif %}
 
+{% if template %}
+<div class="dropdown ml-2">
+  <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+    {% trans 'Template' %}
+  </button>
+  <div id="template" class="dropdown-menu dropdown-menu-right">
+    {% for x in template %}
+    <a class="dropdown-item" href="?{% url_params template=x.id %}">{{ x.name }}</a>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
 </div><!-- .d-flex -->
 
 <div class="form-group row">
