@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  apache:
+    build: ./docker/apache
+    container_name: n-apache
+    ports:
+      - "8010:80"
+    volumes:
+      - .:/opt/n-money
+    depends_on:
+      - main
+
+  postgresql:
+    image: postgres:alpine
+    container_name: n-postgresql
+    environment:
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+      POSTGRES_USER: nmoney
+      POSTGRES_PASSWORD: nmoney
+      POSTGRES_DB: nmoney
+    volumes:
+      - ./docker/postgresql/init:/docker-entrypoint-initdb.d
+
+  main:
+    build: .
+    container_name: n-main
+    volumes:
+      - .:/opt/n-money
+    depends_on:
+      - postgresql
+    restart: always

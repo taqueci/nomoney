@@ -1,0 +1,37 @@
+# Copyright (C) Takeshi Nakamura. All rights reserved.
+
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+SECRET_KEY = 'f28)f6n)+po@miei(tn**ki05n@@5z-caf8y!hrz#&-n8p09i@'
+
+DEBUG = False
+
+ALLOWED_HOSTS = ['n-main']
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'nmoney',
+        'USER': 'nmoney',
+        'PASSWORD': 'nmoney',
+        'HOST': 'n-postgresql',
+        'PORT': 5432,
+    }
+}
+
+LANGUAGE_CODE = 'ja'
+
+TIME_ZONE = 'Asia/Tokyo'
+
+URL_ROOT = ''
+
+STATIC_URL = '/{}static/'.format(URL_ROOT)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+NAME = 'N Money'
+
+ADMIN_USER = 'admin'
+ADMIN_MAIL = 'admin@example.com'
+ADMIN_PASSWORD = 'password'

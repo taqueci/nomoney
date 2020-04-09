@@ -156,6 +156,10 @@ VERSION = version.VERSION
 
 NAME = 'N Money'
 
+ADMIN_USER = 'admin'
+ADMIN_MAIL = 'admin@example.com'
+ADMIN_PASSWORD = 'password'
+
 try:
     from .local_settings import *
 except ImportError:
