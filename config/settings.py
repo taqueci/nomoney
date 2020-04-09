@@ -123,10 +123,13 @@ USE_L10N = True
 USE_TZ = True
 
 
+URL_ROOT = ''
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/{}static/'.format(URL_ROOT)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 AUTH_USER_MODEL = 'system.User'
 
