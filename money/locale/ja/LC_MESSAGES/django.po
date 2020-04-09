@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-08 22:10+0900\n"
+"POT-Creation-Date: 2020-04-09 20:53+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -352,10 +352,6 @@ msgstr "設定"
 msgid "Report"
 msgstr "レポート"
 
-#: money/templates/money/reports/show.html:22
-msgid "Display"
-msgstr ""
-
 #: money/templates/money/reports/show.html:30
 #: money/templates/money/reports/show.html:226
 msgid "Previous chart"
@@ -401,3 +397,7 @@ msgstr "記録の削除に成功しました"
 #: money/views/journals.py:156
 msgid "Failed to delete journal"
 msgstr "記録の削除に失敗しました"
+
+#: money/views/reports.py:69
+msgid "All"
+msgstr "すべて"

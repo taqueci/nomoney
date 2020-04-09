@@ -118,7 +118,7 @@
 </div><!-- #outgoing-table -->
 
   </div>
-  <div class="col-lg">
+  <div class="col-lg-6">
 
 <div class="list-group mb-4">
   {% for x in page %}
@@ -137,7 +137,7 @@
         </div>
       </div>
     </div>
-    <div class="text-muted mb-2">{{ x.note }}</div>
+    <div class="text-muted mb-2">{{ x.note|truncatechars:100 }}</div>
     <div class="d-flex justify-content-between">
       <div>
         {{ x.debit.name }} / {{ x.credit.name }}
@@ -162,7 +162,7 @@
   <div class="input-group">
     <input type="text" name="keyword" id="search" class="form-control">
     <div class="input-group-append">
-      <span class="input-group-text"><i class="fas fa-search fa-fw"></i></span>
+      <button class="btn btn-secondary" type="submit"><i class="fas fa-search fa-fw"></i></button>
     </div>
   </div>
 </div>

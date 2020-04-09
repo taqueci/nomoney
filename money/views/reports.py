@@ -2,6 +2,7 @@
 
 from django.db.models import F, Sum
 from django.shortcuts import render
+from django.utils.translation import gettext_lazy as _
 
 from ..models import Journal
 from .shared import chart, date, value
@@ -65,6 +66,7 @@ def show(request, id):
     ).annotate(sum=Sum('expense')).order_by('-sum')
 
     return render(request, 'money/reports/show.html', {
+        'object': {'name': _('All')},
         'page': date.range_next_prev(f_start, f_end),
         'summary': summary, 'incoming': incoming, 'outgoing': outgoing,
         'data_doughnut_incoming': chart.data_doughnut_incoming(incoming),

@@ -19,7 +19,7 @@
 &raquo;
 <a href="{% url 'money:reports' %}">{% trans 'Reports' %}</a>
 &raquo;
-{% trans 'Display' %}
+{{ object.name }}
 {% endblock %}
 
 {% block heading %}{{ page.base.start }} - {{ page.base.end }}{% endblock %}

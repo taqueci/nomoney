@@ -60,7 +60,7 @@
       <td>{{ x.debit.name }}</td>
       <td>{{ x.credit.name }}</td>
       <td align="right">{{ x.amount|intcomma }}</td>
-      <td><span class="{{ x|journal_category_badge_class }}">{{ x|journal_category_text }}</span></td>
+      <td align="center"><span class="{{ x|journal_category_badge_class }}">{{ x|journal_category_text }}</span></td>
       <td>{{ x.summary }}</td>
       <td class="px-2">
         <span data-toggle="tooltip" data-title="{% trans 'Edit journal' %}"><a href="{% url 'money:edit_journal' x.id %}?next={{ request.get_full_path|urlencode }}"><i class="fas fa-edit fa-fw"></i></a></span>
@@ -114,7 +114,7 @@
         </div>
       </div>
     </div>
-    <div class="text-muted mb-2">{{ x.note }}</div>
+    <div class="text-muted mb-2">{{ x.note|truncatechars:100 }}</div>
     <div class="d-flex justify-content-between">
       <div>
         {{ x.debit.name }} / {{ x.credit.name }}
