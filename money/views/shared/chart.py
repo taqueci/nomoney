@@ -19,6 +19,25 @@ DOUGHNUT_COLOR = (
     '#ff6e40', # 16
 )
 
+STACKED_COLOR = (
+    '#ff80ab', # 02
+    '#82b1ff', # 06
+    '#b9f6ca', # 10
+    '#ffe57f', # 14
+    '#ea80fc', # 03
+    '#80d8ff', # 07
+    '#ccff90', # 11
+    '#ffd180', # 15
+    '#ff8a80', # 01
+    '#8c9eff', # 05
+    '#a7ffeb', # 09
+    '#ffff8d', # 13
+    '#b388ff', # 04
+    '#84ffff', # 08
+    '#f4ff81', # 12
+    '#ff9e80', # 16
+)
+
 
 def data_doughnut_incoming(query):
     data = {

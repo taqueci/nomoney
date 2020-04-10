@@ -219,6 +219,72 @@
 
   </div><!-- .col -->
 </div><!-- .row -->
+<div class="row mb-3">
+  <div class="col">
+
+<h3>{% trans 'Chart' %}</h3>
+
+<div class="d-flex flex-wrap justify-content-end mb-1">
+  <div class="btn-group btn-group-sm btn-group-toggle mb-2" data-toggle="buttons">
+    <label class="btn btn-outline-secondary px-3 active">
+      <input type="radio" name="category" data-chart="balance" autocomplete="off" checked>
+      {% trans 'Balance' %}
+    </label>
+    <label class="btn btn-outline-secondary px-3">
+      <input type="radio" name="category" data-chart="asset" autocomplete="off">
+      {% trans 'Asset' %}
+    </label>
+    <label class="btn btn-outline-secondary px-3">
+      <input type="radio" name="category" data-chart="incoming" autocomplete="off">
+      {% trans 'Incoming' %}
+    </label>
+    <label class="btn btn-outline-secondary px-3">
+      <input type="radio" name="category" data-chart="outgoing" autocomplete="off">
+      {% trans 'Outgoing' %}
+    </label>
+  </div>
+
+  <div class="btn-group btn-group-sm btn-group-toggle mb-2 ml-1" data-toggle="buttons">
+    {% if data_charts.anuual %}
+    <label class="btn btn-outline-secondary px-3">
+      <input type="radio" name="unit" data-chart="annual" autocomplete="off">
+      {% trans 'Year' %}
+    </label>
+    {% endif %}
+    {% if data_charts.monthly %}
+    <label class="btn btn-outline-secondary px-3">
+      <input type="radio" name="unit" data-chart="monthly" autocomplete="off">
+      {% trans 'Month' %}
+    </label>
+    {% endif %}
+    {% if data_charts.weekly %}
+    <label class="btn btn-outline-secondary px-3">
+      <input type="radio" name="unit" data-chart="weekly" autocomplete="off">
+      {% trans 'Week' %}
+    </label>
+    {% endif %}
+    {% if data_charts.daily %}
+    <label class="btn btn-outline-secondary px-3">
+      <input type="radio" name="unit" data-chart="daily" autocomplete="off">
+      {% trans 'Day' %}
+    </label>
+    {% endif %}
+  </div>
+
+  <div class="btn-group btn-group-toggle mb-2 ml-1" data-toggle="buttons">
+    <label class="btn btn-outline-secondary btn-sm px-3 active">
+      <input type="checkbox" id="chart-button-accumulated" checked autocomplete="off">
+      <i class="fas fa-chart-area fa-fw"></i>
+    </label>
+  </div>
+</div>
+
+<div>
+  <canvas id="chart-canvas" width="400" height="400"></canvas>
+</div>
+
+  </div><!-- .col -->
+</div><!-- .row -->
 {% endblock %}
 
 {% block sidebar %}
@@ -265,6 +331,7 @@
 {% include 'money/js_chartjs.html' %}
 {{ data_doughnut_incoming|json_script:'doughnut-data-incoming' }}
 {{ data_doughnut_outgoing|json_script:'doughnut-data-outgoing' }}
+{{ data_charts|json_script:'chart-data' }}
 <script>
 $(function() {
   $('[data-toggle="tooltip"]').tooltip();
@@ -320,6 +387,90 @@ $(function() {
     $('#outgoing-canvas').hide();
     $('#outgoing-doughnut div.alert').removeClass('d-none');
   }
+});
+
+// Line charts
+$(function() {
+  var number_format = function(value, index, values) {
+    return value.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  var number_format_tooltip = function(tooltipItem, data) {
+    return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  var options = {
+    maintainAspectRatio: false,
+    tooltips: {callbacks: {label: number_format_tooltip}},
+    scales: {
+      xAxes: [{
+        type: 'time',
+        time: {
+          displayFormats: {
+            day: 'MM-DD',
+            week: 'YYYY-MM-DD',
+            month: 'YYYY-MM'
+          }
+        }
+      }],
+      yAxes: [{
+        stacked: false,
+        ticks: {callback: number_format}
+      }]
+    }
+  };
+
+  var setOption = function(category) {
+    if ((category === 'balance') || (category === 'asset')) {
+      options.scales.xAxes[0].stacked = false;
+      options.scales.yAxes[0].stacked = false;
+    } else {
+      options.scales.xAxes[0].stacked = true;
+      options.scales.yAxes[0].stacked = true;
+    }
+  };
+
+  var data = JSON.parse(document.getElementById('chart-data').textContent);
+  var ctx = document.getElementById('chart-canvas').getContext('2d');
+  var drawChart = function(data) {
+    return new Chart(ctx, {type: 'line', options: options, data: data});
+  };
+
+  var u = $('input[name="unit"]').first();
+  u.parent().addClass('active');
+
+  var unit = u.data('chart');
+  var category = 'balance';
+  var type = 'accumulated';
+
+  var chart = drawChart(data[unit][category][type]);
+
+  $('#chart-button-accumulated').on('change', function() {
+    type = $(this).prop('checked') ? 'accumulated' : 'normal';
+
+    setOption(category);
+
+    chart.destroy();
+    chart = drawChart(data[unit][category][type]);
+  });
+
+  $('input[name="category"]').on('click', function() {
+    category = $(this).data('chart');
+
+    setOption(category);
+
+    chart.destroy();
+    chart = drawChart(data[unit][category][type]);
+  });
+
+  $('input[name="unit"]').on('click', function() {
+    unit = $(this).data('chart');
+
+    setOption(category);
+
+    chart.destroy();
+    chart = drawChart(data[unit][category][type]);
+  });
 });
 </script>
 {% endblock %}
