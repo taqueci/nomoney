@@ -160,6 +160,53 @@ ADMIN_USER = 'admin'
 ADMIN_MAIL = 'admin@example.com'
 ADMIN_PASSWORD = 'password'
 
+LOG_FILE = os.path.join(BASE_DIR, 'logs/django.log')
+
+LOGGING = {
+    'version': 1,
+    'formatters': {
+        'default': {
+            'format': '\t'.join([
+                '[%(levelname)s]',
+                '%(asctime)s',
+                'module:%(module)s',
+                'process:%(process)d',
+                'thread:%(thread)d',
+                'message:%(message)s',
+            ])
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': LOG_FILE,
+            'formatter': 'default',
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+        },
+    },
+    'loggers': {
+        'money': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
+
 try:
     from .local_settings import *
 except ImportError:

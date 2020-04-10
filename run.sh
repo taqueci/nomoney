@@ -22,12 +22,11 @@ EOF
 
 django-admin compilemessages
 
-test -d logs || mkdir logs
-
 exec uwsgi \
     --http-socket :49152 \
     --wsgi-file config/wsgi.py \
-    --logto logs/uwsgi.log \
+    --daemonize logs/uwsgi.log \
+    --pidfile uwsgi.pid \
     --touch-chain-reload uwsgi-reload \
     --master \
     --processes 4 --threads 1 --thunder-lock \
