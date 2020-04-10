@@ -57,8 +57,8 @@
     <tr>
       <td align="right">{{ x.id }}</td>
       <td>{{ x.date|date:'Y-m-d' }}</td>
-      <td>{{ x.debit.name }}</td>
-      <td>{{ x.credit.name }}</td>
+      <td><a href="?{% url_params debit=x.debit.id %}" class="text-dark">{{ x.debit.name }}</a></td>
+      <td><a href="?{% url_params credit=x.credit.id %}" class="text-dark">{{ x.credit.name }}</a></td>
       <td align="right">{{ x.amount|intcomma }}</td>
       <td align="center"><span class="{{ x|journal_category_badge_class }}">{{ x|journal_category_text }}</span></td>
       <td>{{ x.summary }}</td>
@@ -117,7 +117,9 @@
     <div class="text-muted mb-2">{{ x.note|truncatechars:100 }}</div>
     <div class="d-flex justify-content-between">
       <div>
-        {{ x.debit.name }} / {{ x.credit.name }}
+        <a href="?{% url_params debit=x.debit.id %}" class="text-dark">{{ x.debit.name }}</a>
+        /
+        <a href="?{% url_params credit=x.credit.id %}" class="text-dark">{{ x.credit.name }}</a>
       </div>
       <div>
         <span class="h5" data-toggle="tooltip" data-title="{% trans 'Edit journal' %}"><a href="{% url 'money:edit_journal' x.id %}"><i class="fas fa-edit fa-fw"></i></a></span>

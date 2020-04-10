@@ -140,7 +140,9 @@
     <div class="text-muted mb-2">{{ x.note|truncatechars:100 }}</div>
     <div class="d-flex justify-content-between">
       <div>
-        {{ x.debit.name }} / {{ x.credit.name }}
+        <a href="{% url 'money:journals' %}?{% url_params debit=x.debit.id %}" class="text-dark">{{ x.debit.name }}</a>
+        /
+        <a href="{% url 'money:journals' %}?{% url_params credit=x.credit.id %}" class="text-dark">{{ x.credit.name }}</a>
       </div>
       <div>
         <span class="h5" data-toggle="tooltip" data-title="{% trans 'Edit journal' %}"><a href="{% url 'money:edit_journal' x.id %}"><i class="fas fa-edit fa-fw"></i></a></span>
