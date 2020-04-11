@@ -12,19 +12,19 @@
 <div class="d-flex flex-wrap justify-content-end mb-1">
 
 <div class="btn-group btn-group-sm btn-group-toggle mb-2" data-toggle="buttons">
-  <label class="btn btn-outline-secondary">
+  <label class="btn btn-outline-secondary px-3">
     <input type="radio" name="category" value="1" autocomplete="off">
     {% trans 'Incoming' %}
   </label>
-  <label class="btn btn-outline-secondary">
+  <label class="btn btn-outline-secondary px-3">
     <input type="radio" name="category" value="2" autocomplete="off">
     {% trans 'Outgoing' %}
   </label>
-  <label class="btn btn-outline-secondary">
+  <label class="btn btn-outline-secondary px-3">
     <input type="radio" name="category" value="3" autocomplete="off">
     {% trans 'Repayment' %}
   </label>
-  <label class="btn btn-outline-secondary active">
+  <label class="btn btn-outline-secondary px-3 active">
     <input type="radio" name="category" value="0" autocomplete="off" checked>
     {% trans 'Other' %}
   </label>
@@ -32,7 +32,7 @@
 
 {% if popular_account %}
 <div class="dropdown ml-2 mb-2">
-  <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+  <button class="btn btn-outline-secondary btn-sm pl-3 dropdown-toggle" type="button" data-toggle="dropdown">
     {% trans 'Popular account' %}
   </button>
   <div id="popular" class="dropdown-menu dropdown-menu-right">
@@ -45,7 +45,7 @@
 
 {% if template %}
 <div class="dropdown ml-2">
-  <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+  <button class="btn btn-outline-secondary btn-sm pl-3 dropdown-toggle" type="button" data-toggle="dropdown">
     {% trans 'Template' %}
   </button>
   <div id="template" class="dropdown-menu dropdown-menu-right">
