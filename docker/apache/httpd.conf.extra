@@ -9,13 +9,13 @@ ProxyPassMatch ^/media/ !
 ProxyPass        / http://n-main:49152/
 ProxyPassReverse / http://n-main:49152/
 
-Alias /static/ /opt/n-money/staticfiles/
-Alias /media/  /opt/n-money/media/
+Alias /static/ /opt/nomoney/staticfiles/
+Alias /media/  /opt/nomoney/media/
 
-<Directory  /opt/n-money/staticfiles/>
+<Directory  /opt/nomoney/staticfiles/>
   Require all granted
 </Directory>
 
-<Directory  /opt/n-money/media/>
+<Directory  /opt/nomoney/media/>
   Require all granted
 </Directory>

@@ -154,7 +154,7 @@ FY_START_DAY = 1
 
 VERSION = version.VERSION
 
-NAME = 'N Money'
+NAME = 'NoMoney'
 
 ADMIN_USER = 'admin'
 ADMIN_MAIL = 'admin@example.com'

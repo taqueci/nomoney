@@ -1,6 +1,6 @@
 FROM python:3.8-alpine
 
-ENV INSTALL_DIR /opt/n-money
+ENV INSTALL_DIR /opt/nomoney
 
 WORKDIR $INSTALL_DIR
 
