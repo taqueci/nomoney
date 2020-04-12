@@ -35,7 +35,7 @@ def index(request):
     f_debit = list(request.GET.getlist('debit'))
     f_credit = list(request.GET.getlist('credit'))
 
-    account = Account.objects.all()
+    grouped_account = account.grouped_objects()
 
     q = Journal.objects.filter(disabled=False)
 
@@ -67,7 +67,7 @@ def index(request):
 
     return render(request, 'money/journals/index.html', {
         'page': page, 'total': paginator.count,
-        'debit': account, 'credit': account,
+        'account': grouped_account,
     })
 
 
