@@ -311,7 +311,7 @@
   </div>
 </div>
 
-<button type="submit" class="btn btn-secondary mt-2"><i class="fas fa-check fa-fw"></i> {% trans 'Submit' %}</a>
+<a class="btn btn-secondary mt-2" href="{% url 'money:reports' %}"><i class="fas fa-ban"></i> {% trans 'Reset' %}</a>
 
 </form>
 {% endblock %}
@@ -325,6 +325,9 @@
 <script>
 $(function() {
   $('.datetimepicker').datetimepicker({format: 'YYYY-MM-DD'});
+
+  $('#filter').change(function() { $('#filter').submit() });
+  $('#filter').on('hide.datetimepicker', function() { $('#filter').submit() });
 });
 </script>
 {% endblock %}
