@@ -39,10 +39,10 @@ class Account(models.Model):
 
 class Journal(models.Model):
     debit = models.ForeignKey(
-        Account, on_delete=models.DO_NOTHING, related_name='journal_debit'
+        Account, on_delete=models.PROTECT, related_name='journal_debit'
     )
     credit = models.ForeignKey(
-        Account, on_delete=models.DO_NOTHING, related_name='journal_credit'
+        Account, on_delete=models.PROTECT, related_name='journal_credit'
     )
 
     date = models.DateField()
@@ -65,7 +65,7 @@ class Journal(models.Model):
 
     disabled = models.BooleanField(default=False)
 
-    author = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING)
+    author = models.ForeignKey(UserModel, on_delete=models.PROTECT)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -95,10 +95,10 @@ class Template(models.Model):
     description = models.TextField(null=True, blank=True)
 
     debit = models.ForeignKey(
-        Account, on_delete=models.DO_NOTHING, related_name='template_debit'
+        Account, on_delete=models.PROTECT, related_name='template_debit'
     )
     credit = models.ForeignKey(
-        Account, on_delete=models.DO_NOTHING, related_name='template_credit'
+        Account, on_delete=models.PROTECT, related_name='template_credit'
     )
 
     date = models.CharField(max_length=255, null=True, blank=True)
