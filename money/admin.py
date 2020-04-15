@@ -1,7 +1,7 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
 from django.contrib import admin
-from .models import Account, Journal, Template
+from .models import Account, Journal, Tag, Template
 
 
 @admin.register(Account)
@@ -12,6 +12,12 @@ class AccountAdmin(admin.ModelAdmin):
 @admin.register(Journal)
 class JournalAdmin(admin.ModelAdmin):
     list_display = ('date', 'debit', 'credit', 'amount', 'summary', 'disabled',)
+    filter_horizontal = ('tags', )
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('name', )
 
 
 @admin.register(Template)

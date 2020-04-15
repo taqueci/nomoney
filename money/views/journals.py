@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 
 from ..forms import JournalForm
-from ..models import Account, Journal, Template
+from ..models import Account, Journal, Tag, Template
 from .shared import account, pagination
 
 
@@ -35,6 +35,9 @@ def index(request):
     f_debit = list(request.GET.getlist('debit'))
     f_credit = list(request.GET.getlist('credit'))
 
+    f_tag = list(request.GET.getlist('tag'))
+
+    tag = Tag.objects.all()
     grouped_account = account.grouped_objects()
 
     q = Journal.objects.filter(disabled=False)
@@ -57,6 +60,9 @@ def index(request):
     if f_credit:
         q = q.filter(credit__in=f_credit)
 
+    if f_tag:
+        q = q.filter(tags__in=f_tag)
+
     if sort and (sort in INDEX_SORTABLE_FIELDS):
         q = q.order_by('-' + sort if order and (order == 'desc') else sort)
     else:
@@ -67,7 +73,7 @@ def index(request):
 
     return render(request, 'money/journals/index.html', {
         'page': page, 'total': paginator.count,
-        'account': grouped_account,
+        'account': grouped_account, 'tag': tag,
     })
 
 
@@ -85,6 +91,7 @@ def new(request):
     v_template = request.GET.get('template')
     v_base = request.GET.get('base')
 
+    tag = Tag.objects.all()
     grouped_account = account.grouped_objects()
 
     popular_account = Journal.objects.values(
@@ -104,7 +111,7 @@ def new(request):
         default.date = datetime.date.today()
 
     return render(request, 'money/journals/new.html', {
-        'object': default, 'template': template,
+        'object': default, 'template': template, 'tag': tag,
         'account': grouped_account, 'popular_account': popular_account,
     })
 
@@ -130,6 +137,7 @@ def edit(request, id):
 
         return redirect(request.GET.get('next', 'money:journals'))
 
+    tag = Tag.objects.all()
     grouped_account = account.grouped_objects()
 
     popular_account = Journal.objects.values(
@@ -139,7 +147,7 @@ def edit(request, id):
     ).order_by('-debit_num', '-credit_num')[:POPULAR_ACCOUNT_NUM]
 
     return render(request, 'money/journals/edit.html', {
-        'object': obj,
+        'object': obj, 'tag': tag,
         'account': grouped_account, 'popular_account': popular_account,
     })
 
@@ -165,6 +173,7 @@ def create(request):
         obj = form.save(commit=False)
         obj.author = request.user
         obj.save()
+        form.save_m2m()
 
         return True
 

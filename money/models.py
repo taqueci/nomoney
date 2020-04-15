@@ -37,6 +37,13 @@ class Account(models.Model):
         return self.name
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Journal(models.Model):
     debit = models.ForeignKey(
         Account, on_delete=models.PROTECT, related_name='journal_debit'
@@ -49,6 +56,8 @@ class Journal(models.Model):
     amount = models.IntegerField()
     summary = models.CharField(max_length=255)
     note = models.TextField(null=True, blank=True)
+
+    tags  = models.ManyToManyField(Tag, blank=True)
 
     asset = models.IntegerField(blank=True, default=0)
     liability = models.IntegerField(blank=True, default=0)

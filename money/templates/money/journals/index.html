@@ -49,6 +49,7 @@
       <th><a href="?{% url_params_sort 'amount' %}">{% trans 'Amount' %}</a></th>
       <th></th>
       <th><a href="?{% url_params_sort 'summary' %}">{% trans 'Summary' %}</a></th>
+      <th>{% trans 'Tags' %}</th>
       <th colspan="2"></th>
     </tr>
   </thead>
@@ -62,6 +63,11 @@
       <td align="right">{{ x.amount|intcomma }}</td>
       <td align="center"><span class="{{ x|journal_category_badge_class }}">{{ x|journal_category_text }}</span></td>
       <td>{{ x.summary }}</td>
+      <td>
+        {% for x in x.tags.all %}
+        <small><a href="?{% url_params tag=x.id %}" class="badge badge-pill badge-secondary">{{ x.name }}</a></small>
+        {% endfor %}
+      </td>
       <td class="px-2">
         <span data-toggle="tooltip" data-title="{% trans 'Edit journal' %}"><a href="{% url 'money:edit_journal' x.id %}?next={{ request.get_full_path|urlencode }}"><i class="fas fa-edit fa-fw"></i></a></span>
       </td>
@@ -115,6 +121,11 @@
       </div>
     </div>
     <div class="text-muted mb-2">{{ x.note|truncatechars:100 }}</div>
+    <div class="mb-2">
+      {% for x in x.tags.all %}
+      <small><a href="?{% url_params tag=x.id %}" class="badge badge-pill badge-secondary">{{ x.name }}</a></small>
+      {% endfor %}
+    </div>
     <div class="d-flex justify-content-between">
       <div>
         <a href="?{% url_params debit=x.debit.id %}" class="text-dark">{{ x.debit.name }}</a>
@@ -194,6 +205,15 @@
       <option value="{{ y.id }}" {% html_selected_by_query_list 'credit' y.id %}>{{ y.name }}</option>
       {% endfor %}
     </optgroup>
+    {% endfor %}
+  </select>
+</div>
+
+<div class="form-group">
+  <label>{% trans 'Tag' %}</label>
+  <select name="tag" class="form-control select2" multiple="multiple" size="1">
+    {% for x in tag %}
+    <option value="{{ x.id }}" {% html_selected_by_query_list 'tag' x.id %} style="visibility: hidden">{{ x.name }}</option>
     {% endfor %}
   </select>
 </div>

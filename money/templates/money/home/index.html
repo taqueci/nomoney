@@ -138,6 +138,11 @@
       </div>
     </div>
     <div class="text-muted mb-2">{{ x.note|truncatechars:100 }}</div>
+    <div class="mb-2">
+      {% for x in x.tags.all %}
+      <small><a href="{% url 'money:journals' %}?{% url_params tag=x.id %}" class="badge badge-pill badge-secondary">{{ x.name }}</a></small>
+      {% endfor %}
+    </div>
     <div class="d-flex justify-content-between">
       <div>
         <a href="{% url 'money:journals' %}?{% url_params debit=x.debit.id %}" class="text-dark">{{ x.debit.name }}</a>
