@@ -28,10 +28,10 @@ def index(request):
         balance=F('income')-F('expense')
     ).order_by('-year', '-month')[:INDEX_NUM]
 
-    weekly = q.values('year', 'month', 'week').annotate(
+    weekly = q.values('year', 'week').annotate(
         income=Sum('income'), expense=Sum('expense'),
         balance=F('income')-F('expense')
-    ).order_by('-year', '-month', '-week')[:INDEX_NUM]
+    ).order_by('-year', '-week')[:INDEX_NUM]
 
     daily = q.values('date').annotate(
         income=Sum('income'), expense=Sum('expense'),
