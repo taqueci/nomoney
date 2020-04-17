@@ -25,8 +25,7 @@ django-admin compilemessages
 exec uwsgi \
     --http-socket :49152 \
     --wsgi-file config/wsgi.py \
-    --daemonize logs/uwsgi.log \
-    --pidfile uwsgi.pid \
+    --logto logs/uwsgi.log \
     --touch-chain-reload uwsgi-reload \
     --master \
     --processes 4 --threads 1 --thunder-lock \
