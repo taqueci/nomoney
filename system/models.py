@@ -5,4 +5,13 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    pass
+    def __str__(self):
+        name = []
+
+        if self.first_name:
+            name.append(self.first_name)
+
+        if self.last_name:
+            name.append(self.last_name)
+
+        return ' '.join(name) if name else self.username

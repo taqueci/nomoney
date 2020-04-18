@@ -20,7 +20,7 @@
 {% block heading %}{% trans 'Dashboard' %}{% endblock %}
 
 {% block actions %}
-<a href="{% url 'money:new_journal' %}?next={{ request.get_full_path|urlencode }}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-plus fa-fw"></i> {% trans 'New' %}</a>
+<a href="{% url 'money:new_journal' %}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-plus fa-fw"></i> {% trans 'New' %}</a>
 
 <div class="d-inline d-lg-none">
   <a href="#search" class="btn btn-outline-secondary btn-sm"><i class="fas fa-search fa-fw"></i> {% trans 'Search' %}</a>
@@ -120,6 +120,8 @@
   </div>
   <div class="col-lg-6">
 
+<h3>{% trans 'Recent journals' %}</h3>
+
 <div class="list-group mb-4">
   {% for x in page %}
   <div class="list-group-item">
@@ -138,6 +140,11 @@
       </div>
     </div>
     <div class="text-muted mb-2">{{ x.note|truncatechars:100 }}</div>
+    <div class="mb-2">
+      {% for x in x.tags.all %}
+      <small><a href="{% url 'money:journals' %}?{% url_params tag=x.id %}" class="badge badge-pill badge-secondary">{{ x.name }}</a></small>
+      {% endfor %}
+    </div>
     <div class="d-flex justify-content-between">
       <div>
         <a href="{% url 'money:journals' %}?{% url_params debit=x.debit.id %}" class="text-dark">{{ x.debit.name }}</a>

@@ -13,7 +13,10 @@ INDEX_NUM = 7
 
 
 def index(request):
-    q = Journal.objects.filter(disabled=False)
+    start = value.valid_or(request.GET.get('start'), '1970-01-01')
+    end = value.valid_or(request.GET.get('end'), '2100-12-31')
+
+    q = Journal.objects.filter(disabled=False).filter(date__gte=start, date__lte=end)
 
     annual = q.values('year').annotate(
         income=Sum('income'), expense=Sum('expense'),
@@ -25,10 +28,10 @@ def index(request):
         balance=F('income')-F('expense')
     ).order_by('-year', '-month')[:INDEX_NUM]
 
-    weekly = q.values('year', 'month', 'week').annotate(
+    weekly = q.values('year', 'week').annotate(
         income=Sum('income'), expense=Sum('expense'),
         balance=F('income')-F('expense')
-    ).order_by('-year', '-month', '-week')[:INDEX_NUM]
+    ).order_by('-year', '-week')[:INDEX_NUM]
 
     daily = q.values('date').annotate(
         income=Sum('income'), expense=Sum('expense'),
@@ -41,13 +44,10 @@ def index(request):
 
 
 def show(request, id):
-    q = Journal.objects.filter(disabled=False)
+    start = value.valid_or(request.GET.get('start'), '1970-01-01')
+    end = value.valid_or(request.GET.get('end'), '2100-12-31')
 
-    start = request.GET.get('start', '1970-01-01')
-    end = request.GET.get('end', '2100-12-31')
-
-    q = q.filter(date__gte=start)
-    q = q.filter(date__lte=end)
+    q = Journal.objects.filter(disabled=False).filter(date__gte=start, date__lte=end)
 
     summary = q.aggregate(
         income=Sum('income'), expense=Sum('expense'),

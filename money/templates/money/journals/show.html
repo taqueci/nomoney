@@ -28,7 +28,7 @@
 {% block actions %}
 <a href="{% url 'money:edit_journal' object.id %}?next={{ request.get_full_path|urlencode }}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-edit fa-fw"></i> {% trans 'Edit' %}</a>
 
-<a href="{% url 'money:new_journal' %}?{% url_params base=object.id next=request.get_full_path|urlencode %}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-copy fa-fw"></i> {% trans 'Copy' %}</a>
+<a href="{% url 'money:new_journal' %}?{% url_params base=object.id %}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-copy fa-fw"></i> {% trans 'Copy' %}</a>
 
 <form method="post" action="{% url 'money:destroy_journal' object.id %}" class="d-inline" onSubmit="return confirmDelete()">
   {% csrf_token %}
@@ -51,10 +51,14 @@
   <dd class="col-8">{{ object.id }}</dd>
 
   <dt class="col-4">{% trans 'Debit' %}</dt>
-  <dd class="col-8">{{ object.debit.name }}</dd>
+  <dd class="col-8">
+    <a href="{% url 'money:journals' %}?{% url_params debit=object.debit.id %}" class="text-dark">{{ object.debit.name }}</a>
+  </dd>
 
   <dt class="col-4">{% trans 'Credit' %}</dt>
-  <dd class="col-8">{{ object.credit.name }}</dd>
+  <dd class="col-8">
+    <a href="{% url 'money:journals' %}?{% url_params credit=object.credit.id %}" class="text-dark">{{ object.credit.name }}</a>
+  </dd>
 
   <dt class="col-4">{% trans 'Date' %}</dt>
   <dd class="col-8">{{ object.date|date:'Y-m-d' }}</dd>
@@ -72,6 +76,15 @@
 <dl class="row mb-2">
   <dt class="col-4">{% trans 'Note' %}</dt>
   <dd class="col-8">{{ object.note|default:'-'|linebreaksbr }}</dd>
+
+  <dt class="col-4">{% trans 'Tags' %}</dt>
+  <dd class="col-8">
+    {% for x in object.tags.all %}
+    <a href="{% url 'money:journals' %}?{% url_params tag=x.id %}" class="badge badge-pill badge-secondary">{{ x.name }}</a>
+    {% empty %}
+    -
+    {% endfor %}
+  </dd>
 </dl>
 
 <dl class="row mb-2">

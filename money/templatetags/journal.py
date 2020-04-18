@@ -3,7 +3,7 @@
 from django import template
 from django.utils.translation import gettext_lazy as _
 
-from ..models import Account
+from ..models import Account, Tag
 from ..views.shared import journal
 
 register = template.Library()
@@ -38,6 +38,14 @@ def journal_category_badge_class(obj):
 
 
 @register.filter
+def journal_html_selected_if_has_tag(obj, tag):
+    if hasattr(obj, 'tags') and tag.id in [x.id for x in obj.tags.all()]:
+        return 'selected'
+
+    return ''
+
+
+@register.filter
 def journal_filter_items(request):
     item = []
 
@@ -46,6 +54,7 @@ def journal_filter_items(request):
     f_end = request.GET.get('end')
     f_debit = list(request.GET.getlist('debit'))
     f_credit = list(request.GET.getlist('credit'))
+    f_tag = list(request.GET.getlist('tag'))
 
     if f_keyword:
         item.append({'key': _('Keyword'), 'value': f_keyword})
@@ -63,5 +72,9 @@ def journal_filter_items(request):
     if f_credit:
         for x in Account.objects.filter(id__in=f_credit):
             item.append({'key': _('Credit'), 'value': x.name})
+
+    if f_tag:
+        for x in Tag.objects.filter(id__in=f_tag):
+            item.append({'key': _('Tag'), 'value': x.name})
 
     return item

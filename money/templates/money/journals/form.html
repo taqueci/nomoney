@@ -4,6 +4,7 @@
 {% load i18n %}
 
 {% load html %}
+{% load journal %}
 {% load url %}
 
 <form method="post">
@@ -121,6 +122,19 @@
   </div>
 </div>
 
+{% if tag %}
+<div class="form-group row">
+  <label class="col-sm-3 col-form-label">{% trans 'Tags' %}</label>
+  <div class="col-sm-9">
+    <select name="tags" class="form-control select2" multiple="multiple" size="1">
+      {% for x in tag %}
+      <option value="{{ x.id }}" style="visibility: hidden" {{ object|journal_html_selected_if_has_tag:x }}>{{ x.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+{% endif %}
+
 <div class="row mt-4">
   <div class="col">
     <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-check fa-fw"></i> {% trans 'Submit' %}</button>
@@ -149,9 +163,11 @@
 {% block js %}
 {% include 'money/js_moment.html' %}
 {% include 'money/js_datetimepicker.html' %}
+{% include 'money/js_select2.html' %}
 <script>
 $(function() {
   $('.datetimepicker').datetimepicker({format: 'YYYY-MM-DD'});
+  $('.select2').select2();
 
   $('#popular a').on('click', function(e) {
     e.preventDefault();

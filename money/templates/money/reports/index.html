@@ -37,6 +37,7 @@
     </tr>
   </thead>
   <tbody>
+    {% if weekly %}
     {% with x=weekly|first %}
     <tr>
       <td>{{ x.year }}-W{{ x.week }}</td>
@@ -62,6 +63,8 @@
       </td>
     </tr>
     {% endwith %}
+    {% endif %}
+    {% if monthly %}
     {% with x=monthly|first %}
     <tr>
       <td>{{ x.year }}-{{ x.month }}</td>
@@ -85,7 +88,10 @@
       <td class="px-2" align="right">
         <span data-toggle="tooltip" data-title="{% trans 'Show charts' %}"><a href="{% url 'money:report' 0 %}?{% url_params_period year=x.year month=x.month %}"><i class="fas fa-chart-pie fa-fw"></i></a></span>
       </td>
+    </tr>
     {% endwith %}
+    {% endif %}
+    {% if annual %}
     {% with x=annual|first %}
     <tr>
       <td>{{ x.year }}</td>
@@ -109,7 +115,9 @@
       <td class="px-2" align="right">
         <span data-toggle="tooltip" data-title="{% trans 'Show charts' %}"><a href="{% url 'money:report' 0 %}?{% url_params_period year=x.year %}"><i class="fas fa-chart-pie fa-fw"></i></a></span>
       </td>
+    </tr>
     {% endwith %}
+    {% endif %}
   </tbody>
 </table>
 
@@ -149,6 +157,7 @@
       <td class="px-2" align="right">
         <span data-toggle="tooltip" data-title="{% trans 'Show charts' %}"><a href="{% url 'money:report' 0 %}?start={{ x.date|date:'Y-m-d' }}&end={{ x.date|date:'Y-m-d' }}"><i class="fas fa-chart-pie fa-fw"></i></a></span>
       </td>
+    </tr>
     {% endfor %}
   </tbody>
 </table>
@@ -189,6 +198,7 @@
       <td class="px-2" align="right">
         <span data-toggle="tooltip" data-title="{% trans 'Show charts' %}"><a href="{% url 'money:report' 0 %}?{% url_params_period year=x.year week=x.week %}"><i class="fas fa-chart-pie fa-fw"></i></a></span>
       </td>
+    </tr>
     {% endfor %}
   </tbody>
 </table>
@@ -229,6 +239,7 @@
       <td class="px-2" align="right">
         <span data-toggle="tooltip" data-title="{% trans 'Show charts' %}"><a href="{% url 'money:report' 0 %}?{% url_params_period year=x.year month=x.month %}"><i class="fas fa-chart-pie fa-fw"></i></a></span>
       </td>
+    </tr>
     {% endfor %}
   </tbody>
 </table>
@@ -269,15 +280,16 @@
       <td class="px-2" align="right">
         <span data-toggle="tooltip" data-title="{% trans 'Show charts' %}"><a href="{% url 'money:report' 0 %}?{% url_params_period year=x.year %}"><i class="fas fa-chart-pie fa-fw"></i></a></span>
       </td>
+    </tr>
     {% endfor %}
   </tbody>
 </table>
 {% endblock %}
 
 {% block sidebar %}
-<h5 class="border-bottom pb-2 mb-3"><i class="fas fa-sliders-h fa-fw"></i> {% trans 'Setting' %}</h5>
+<h5 class="border-bottom pb-2 mb-3"><i class="fas fa-filter fa-fw"></i> {% trans 'Filter' %}</h5>
 
-<form id="filter" method="get" action="{% url 'money:report' 0 %}">
+<form id="filter" method="get" action="{% url 'money:reports' %}">
 
 <div class="form-group">
   <label>{% trans 'Start date' %}</label>
@@ -299,7 +311,7 @@
   </div>
 </div>
 
-<button type="submit" class="btn btn-secondary mt-2"><i class="fas fa-check fa-fw"></i> {% trans 'Submit' %}</a>
+<a class="btn btn-secondary mt-2" href="{% url 'money:reports' %}"><i class="fas fa-ban"></i> {% trans 'Reset' %}</a>
 
 </form>
 {% endblock %}
@@ -313,6 +325,9 @@
 <script>
 $(function() {
   $('.datetimepicker').datetimepicker({format: 'YYYY-MM-DD'});
+
+  $('#filter').change(function() { $('#filter').submit() });
+  $('#filter').on('hide.datetimepicker', function() { $('#filter').submit() });
 });
 </script>
 {% endblock %}
