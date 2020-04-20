@@ -122,7 +122,6 @@
   </div>
 </div>
 
-{% if tag %}
 <div class="form-group row">
   <label class="col-sm-3 col-form-label">{% trans 'Tags' %}</label>
   <div class="col-sm-9">
@@ -133,7 +132,6 @@
     </select>
   </div>
 </div>
-{% endif %}
 
 <div class="row mt-4">
   <div class="col">
@@ -160,6 +158,8 @@
   </select>
 </div>
 
+<form id="form-tag">{% csrf_token %} <input type="hidden" name="name"></form>
+
 {% block js %}
 {% include 'money/js_moment.html' %}
 {% include 'money/js_datetimepicker.html' %}
@@ -167,7 +167,28 @@
 <script>
 $(function() {
   $('.datetimepicker').datetimepicker({format: 'YYYY-MM-DD'});
-  $('.select2').select2();
+  $('.select2').select2({
+    tags: true,
+    createTag: function(params) {
+      var term = $.trim(params.term);
+
+      return term ? {id: '_' + term, text: term, newTag: true} : null;
+    }
+  }).on('select2:select', function (e) {
+    var select = $(this);
+    var tag = e.params.data;
+
+    if (tag.newTag === true) {
+      $('#form-tag input[name="name"]').val(tag.text);
+
+      $.ajax("{% url 'money:new_tag' %}", {
+        type: 'POST',
+        data: $('#form-tag').serialize()
+      }).done(function(data) {
+        select.children('option[value="' + tag.id + '"]').val(data.id);
+      });
+    }
+  });
 
   $('#popular a').on('click', function(e) {
     e.preventDefault();

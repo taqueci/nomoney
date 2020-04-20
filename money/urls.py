@@ -1,7 +1,7 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
 from django.urls import path
-from .views import home, journals, reports
+from .views import home, journals, reports, tags
 
 app_name = 'money'
 
@@ -14,6 +14,8 @@ urlpatterns = [
 
     path('reports/', reports.index, name='reports'),
     path('reports/<id>', reports.show, name='report'),
+
+    path('tags/new', tags.new, name='new_tag'),
 
     path('', home.index, name='home'),
 ]
