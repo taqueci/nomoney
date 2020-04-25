@@ -22,7 +22,10 @@
 {{ object.name }}
 {% endblock %}
 
-{% block heading %}{{ page.base.start }} - {{ page.base.end }}{% endblock %}
+{% block heading %}
+<span class="mr-2">{% trans 'Report' %}</span>
+<small class="d-inline-block">{{ page.base.start }} - {{ page.base.end }}</small>
+{% endblock %}
 
 {% block actions %}
 <div class="d-block d-lg-none">

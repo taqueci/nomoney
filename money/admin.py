@@ -1,7 +1,11 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
 from django.contrib import admin
+
+from config.settings import URL_ROOT
 from .models import Account, Journal, Tag, Template
+
+admin.site.site_url = '/{}money/'.format(URL_ROOT)
 
 
 @admin.register(Account)
