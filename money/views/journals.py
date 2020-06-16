@@ -44,7 +44,7 @@ def index(request):
 
     if f_keyword:
         q = q.filter(
-            Q(summary__contains=f_keyword) |
+            Q(summary__icontains=f_keyword) |
             Q(note__icontains=f_keyword)
         )
 
