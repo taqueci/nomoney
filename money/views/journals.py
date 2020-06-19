@@ -35,6 +35,9 @@ def index(request):
     f_debit = list(request.GET.getlist('debit'))
     f_credit = list(request.GET.getlist('credit'))
 
+    f_max = request.GET.get('max')
+    f_min = request.GET.get('min')
+
     f_tag = list(request.GET.getlist('tag'))
 
     tag = Tag.objects.all()
@@ -59,6 +62,12 @@ def index(request):
 
     if f_credit:
         q = q.filter(credit__in=f_credit)
+
+    if f_min and f_min.isdecimal():
+        q = q.filter(amount__gte=f_min)
+
+    if f_max and f_max.isdecimal():
+        q = q.filter(amount__lte=f_max)
 
     if f_tag:
         q = q.filter(tags__in=f_tag)
