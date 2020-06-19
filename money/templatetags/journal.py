@@ -54,6 +54,8 @@ def journal_filter_items(request):
     f_end = request.GET.get('end')
     f_debit = list(request.GET.getlist('debit'))
     f_credit = list(request.GET.getlist('credit'))
+    f_max = request.GET.get('max')
+    f_min = request.GET.get('min')
     f_tag = list(request.GET.getlist('tag'))
 
     if f_keyword:
@@ -72,6 +74,16 @@ def journal_filter_items(request):
     if f_credit:
         for x in Account.objects.filter(id__in=f_credit):
             item.append({'key': _('Credit'), 'value': x.name})
+
+    if f_max and f_max.isdecimal():
+        item.append({
+            'key': _('Max amount'), 'value': '{:,}'.format(int(f_max))
+        })
+
+    if f_min and f_min.isdecimal():
+        item.append({
+            'key': _('Min amount'), 'value': '{:,}'.format(int(f_min))
+        })
 
     if f_tag:
         for x in Tag.objects.filter(id__in=f_tag):
