@@ -211,6 +211,16 @@
   </select>
 </div>
 
+<div class="form-group">
+  <label>{% trans 'Max amount' %}</label>
+  <input type="number" name="max" value="{% url_param_value 'max' %}" min="0" class="form-control">
+</div>
+
+<div class="form-group">
+  <label>{% trans 'Min amount' %}</label>
+  <input type="number" name="min" value="{% url_param_value 'min' %}" min="0" class="form-control">
+</div>
+
 {% if tag %}
 <div class="form-group">
   <label>{% trans 'Tag' %}</label>
