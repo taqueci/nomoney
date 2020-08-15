@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 from django.utils.deprecation import MiddlewareMixin
 from django.urls import reverse
 
-from config.settings import LOGIN_URL, LOGOUT_URL
+from config.settings import LOGIN_URL, LOGOUT_URL, LOGIN_TARGETS
 
 
 class AuthMiddleware(MiddlewareMixin):
@@ -18,13 +18,13 @@ class AuthMiddleware(MiddlewareMixin):
         path = request.path
         login = reverse(LOGIN_URL)
 
-        if path != login:
-            if path == reverse(LOGOUT_URL):
-                url = login
-            else:
-                next = urllib.parse.quote(request.get_full_path())
-                url = f'{login}?next={next}'
+        if path == login or not path.startswith(LOGIN_TARGETS):
+            return response
 
-            return HttpResponseRedirect(url)
+        if path == reverse(LOGOUT_URL):
+            url = login
+        else:
+            next_url = urllib.parse.quote(request.get_full_path())
+            url = f'{login}?next={next_url}'
 
-        return response
+        return HttpResponseRedirect(url)
