@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from os import environ as env
 from . import version
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -26,9 +27,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'f28)f6n)+po@miei(tn**ki05n@@5z-caf8y!hrz#&-n8p09i@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.get('N_ALLOWED_HOSTS', 'localhost').split(',')
 
 
 # Application definition
@@ -84,8 +85,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': env.get('N_DATABASE_ENGINE'),
+        'NAME': env.get('N_DATABASE_NAME'),
+        'USER': env.get('N_DATABASE_USER'),
+        'PASSWORD': env.get('N_DATABASE_PASSWORD'),
+        'HOST': env.get('N_DATABASE_HOST'),
+        'PORT': env.get('N_DATABASE_PORT'),
     }
 }
 
@@ -112,9 +117,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = env.get('N_LANGUAGE_CODE', 'en-us')
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = env.get('N_TIME_ZONE', 'UTC')
 
 USE_I18N = True
 
@@ -122,14 +127,18 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-URL_ROOT = ''
+URL_ROOT = env.get('N_URL_ROOT', 'n/')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/{}static/'.format(URL_ROOT)
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = env.get('N_STATIC_URL', f'/{URL_ROOT}static/')
+
+STATIC_ROOT = env.get('N_STATIC_ROOT', os.path.join(BASE_DIR, 'staticfiles'))
+
+MEDIA_URL = env.get('N_MEDIA_URL', f'/{URL_ROOT}media/')
+
+MEDIA_ROOT = env.get('N_MEDIA_ROOT',  os.path.join(BASE_DIR, 'media'))
 
 AUTH_USER_MODEL = 'system.User'
 
@@ -152,13 +161,9 @@ AUTHENTICATION_BACKENDS = (
 FY_START_MONTH = 4
 FY_START_DAY = 1
 
+NAME = env.get('N_NAME', 'NoMoney')
+
 VERSION = version.VERSION
-
-NAME = 'NoMoney'
-
-ADMIN_USER = 'admin'
-ADMIN_MAIL = 'admin@example.com'
-ADMIN_PASSWORD = 'password'
 
 LOG_FILE = os.path.join(BASE_DIR, 'logs/django.log')
 
@@ -211,3 +216,11 @@ try:
     from .local_settings import *
 except ImportError:
     pass
+
+SITE_URL = f'/{URL_ROOT}money/'
+LOGIN_TARGETS = (f'/{URL_ROOT}money/', )
+
+if DEBUG:
+    INSTALLED_APPS += ['debug_toolbar', ]
+    MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
+    DEBUG_TOOLBAR_CONFIG = {'SHOW_TOOLBAR_CALLBACK': lambda request: True}

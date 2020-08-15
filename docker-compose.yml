@@ -2,10 +2,11 @@ version: '3'
 
 services:
   apache:
-    build: ./docker/apache
+    build: ./extra/docker/apache
     container_name: n-apache
     ports:
-      - "8010:80"
+      - "8000:80"
+      - "8080:8080"
     volumes:
       - .:/opt/nomoney
     depends_on:
@@ -16,11 +17,12 @@ services:
     container_name: n-postgresql
     environment:
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+      POSTGRES_DB: nmoney
       POSTGRES_USER: nmoney
       POSTGRES_PASSWORD: nmoney
-      POSTGRES_DB: nmoney
     volumes:
-      - ./docker/postgresql/init:/docker-entrypoint-initdb.d
+      - ./extra/docker/postgresql/init:/docker-entrypoint-initdb.d
+      - ./data/postgresql:/var/lib/postgresql/data
 
   main:
     build: .
@@ -29,4 +31,14 @@ services:
       - .:/opt/nomoney
     depends_on:
       - postgresql
-    restart: always
+    environment:
+      N_ALLOWED_HOSTS: n-main
+      N_DATABASE_ENGINE: django.db.backends.postgresql_psycopg2
+      N_DATABASE_NAME: nmoney
+      N_DATABASE_USER: nmoney
+      N_DATABASE_PASSWORD: nmoney
+      N_DATABASE_HOST: n-postgresql
+      N_DATABASE_PORT: "5432"
+      N_URL_ROOT: n/
+      N_STATIC_URL: /n/static/
+      N_MEDIA_URL: /n/media/

@@ -4,6 +4,7 @@
 {% load i18n %}
 
 {% load bootstrap4 %}
+{% load user %}
 
 {% get_current_language as LANGUAGE_CODE %}
 
@@ -16,7 +17,7 @@
     <link rel="stylesheet" href="{% static 'system/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'system/font/fontawesome/css/all.min.css' %}">
 
-    <script src="{% static 'system/js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'system/js/jquery-3.5.1.min.js' %}"></script>
 
     {% block head %}{% endblock %}
 
@@ -46,8 +47,8 @@
       <ul class="navbar-nav">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-            <i class="fas fa-user-circle fa-fw"></i>
-            {{ user }}
+            <span class="mr-1">{% user_avatar user 16 %}</span>
+            {{ user|user_full_name:LANGUAGE_CODE }}
           </a>
           <div class="dropdown-menu dropdown-menu-right">
             <form name="lang" method="post" action="{% url 'set_language' %}">
