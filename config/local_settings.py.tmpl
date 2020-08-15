@@ -6,18 +6,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 'f28)f6n)+po@miei(tn**ki05n@@5z-caf8y!hrz#&-n8p09i@'
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['n-main']
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'nmoney',
-        'USER': 'nmoney',
-        'PASSWORD': 'nmoney',
-        'HOST': 'n-postgresql',
-        'PORT': 5432,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': 'nmoney',
+        # 'USER': 'nmoney',
+        # 'PASSWORD': 'nmoney',
+        # 'HOST': 'n-postgresql',
+        # 'PORT': 5432,
     }
 }
 
@@ -25,19 +27,17 @@ LANGUAGE_CODE = 'ja'
 
 TIME_ZONE = 'Asia/Tokyo'
 
-URL_ROOT = ''
+URL_ROOT = 'n/'
 
-STATIC_URL = f'/{URL_ROOOT}static/'
+STATIC_URL = f'/{URL_ROOT}static/'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = f'/{URL_ROOT}media/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 NAME = 'NoMoney'
-
-ADMIN_USER = 'admin'
-ADMIN_MAIL = 'admin@example.com'
-ADMIN_PASSWORD = 'password'
 
 LOG_FILE = os.path.join(BASE_DIR, 'logs/django.log')
 
@@ -57,6 +57,7 @@ LOGGING = {
     },
     'handlers': {
         'file': {
+            # 'level': 'INFO',
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': LOG_FILE,
@@ -69,17 +70,23 @@ LOGGING = {
     },
     'loggers': {
         'money': {
+            # 'handlers': ['file'],
             'handlers': ['file', 'console'],
+            # 'level': 'INFO',
             'level': 'DEBUG',
             'propagate': False,
         },
         'django': {
+            # 'handlers': ['file'],
             'handlers': ['file', 'console'],
+            # 'level': 'INFO',
             'level': 'DEBUG',
             'propagate': False,
         },
         'django.db.backends': {
+            # 'handlers': ['file'],
             'handlers': ['file', 'console'],
+            # 'level': 'INFO',
             'level': 'DEBUG',
             'propagate': False,
         },

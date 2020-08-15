@@ -1,9 +1,11 @@
 #!/bin/sh
 
-pip install -r requirements.txt
+if type python3 > /dev/null 2>&1; then
+    alias python=python3
+    alias pip=pip3
+fi
 
-test -f config/local_settings.py ||
-    cp config/local_settings.py.tmpl config/local_settings.py
+pip install -r requirements.txt
 
 python manage.py makemigrations
 python manage.py migrate
@@ -12,7 +14,10 @@ python manage.py collectstatic --no-input --clear
 # Create super user
 cat <<EOF | python manage.py shell
 from django.contrib.auth import get_user_model
-from config.settings import ADMIN_USER, ADMIN_MAIL, ADMIN_PASSWORD
+
+ADMIN_USER = 'admin'
+ADMIN_MAIL = 'admin@example.com'
+ADMIN_PASSWORD = 'password'
 
 User = get_user_model()
 
@@ -20,7 +25,7 @@ if not User.objects.filter(username=ADMIN_USER).exists():
     User.objects.create_superuser(ADMIN_USER, ADMIN_MAIL, ADMIN_PASSWORD)
 EOF
 
-django-admin compilemessages
+python manage.py compilemessages
 
 exec uwsgi \
     --http-socket :49152 \
