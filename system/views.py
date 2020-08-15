@@ -1,3 +1,1 @@
-from django.shortcuts import render
-
-# Create your views here.
+# Copyright (C) Takeshi Nakamura. All rights reserved.

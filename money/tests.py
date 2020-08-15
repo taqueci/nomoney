@@ -1,3 +1,3 @@
-from django.test import TestCase
+# Copyright (C) Takeshi Nakamura. All rights reserved.
 
-# Create your tests here.
+# from django.test import TestCase
