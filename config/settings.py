@@ -131,6 +131,9 @@ URL_ROOT = ''
 STATIC_URL = '/{}static/'.format(URL_ROOT)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+MEDIA_URL = '/{}media/'.format(URL_ROOT)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 AUTH_USER_MODEL = 'system.User'
 
 LOCALE_PATHS = (
