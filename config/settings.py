@@ -128,10 +128,10 @@ URL_ROOT = ''
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/{}static/'.format(URL_ROOT)
+STATIC_URL = f'/{URL_ROOT}static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-MEDIA_URL = '/{}media/'.format(URL_ROOT)
+MEDIA_URL = f'/{URL_ROOT}media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'system.User'

@@ -27,8 +27,11 @@ TIME_ZONE = 'Asia/Tokyo'
 
 URL_ROOT = ''
 
-STATIC_URL = '/{}static/'.format(URL_ROOT)
+STATIC_URL = f'/{URL_ROOOT}static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MEDIA_URL = f'/{URL_ROOT}media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 NAME = 'NoMoney'
 
