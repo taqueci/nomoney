@@ -23,7 +23,7 @@ class AuthMiddleware(MiddlewareMixin):
                 url = login
             else:
                 next = urllib.parse.quote(request.get_full_path())
-                url = '{}?next={}'.format(login, next)
+                url = f'{login}?next={next}'
 
             return HttpResponseRedirect(url)
 

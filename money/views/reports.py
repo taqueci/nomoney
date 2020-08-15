@@ -253,6 +253,6 @@ def _chart_data_val_x(obj, *keys):
     elif len(keys) == 1:
         return obj['year']
     elif keys[1] == 'week':
-        return '{}W{:02}'.format(obj['year'], obj['week'])
+        return f'{obj["year"]}W{obj["week"]:02}'
 
-    return '{}-{:02}'.format(obj['year'], obj['month'])
+    return f'{obj["year"]}-{obj["month"]:02}'
