@@ -5,7 +5,7 @@ from django.contrib import admin
 from config.settings import URL_ROOT
 from .models import Account, Journal, Tag, Template
 
-admin.site.site_url = '/{}money/'.format(URL_ROOT)
+admin.site.site_url = f'/{URL_ROOT}money/'
 
 
 @admin.register(Account)

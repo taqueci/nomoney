@@ -6,9 +6,9 @@ WORKDIR $INSTALL_DIR
 
 COPY requirements.txt .
 
-RUN apk add --no-cache gettext postgresql-libs && \
+RUN apk add --no-cache gettext postgresql-libs libjpeg && \
     apk add --no-cache --virtual .build-deps gcc \
-        linux-headers musl-dev postgresql-dev && \
+        linux-headers musl-dev postgresql-dev jpeg-dev zlib-dev && \
     pip install --no-cache-dir uwsgi psycopg2 -r requirements.txt && \
     apk del --no-cache --purge .build-deps
 

@@ -77,12 +77,12 @@ def journal_filter_items(request):
 
     if f_max and f_max.isdecimal():
         item.append({
-            'key': _('Max amount'), 'value': '{:,}'.format(int(f_max))
+            'key': _('Max amount'), 'value': f'{int(f_max):,}'
         })
 
     if f_min and f_min.isdecimal():
         item.append({
-            'key': _('Min amount'), 'value': '{:,}'.format(int(f_min))
+            'key': _('Min amount'), 'value': f'{int(f_min):,}'
         })
 
     if f_tag:
