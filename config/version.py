@@ -1,3 +1,3 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
-VERSION = '1.4.1'
+VERSION = '1.5.0'
