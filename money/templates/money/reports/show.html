@@ -143,12 +143,12 @@
 
 <div id="incoming-table" class="group-incoming" style="display: none">
 
-<table class="table">
+<table class="table table-sm">
   <thead>
     <tr>
       <th>{% trans 'Account' %}</th>
-      <th>{% trans 'Amount' %}</th>
-      <th>%</th>
+      <th class="text-right">{% trans 'Amount' %}</th>
+      <th class="text-right">%</th>
       <th></th>
     </tr>
   </thead>
@@ -156,8 +156,8 @@
     {% for x in incoming %}
     <tr>
       <td>{{ x.credit__name }}</td>
-      <td align="right">{{ x.sum|intcomma }}</td>
-      <td align="right">{{ x.sum|value_percent:summary.income|floatformat:1 }}</td>
+      <td class="text-right">{{ x.sum|intcomma }}</td>
+      <td class="text-right">{{ x.sum|value_percent:summary.income|floatformat:1 }}</td>
       <td class="px-2">
         <span data-toggle="tooltip" data-title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?{% url_params credit=x.credit__id %}"><i class="fas fa-list fa-fw"></i></a></span>
       </td>
@@ -195,12 +195,12 @@
 
 <div id="outgoing-table" class="group-outgoing" style="display: none">
 
-<table class="table">
+<table class="table table-sm">
   <thead>
     <tr>
       <th>{% trans 'Account' %}</th>
-      <th>{% trans 'Amount' %}</th>
-      <th>%</th>
+      <th class="text-right">{% trans 'Amount' %}</th>
+      <th class="text-right">%</th>
       <th></th>
     </tr>
   </thead>
@@ -208,8 +208,8 @@
     {% for x in outgoing %}
     <tr>
       <td>{{ x.debit__name }}</td>
-      <td align="right">{{ x.sum|intcomma }}</td>
-      <td align="right">{{ x.sum|value_percent:summary.expense|floatformat:1 }}</td>
+      <td class="text-right">{{ x.sum|intcomma }}</td>
+      <td class="text-right">{{ x.sum|value_percent:summary.expense|floatformat:1 }}</td>
       <td class="px-2">
         <span data-toggle="tooltip" data-title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?{% url_params debit=x.debit__id %}"><i class="fas fa-list fa-fw"></i></a></span>
       </td>
