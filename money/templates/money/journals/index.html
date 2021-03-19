@@ -46,7 +46,7 @@
       <th><a href="?{% url_params_sort 'date' %}">{% trans 'Date' %}</a></th>
       <th><a href="?{% url_params_sort 'debit' %}">{% trans 'Debit' %}</a></th>
       <th><a href="?{% url_params_sort 'credit' %}">{% trans 'Credit' %}</a></th>
-      <th><a href="?{% url_params_sort 'amount' %}">{% trans 'Amount' %}</a></th>
+      <th class="text-right"><a href="?{% url_params_sort 'amount' %}">{% trans 'Amount' %}</a></th>
       <th></th>
       <th><a href="?{% url_params_sort 'summary' %}">{% trans 'Summary' %}</a></th>
       <th colspan="2"></th>
@@ -55,12 +55,12 @@
   <tbody>
     {% for x in page %}
     <tr>
-      <td align="right">{{ x.id }}</td>
+      <td class="text-right">{{ x.id }}</td>
       <td>{{ x.date|date:'Y-m-d' }}</td>
       <td><a href="?{% url_params debit=x.debit.id %}" class="text-dark">{{ x.debit.name }}</a></td>
       <td><a href="?{% url_params credit=x.credit.id %}" class="text-dark">{{ x.credit.name }}</a></td>
-      <td align="right">{{ x.amount|intcomma }}</td>
-      <td align="center"><span class="{{ x|journal_category_badge_class }}">{{ x|journal_category_text }}</span></td>
+      <td class="text-right">{{ x.amount|intcomma }}</td>
+      <td class="text-center"><span class="{{ x|journal_category_badge_class }}">{{ x|journal_category_text }}</span></td>
       <td>
         {{ x.summary }}
         {% for y in x.tags.all %}
