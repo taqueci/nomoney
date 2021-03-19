@@ -67,6 +67,11 @@ body {
   <body class="text-center">
     <form method="post" class="form-signin">
       <h1 class="h3 mb-3 font-weight-normal">Welcome!</h1>
+      {% for x in form.non_field_errors %}
+      <div class="alert alert-danger text-left">
+        {{ x }}
+      </div>
+      {% endfor %}
       <label for="inputUser" class="sr-only">User</label>
       <input type="text" name="username" id="inputUser" class="form-control" placeholder="User" required autofocus>
       <label for="inputPassword" class="sr-only">Password</label>

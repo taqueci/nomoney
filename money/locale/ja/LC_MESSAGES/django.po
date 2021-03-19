@@ -31,7 +31,7 @@ msgid "Expense"
 msgstr "費用"
 
 msgid "Equity"
-msgstr "資産"
+msgstr "資本"
 
 msgid "Financial year"
 msgstr "年度"
