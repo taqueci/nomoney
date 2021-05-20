@@ -5,14 +5,14 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from .settings import DEBUG, URL_ROOT
+from .settings import DEBUG, ROUTE_PREFIX
 
 
 urlpatterns = [
-    path(f'{URL_ROOT}admin/', admin.site.urls),
-    path(f'{URL_ROOT}i18n/', include('django.conf.urls.i18n')),
-    path(f'{URL_ROOT}system/', include('system.urls', namespace='system')),
-    path(f'{URL_ROOT}money/', include('money.urls', namespace='money')),
+    path(f'{ROUTE_PREFIX}/admin/', admin.site.urls),
+    path(f'{ROUTE_PREFIX}/i18n/', include('django.conf.urls.i18n')),
+    path(f'{ROUTE_PREFIX}/system/', include('system.urls', namespace='system')),
+    path(f'{ROUTE_PREFIX}/money/', include('money.urls', namespace='money')),
 ]
 
 if DEBUG:
@@ -23,4 +23,6 @@ if DEBUG:
 
     import debug_toolbar
 
-    urlpatterns += [path('__debug__/', include(debug_toolbar.urls)), ]
+    urlpatterns += [
+        path(f'{ROUTE_PREFIX}/__debug__/', include(debug_toolbar.urls)),
+    ]

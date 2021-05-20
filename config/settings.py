@@ -129,16 +129,18 @@ USE_L10N = True
 
 USE_TZ = True
 
-URL_ROOT = env.get('N_URL_ROOT', 'n/')
+URL_PREFIX = env.get('N_URL_PREFIX', '/n')
+
+ROUTE_PREFIX = URL_PREFIX[1:]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = env.get('N_STATIC_URL', f'/{URL_ROOT}static/')
+STATIC_URL = env.get('N_STATIC_URL', f'{URL_PREFIX}/static/')
 
 STATIC_ROOT = env.get('N_STATIC_ROOT', os.path.join(BASE_DIR, 'staticfiles'))
 
-MEDIA_URL = env.get('N_MEDIA_URL', f'/{URL_ROOT}media/')
+MEDIA_URL = env.get('N_MEDIA_URL', f'{URL_PREFIX}/media/')
 
 MEDIA_ROOT = env.get('N_MEDIA_ROOT',  os.path.join(BASE_DIR, 'media'))
 
@@ -224,8 +226,8 @@ try:
 except ImportError:
     pass
 
-SITE_URL = f'/{URL_ROOT}money/'
-LOGIN_TARGETS = (f'/{URL_ROOT}money/', )
+SITE_URL = f'{URL_PREFIX}/money/'
+LOGIN_TARGETS = (f'{URL_PREFIX}/money/', )
 
 if DEBUG:
     INSTALLED_APPS += ['debug_toolbar', ]
