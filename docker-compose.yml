@@ -39,6 +39,6 @@ services:
       N_DATABASE_PASSWORD: nmoney
       N_DATABASE_HOST: n-postgresql
       N_DATABASE_PORT: "5432"
-      N_URL_ROOT: n/
+      N_URL_PREFIX: /n
       N_STATIC_URL: /n/static/
       N_MEDIA_URL: /n/media/

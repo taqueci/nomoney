@@ -2,10 +2,10 @@
 
 from django.contrib import admin
 
-from config.settings import URL_ROOT
+from config.settings import SITE_URL
 from .models import Account, Journal, Tag, Template
 
-admin.site.site_url = f'/{URL_ROOT}money/'
+admin.site.site_url = SITE_URL
 
 
 @admin.register(Account)
