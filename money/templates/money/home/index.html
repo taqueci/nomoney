@@ -5,6 +5,7 @@
 {% load humanize %}
 {% load i18n %}
 
+{% load access %}
 {% load journal %}
 {% load url %}
 {% load value %}
@@ -20,7 +21,9 @@
 {% block heading %}{% trans 'Dashboard' %}{% endblock %}
 
 {% block actions %}
+{% if request.user|access_creatable %}
 <a href="{% url 'money:new_journal' %}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-plus fa-fw"></i> {% trans 'New' %}</a>
+{% endif %}
 
 <div class="d-inline d-lg-none">
   <a href="#search" class="btn btn-outline-secondary btn-sm"><i class="fas fa-search fa-fw"></i> {% trans 'Search' %}</a>
@@ -152,7 +155,9 @@
         <a href="{% url 'money:journals' %}?{% url_params credit=x.credit.id %}" class="text-dark">{{ x.credit.name }}</a>
       </div>
       <div>
+        {% if request.user|access_updatable %}
         <span class="h5" data-toggle="tooltip" data-title="{% trans 'Edit journal' %}"><a href="{% url 'money:edit_journal' x.id %}"><i class="fas fa-edit fa-fw"></i></a></span>
+        {% endif %}
         <span class="ml-3 h5" data-toggle="tooltip" data-title="{% trans 'More information' %}"><a href="{% url 'money:journal' x.id %}"><i class="fas fa-list-alt fa-fw"></i></a></span>
       </div>
     </div>
