@@ -5,6 +5,7 @@
 {% load humanize %}
 {% load i18n %}
 
+{% load access %}
 {% load html %}
 {% load url %}
 
@@ -26,14 +27,20 @@
 {% block heading %}{{ object.summary }}{% endblock %}
 
 {% block actions %}
+{% if request.user|access_updatable %}
 <a href="{% url 'money:edit_journal' object.id %}?next={{ request.get_full_path|urlencode }}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-edit fa-fw"></i> {% trans 'Edit' %}</a>
+{% endif %}
 
+{% if request.user|access_creatable %}
 <a href="{% url 'money:new_journal' %}?{% url_params base=object.id %}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-copy fa-fw"></i> {% trans 'Copy' %}</a>
+{% endif %}
 
+{% if request.user|access_deletable %}
 <form method="post" action="{% url 'money:destroy_journal' object.id %}" class="d-inline" onSubmit="return confirmDelete()">
   {% csrf_token %}
   <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-trash fa-fw"></i> {% trans 'Delete' %}</button>
 </form>
+{% endif %}
 {% endblock %}
 
 {% block content %}
