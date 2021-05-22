@@ -5,6 +5,7 @@
 {% load humanize %}
 {% load i18n %}
 
+{% load access %}
 {% load html %}
 {% load url %}
 
@@ -25,7 +26,9 @@
 {% block heading %}{% trans 'Journal list' %}{% endblock %}
 
 {% block actions %}
+{% if request.user|access_creatable %}
 <a href="{% url 'money:new_journal' %}?next={{ request.get_full_path|urlencode }}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-plus fa-fw"></i> {% trans 'New' %}</a>
+{% endif %}
 
 <div class="d-inline d-lg-none">
 <a href="#filter" class="btn btn-outline-secondary btn-sm"><i class="fas fa-filter fa-fw"></i> {% trans 'Filter' %}</a>
@@ -71,7 +74,9 @@
         {% endfor %}
       </td>
       <td class="px-2">
+        {% if request.user|access_updatable %}
         <span data-toggle="tooltip" data-title="{% trans 'Edit journal' %}"><a href="{% url 'money:edit_journal' x.id %}?next={{ request.get_full_path|urlencode }}"><i class="fas fa-edit fa-fw"></i></a></span>
+        {% endif %}
       </td>
       <td class="px-2">
         <span data-toggle="tooltip" data-title="{% trans 'More information' %}"><a href="{% url 'money:journal' x.id %}"><i class="fas fa-list-alt fa-fw"></i></a></span>
@@ -135,7 +140,9 @@
         <a href="?{% url_params credit=x.credit.id %}" class="text-dark">{{ x.credit.name }}</a>
       </div>
       <div>
+        {% if request.user|access_updatable %}
         <span class="h5" data-toggle="tooltip" data-title="{% trans 'Edit journal' %}"><a href="{% url 'money:edit_journal' x.id %}?next={{ request.get_full_path|urlencode }}"><i class="fas fa-edit fa-fw"></i></a></span>
+        {% endif %}
         <span class="ml-3 h5" data-toggle="tooltip" data-title="{% trans 'More information' %}"><a href="{% url 'money:journal' x.id %}"><i class="fas fa-list-alt fa-fw"></i></a></span>
       </div>
     </div>

@@ -27,13 +27,13 @@ LANGUAGE_CODE = 'ja'
 
 TIME_ZONE = 'Asia/Tokyo'
 
-URL_ROOT = 'n/'
+URL_PREFIX = '/n'
 
-STATIC_URL = f'/{URL_ROOT}static/'
+STATIC_URL = f'{URL_PREFIX}/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-MEDIA_URL = f'/{URL_ROOT}media/'
+MEDIA_URL = f'{URL_PREFIX}/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
