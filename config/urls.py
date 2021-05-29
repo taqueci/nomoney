@@ -13,6 +13,7 @@ urlpatterns = [
     path(f'{ROUTE_PREFIX}/i18n/', include('django.conf.urls.i18n')),
     path(f'{ROUTE_PREFIX}/system/', include('system.urls', namespace='system')),
     path(f'{ROUTE_PREFIX}/money/', include('money.urls', namespace='money')),
+    path(f'{ROUTE_PREFIX}/api/', include('api.urls', namespace='api')),
 ]
 
 if DEBUG:
