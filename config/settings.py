@@ -44,8 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'rest_framework',
     'system',
     'money',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -159,6 +161,16 @@ LOGIN_URL = 'system:login'
 LOGIN_REDIRECT_URL = 'money:home'
 LOGOUT_URL = 'system:logout'
 LOGOUT_REDIRECT_URL = 'system:login'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
 
 # Number of digits for filter initcomma
 NUMBER_GROUPING = 3

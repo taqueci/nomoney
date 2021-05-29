@@ -243,6 +243,13 @@
 
 <a class="btn btn-secondary mt-2" href="{% url 'money:journals' %}"><i class="fas fa-ban"></i> {% trans 'Reset' %}</a>
 
+<h5 class="border-bottom pb-2 mb-3 mt-5"><i class="fas fa-wrench"></i> {% trans 'Operation' %}</h5>
+
+<ul class="list-unstyled">
+  <li class="py-1"><a href="{% url 'api:journals_export' %}?{% url_params %}">{% trans 'Export as CSV' %}</a></li>
+</ul>
+
+
 </div>
 {% endblock %}
 

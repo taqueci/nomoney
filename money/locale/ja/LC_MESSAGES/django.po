@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-15 22:31+0900\n"
+"POT-Creation-Date: 2021-05-28 15:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,24 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Date"
+msgstr "日付"
+
+msgid "Debit"
+msgstr "貸方"
+
+msgid "Credit"
+msgstr "借方"
+
+msgid "Amount"
+msgstr "金額"
+
+msgid "Summary"
+msgstr "サマリー"
+
+msgid "Note"
+msgstr "備考"
 
 msgid "Asset"
 msgstr "資産"
@@ -63,9 +81,6 @@ msgstr "検索"
 msgid "Chart"
 msgstr "チャート"
 
-msgid "Summary"
-msgstr "サマリー"
-
 msgid "Incoming"
 msgstr "収入"
 
@@ -80,9 +95,6 @@ msgstr "データがありません"
 
 msgid "Account"
 msgstr "科目"
-
-msgid "Amount"
-msgstr "金額"
 
 msgid "More information"
 msgstr "詳細情報"
@@ -110,18 +122,6 @@ msgstr "よく使う科目"
 
 msgid "Template"
 msgstr "テンプレート"
-
-msgid "Debit"
-msgstr "貸方"
-
-msgid "Credit"
-msgstr "借方"
-
-msgid "Date"
-msgstr "日付"
-
-msgid "Note"
-msgstr "備考"
 
 msgid "Tags"
 msgstr "タグ"
@@ -161,6 +161,12 @@ msgstr "タグ"
 
 msgid "Reset"
 msgstr "リセット"
+
+msgid "Operation"
+msgstr "操作"
+
+msgid "Export as CSV"
+msgstr "CSVエクスポート"
 
 msgid "New journal"
 msgstr "新しい記録"
@@ -265,7 +271,7 @@ msgid "All"
 msgstr "すべて"
 
 msgid "Personal info"
-msgstr ""
+msgstr "個人情報"
 
 msgid "Permissions"
-msgstr ""
+msgstr "パーミッション"
