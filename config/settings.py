@@ -234,6 +234,7 @@ LOGGING = {
 }
 
 try:
+    # pylint: disable=W0401,W0614
     from .local_settings import *
 except ImportError:
     pass
