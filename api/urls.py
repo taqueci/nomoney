@@ -1,5 +1,7 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
+"""URL configuration for API."""
+
 from django.urls import path
 
 from .views import journals
