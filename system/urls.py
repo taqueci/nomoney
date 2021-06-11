@@ -1,5 +1,7 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
+"""URL configuration for system."""
+
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 

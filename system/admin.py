@@ -1,5 +1,7 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
+"""Administrator site settings for system."""
+
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
@@ -9,6 +11,8 @@ from . import models
 
 @admin.register(models.User)
 class AdminUserAdmin(UserAdmin):
+    """The representation of user model."""
+
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         (_('Personal info'), {

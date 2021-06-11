@@ -1,5 +1,7 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
+"""Models for money application."""
+
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -9,6 +11,8 @@ from .views.shared import date
 
 
 class Account(models.Model):
+    """Account model."""
+
     ENTRY_ASSET = 1
     ENTRY_LIABILITY = 2
     ENTRY_INCOME = 3
@@ -36,13 +40,18 @@ class Account(models.Model):
 
 
 class Tag(models.Model):
+    """Tag model."""
+
     name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.name
 
 
+# pylint: disable=R0902
 class Journal(models.Model):
+    """Journal model."""
+
     debit = models.ForeignKey(
         Account, on_delete=models.PROTECT, related_name='journal_debit'
     )
@@ -63,6 +72,7 @@ class Journal(models.Model):
     expense = models.IntegerField(blank=True, default=0)
     equity = models.IntegerField(blank=True, default=0)
 
+    # pylint: disable=C0103
     fy = models.IntegerField(
         blank=True, default=0, verbose_name=_('Financial year')
     )
@@ -97,10 +107,12 @@ class Journal(models.Model):
         self.month = self.date.month
         self.week = self.date.isocalendar()[1]
 
-        super(Journal, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 class Template(models.Model):
+    """Template model."""
+
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
 
