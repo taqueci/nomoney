@@ -87,7 +87,7 @@
   <dt class="col-4">{% trans 'Tags' %}</dt>
   <dd class="col-8">
     {% for x in object.tags.all %}
-    <a href="{% url 'money:journals' %}?{% url_params tag=x.id %}" class="badge badge-pill badge-secondary">{{ x.name }}</a>
+    <a href="{% url 'money:journals' %}?{% url_params tag=x.id %}" class="badge rounded-pill bg-secondary">{{ x.name }}</a>
     {% empty %}
     -
     {% endfor %}
