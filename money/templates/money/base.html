@@ -19,6 +19,10 @@
 
     <script src="{% static 'system/js/jquery-3.5.1.min.js' %}"></script>
 
+    <style type="text/css">
+      nav .breadcrumb a { text-decoration: none; }
+    </style>
+
     {% block head %}{% endblock %}
 
     <title>{% block title %}{{ NAME }}{% endblock %}</title>
@@ -86,7 +90,7 @@
 </div>
 
 <div class="container mb-5">
-  <nav class="text-muted mb-1">
+  <nav style="--bs-breadcrumb-divider: '&raquo;'">
     {% block breadcrumb %}{% endblock %}
   </nav>
 
