@@ -6,25 +6,18 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="{% static 'system/css/bootstrap.min.css' %}">
-    <style type="text/css">
+    <style>
 html,
 body {
   height: 100%;
 }
 
 body {
-  display: -ms-flexbox;
-  display: -webkit-box;
   display: flex;
-  -ms-flex-align: center;
-  -ms-flex-pack: center;
-  -webkit-box-align: center;
   align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
   padding-top: 40px;
   padding-bottom: 40px;
   background-color: #f5f5f5;
@@ -34,26 +27,23 @@ body {
   width: 100%;
   max-width: 330px;
   padding: 15px;
-  margin: 0 auto;
+  margin: auto;
 }
+
 .form-signin .checkbox {
   font-weight: 400;
 }
-.form-signin .form-control {
-  position: relative;
-  box-sizing: border-box;
-  height: auto;
-  padding: 10px;
-  font-size: 16px;
-}
-.form-signin .form-control:focus {
+
+.form-signin .form-floating:focus-within {
   z-index: 2;
 }
-.form-signin input[type="email"] {
+
+.form-signin input[type="text"] {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
+
 .form-signin input[type="password"] {
   margin-bottom: 10px;
   border-top-left-radius: 0;
@@ -65,22 +55,34 @@ body {
   </head>
 
   <body class="text-center">
-    <form method="post" class="form-signin">
-      <h1 class="h3 mb-3 font-weight-normal">Welcome!</h1>
-      {% for x in form.non_field_errors %}
-      <div class="alert alert-danger text-left">
-        {{ x }}
-      </div>
-      {% endfor %}
-      <label for="inputUser" class="sr-only">User</label>
-      <input type="text" name="username" id="inputUser" class="form-control" placeholder="User" required autofocus>
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
-      <div class="checkbox mb-3">
-      </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      {% csrf_token %}
-      <input type="hidden" name="next" value="{{ next }}">
-    </form>
+
+<main class="form-signin">
+  <form method="post">
+    <h1 class="h3 mb-3 fw-normal">Welcome!</h1>
+
+    {% for x in form.non_field_errors %}
+    <div class="alert alert-danger text-start">
+      {{ x }}
+    </div>
+    {% endfor %}
+
+    <div class="form-floating">
+      <input type="text" name="username" class="form-control" id="floatingInput" placeholder="User">
+      <label for="floatingInput">User</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
+      <label for="floatingPassword">Password</label>
+    </div>
+
+    <div class="mt-3">
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+    </div>
+
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}">
+  </form>
+</main>
+
   </body>
 </html>
