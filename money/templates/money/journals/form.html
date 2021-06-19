@@ -12,28 +12,23 @@
 
 <div class="d-flex flex-wrap justify-content-end mb-1">
 
-<div class="btn-group btn-group-sm btn-group-toggle mb-2" data-toggle="buttons">
-  <label class="btn btn-outline-secondary px-3">
-    <input type="radio" name="category" value="1" autocomplete="off">
-    {% trans 'Incoming' %}
-  </label>
-  <label class="btn btn-outline-secondary px-3">
-    <input type="radio" name="category" value="2" autocomplete="off">
-    {% trans 'Outgoing' %}
-  </label>
-  <label class="btn btn-outline-secondary px-3">
-    <input type="radio" name="category" value="3" autocomplete="off">
-    {% trans 'Repayment' %}
-  </label>
-  <label class="btn btn-outline-secondary px-3 active">
-    <input type="radio" name="category" value="0" autocomplete="off" checked>
-    {% trans 'Other' %}
-  </label>
+<div class="btn-group btn-group-sm mb-2">
+  <input type="radio" class="btn-check" name="category" value="1" id="btn-incoming" autocomplete="off">
+  <label class="btn btn-outline-secondary px-3" for="btn-incoming">{% trans 'Incoming' %}</label>
+
+  <input type="radio" class="btn-check" name="category" value="2" id="btn-outgoing" autocomplete="off">
+  <label class="btn btn-outline-secondary px-3" for="btn-outgoing">{% trans 'Outgoing' %}</label>
+
+  <input type="radio" class="btn-check" name="category" value="3" id="btn-repayment" autocomplete="off">
+  <label class="btn btn-outline-secondary px-3" for="btn-repayment">{% trans 'Repayment' %}</label>
+
+  <input type="radio" class="btn-check" name="category" value="0" id="btn-other" autocomplete="off" checked>
+  <label class="btn btn-outline-secondary px-3" for="btn-other">{% trans 'Other' %}</label>
 </div>
 
 {% if popular_account %}
-<div class="dropdown ml-2 mb-2">
-  <button class="btn btn-outline-secondary btn-sm pl-3 dropdown-toggle" type="button" data-toggle="dropdown">
+<div class="dropdown ms-2 mb-2">
+  <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
     {% trans 'Popular account' %}
   </button>
   <div id="popular" class="dropdown-menu dropdown-menu-right">
@@ -45,8 +40,8 @@
 {% endif %}
 
 {% if template %}
-<div class="dropdown ml-2">
-  <button class="btn btn-outline-secondary btn-sm pl-3 dropdown-toggle" type="button" data-toggle="dropdown">
+<div class="dropdown ms-2">
+  <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
     {% trans 'Template' %}
   </button>
   <div id="template" class="dropdown-menu dropdown-menu-right">
@@ -59,7 +54,7 @@
 
 </div><!-- .d-flex -->
 
-<div class="form-group row">
+<div class="mb-3 row">
   <label class="col-sm-3 col-form-label">{% trans 'Debit' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
     <select name="debit" class="form-control">
@@ -74,7 +69,7 @@
   </div>
 </div>
 
-<div class="form-group row">
+<div class="mb-3 row">
   <label class="col-sm-3 col-form-label">{% trans 'Credit' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
     <select name="credit" class="form-control">
@@ -89,40 +84,40 @@
   </div>
 </div>
 
-<div class="form-group row">
+<div class="mb-3 row">
   <label class="col-sm-3 col-form-label">{% trans 'Date' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
     <div id="date" class="input-group date datetimepicker" data-target-input="nearest">
       <input type="text" name="date" value="{{ object.date|date:'Y-m-d' }}" class="form-control datetimepicker-input" data-target="#date" />
-      <div class="input-group-append" data-target="#date" data-toggle="datetimepicker">
-        <div class="input-group-text"><i class="fas fa-calendar fa-fw"></i></div>
+      <div class="input-group-text" data-target="#date" data-toggle="datetimepicker">
+        <i class="fas fa-calendar fa-fw"></i>
       </div>
     </div>
   </div>
 </div>
 
-<div class="form-group row">
+<div class="mb-3 row">
   <label class="col-sm-3 col-form-label">{% trans 'Amount' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
     <input type="number" name="amount" value="{{ object.amount }}" class="form-control" required>
   </div>
 </div>
 
-<div class="form-group row">
+<div class="mb-3 row">
   <label class="col-sm-3 col-form-label">{% trans 'Summary' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
     <input type="text" name="summary" value="{{ object.summary|default:'' }}" class="form-control" required>
   </div>
 </div>
 
-<div class="form-group row">
+<div class="mb-3 row">
   <label class="col-sm-3 col-form-label">{% trans 'Note' %}</label>
   <div class="col-sm-9">
     <textarea name="note" class="form-control" rows="3">{{ object.note|default:'' }}</textarea>
   </div>
 </div>
 
-<div class="form-group row">
+<div class="mb-3 row">
   <label class="col-sm-3 col-form-label">{% trans 'Tags' %}</label>
   <div class="col-sm-9">
     <select name="tags" class="form-control select2" multiple="multiple" size="1">
@@ -135,7 +130,7 @@
 
 <div class="row mt-4">
   <div class="col">
-    <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-check fa-fw"></i> {% trans 'Submit' %}</button>
+    <button type="submit" class="btn btn-primary me-2"><i class="fas fa-check fa-fw"></i> {% trans 'Submit' %}</button>
     {% if request.GET.next %}
     <a href="{{ request.GET.next }}" class="btn btn-secondary"><i class="fas fa-ban fa-fw"></i> {% trans 'Cancel' %}</a>
     {% else %}
