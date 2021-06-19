@@ -13,9 +13,10 @@
 {% block title %}{% trans 'Reports' %} | {{ NAME }}{% endblock %}
 
 {% block breadcrumb %}
-<a href="{% url 'money:home' %}">{% trans 'Home' %}</a>
-&raquo;
-{% trans 'Reports' %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{% url 'money:home' %}">{% trans 'Home' %}</a>
+  <li class="breadcrumb-item active">{% trans 'Reports' %}</li>
+</ol>
 {% endblock %}
 
 {% block heading %}{% trans 'Report list' %}{% endblock %}

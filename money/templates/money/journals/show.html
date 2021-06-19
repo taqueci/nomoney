@@ -17,11 +17,11 @@
 {% block title %}{% trans 'Journal' %} | {{ NAME }}{% endblock %}
 
 {% block breadcrumb %}
-<a href="{% url 'money:home' %}">{% trans 'Home' %}</a>
-&raquo;
-<a href="{% url 'money:journals' %}">{% trans 'Journals' %}</a>
-&raquo;
-#{{ object.id }}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{% url 'money:home' %}">{% trans 'Home' %}</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'money:journals' %}">{% trans 'Journals' %}</a></li>
+  <li class="breadcrumb-item active">#{{ object.id }}</li>
+</ol>
 {% endblock %}
 
 {% block heading %}{{ object.summary }}{% endblock %}
