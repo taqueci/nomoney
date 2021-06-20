@@ -54,7 +54,7 @@
             <span class="me-1">{% user_avatar user 16 %}</span>
             {{ user|user_full_name:LANGUAGE_CODE }}
           </a>
-          <div class="dropdown-menu dropdown-menu-right">
+          <div class="dropdown-menu dropdown-menu-end">
             <form name="lang" method="post" action="{% url 'set_language' %}">
               {% csrf_token %}
               <input name="next" type="hidden" value="{{ request.get_full_path }}">
