@@ -76,11 +76,11 @@
       </td>
       <td class="px-2">
         {% if request.user|access_updatable %}
-        <span data-bs-toggle="tooltip" data-bs-title="{% trans 'Edit journal' %}"><a href="{% url 'money:edit_journal' x.id %}?next={{ request.get_full_path|urlencode }}"><i class="fas fa-edit fa-fw"></i></a></span>
+        <span data-bs-toggle="tooltip" title="{% trans 'Edit journal' %}"><a href="{% url 'money:edit_journal' x.id %}?next={{ request.get_full_path|urlencode }}"><i class="fas fa-edit fa-fw"></i></a></span>
         {% endif %}
       </td>
       <td class="px-2">
-        <span data-bs-toggle="tooltip" data-bs-title="{% trans 'More information' %}"><a href="{% url 'money:journal' x.id %}"><i class="fas fa-list-alt fa-fw"></i></a></span>
+        <span data-bs-toggle="tooltip" title="{% trans 'More information' %}"><a href="{% url 'money:journal' x.id %}"><i class="fas fa-list-alt fa-fw"></i></a></span>
       </td>
     </tr>
     {% endfor %}
@@ -142,9 +142,9 @@
       </div>
       <div>
         {% if request.user|access_updatable %}
-        <span class="h5" data-bs-toggle="tooltip" data-bs-title="{% trans 'Edit journal' %}"><a href="{% url 'money:edit_journal' x.id %}?next={{ request.get_full_path|urlencode }}"><i class="fas fa-edit fa-fw"></i></a></span>
+        <span class="h5" data-bs-toggle="tooltip" title="{% trans 'Edit journal' %}"><a href="{% url 'money:edit_journal' x.id %}?next={{ request.get_full_path|urlencode }}"><i class="fas fa-edit fa-fw"></i></a></span>
         {% endif %}
-        <span class="ms-3 h5" data-bs-toggle="tooltip" data-bs-title="{% trans 'More information' %}"><a href="{% url 'money:journal' x.id %}"><i class="fas fa-list-alt fa-fw"></i></a></span>
+        <span class="ms-3 h5" data-bs-toggle="tooltip" title="{% trans 'More information' %}"><a href="{% url 'money:journal' x.id %}"><i class="fas fa-list-alt fa-fw"></i></a></span>
       </div>
     </div>
   </div>
