@@ -1,6 +1,5 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
-import datetime
 from money.models import Account
 
 UNDEFINED = 0

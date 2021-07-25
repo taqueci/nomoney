@@ -30,8 +30,8 @@
 {% block actions %}
 <div class="d-block d-lg-none">
   <div class="btn-group btn-group-sm">
-    <a class="btn btn-outline-secondary px-4" href="?{% url_params start=page.prev.start|date:'Y-m-d' end=page.prev.end|date:'Y-m-d' %}" data-bs-toggle="tooltip" data-bs-title="{% trans 'Previous chart' %}"><i class="fas fa-chevron-left"></i></a>
-    <a class="btn btn-outline-secondary px-4" href="?{% url_params start=page.next.start|date:'Y-m-d' end=page.next.end|date:'Y-m-d' %}" data-bs-toggle="tooltip" data-bs-title="{% trans 'Next chart' %}"><i class="fas fa-chevron-right"></i></a>
+    <a class="btn btn-outline-secondary px-4" href="?{% url_params start=page.prev.start|date:'Y-m-d' end=page.prev.end|date:'Y-m-d' %}" data-bs-toggle="tooltip" title="{% trans 'Previous chart' %}"><i class="fas fa-chevron-left"></i></a>
+    <a class="btn btn-outline-secondary px-4" href="?{% url_params start=page.next.start|date:'Y-m-d' end=page.next.end|date:'Y-m-d' %}" data-bs-toggle="tooltip" title="{% trans 'Next chart' %}"><i class="fas fa-chevron-right"></i></a>
   </div>
 </div><!-- .d-lg-none -->
 {% endblock %}
@@ -156,7 +156,7 @@
       <td class="text-end">{{ x.sum|intcomma }}</td>
       <td class="text-end">{{ x.sum|value_percent:summary.income|floatformat:1 }}</td>
       <td class="px-2">
-        <span data-bs-toggle="tooltip" data-bs-title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?{% url_params credit=x.credit__id %}"><i class="fas fa-list fa-fw"></i></a></span>
+        <span data-bs-toggle="tooltip" title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?{% url_params credit=x.credit__id %}"><i class="fas fa-list fa-fw"></i></a></span>
       </td>
     </tr>
     {% endfor %}
@@ -205,7 +205,7 @@
       <td class="text-end">{{ x.sum|intcomma }}</td>
       <td class="text-end">{{ x.sum|value_percent:summary.expense|floatformat:1 }}</td>
       <td class="px-2">
-        <span data-bs-toggle="tooltip" data-bs-title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?{% url_params debit=x.debit__id %}"><i class="fas fa-list fa-fw"></i></a></span>
+        <span data-bs-toggle="tooltip" title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?{% url_params debit=x.debit__id %}"><i class="fas fa-list fa-fw"></i></a></span>
       </td>
     </tr>
     {% endfor %}
@@ -271,8 +271,8 @@
 
 {% block sidebar %}
 <div class="btn-group d-flex mb-5">
-  <a class="btn btn-light w-100" href="?{% url_params start=page.prev.start|date:'Y-m-d' end=page.prev.end|date:'Y-m-d' %}" data-bs-toggle="tooltip" data-bs-title="{% trans 'Previous chart' %}"><i class="fas fa-chevron-left"></i></a>
-  <a class="btn btn-light w-100" href="?{% url_params start=page.next.start|date:'Y-m-d' end=page.next.end|date:'Y-m-d' %}" data-bs-toggle="tooltip" data-bs-title="{% trans 'Next chart' %}"><i class="fas fa-chevron-right"></i></a>
+  <a class="btn btn-light w-100" href="?{% url_params start=page.prev.start|date:'Y-m-d' end=page.prev.end|date:'Y-m-d' %}" data-bs-toggle="tooltip" title="{% trans 'Previous chart' %}"><i class="fas fa-chevron-left"></i></a>
+  <a class="btn btn-light w-100" href="?{% url_params start=page.next.start|date:'Y-m-d' end=page.next.end|date:'Y-m-d' %}" data-bs-toggle="tooltip" title="{% trans 'Next chart' %}"><i class="fas fa-chevron-right"></i></a>
 </div>
 
 <h5 class="border-bottom pb-2 mb-3"><i class="fas fa-sliders-h fa-fw"></i> {% trans 'Setting' %}</h5>

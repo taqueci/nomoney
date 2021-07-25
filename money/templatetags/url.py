@@ -1,6 +1,5 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
-import os
 from django import template
 
 from ..views.shared import date
@@ -10,15 +9,15 @@ register = template.Library()
 
 @register.simple_tag(takes_context=True)
 def url_param_value(context, key):
-    return context['request'].GET.get(key) or ''
+    return context['request'].GET.get(key, '')
 
 
 @register.simple_tag(takes_context=True)
 def url_params(context, **kwargs):
     query = context['request'].GET.copy()
 
-    for key in kwargs.keys():
-        query[key] = kwargs[key]
+    for key, val in kwargs.items():
+        query[key] = val
 
     return query.urlencode()
 
