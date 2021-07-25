@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 
 from ..models import Journal
-from .shared import chart, date, pagination, value
+from .shared import chart, date, pagination
 
 INDEX_PER_PAGE = 20
 INDEX_DEFAULT_SORT = 'date'
@@ -60,11 +60,13 @@ def index(request):
     })
 
 
-def show(request, id):
-    start = value.valid_or(request.GET.get('start'), '1970-01-01')
-    end = value.valid_or(request.GET.get('end'), '2100-12-31')
+def show(request, pk): # pylint: disable=unused-argument
+    start = request.GET.get('start', '1970-01-01')
+    end = request.GET.get('end', '2100-12-31')
 
-    q = Journal.objects.filter(disabled=False).filter(date__gte=start, date__lte=end)
+    q = Journal.objects.filter(disabled=False).filter(
+        date__gte=start, date__lte=end
+    )
 
     summary = q.aggregate(
         income=Sum('income'), expense=Sum('expense'),
@@ -266,19 +268,19 @@ def _chart_data_stacked(label, query, accumulated, field, *keys):
 
     for x in query:
         val_x = _chart_data_val_x(x, *keys)
-        id = x[field_id]
+        pk = x[field_id]
 
         for y in datasets:
-            if y['_id'] == id:
+            if y['_id'] == pk:
                 if not val_x in data:
                     data[val_x] = {}
 
-                data[val_x][id] = x['sum']
+                data[val_x][pk] = x['sum']
 
     for t, val in data.items():
         for d in datasets:
-            id = d['_id']
-            y = val[id] if id in val else 0
+            pk = d['_id']
+            y = val[pk] if pk in val else 0
             offset = d['_sum'] if accumulated else 0
 
             d['data'].append({'t': t, 'y': y + offset})
@@ -288,13 +290,13 @@ def _chart_data_stacked(label, query, accumulated, field, *keys):
 
 
 def _chart_data_val_x(obj, *keys):
-    l = len(keys)
-
     if keys[0] == 'date':
         return obj['date']
-    elif len(keys) == 1:
+
+    if len(keys) == 1:
         return obj['year']
-    elif keys[1] == 'week':
+
+    if keys[1] == 'week':
         return f'{obj["year"]}W{obj["week"]:02}'
 
     return f'{obj["year"]}-{obj["month"]:02}'
