@@ -67,10 +67,10 @@
         {% endif %}
       </td>
       <td class="px-2 text-end">
-        <span data-bs-toggle="tooltip" title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?{% url_params_period year=x.year %}"><i class="fas fa-list fa-fw"></i></a></span>
+        <span data-bs-toggle="tooltip" title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?{% url_params_period year=x.year month=x.month|default:None week=x.week|default:None date=x.date|default:None %}"><i class="fas fa-list fa-fw"></i></a></span>
       </td>
       <td class="px-2 text-end">
-        <span data-bs-toggle="tooltip" title="{% trans 'Show charts' %}"><a href="{% url 'money:report' 0 %}?{% url_params_period year=x.year %}"><i class="fas fa-chart-pie fa-fw"></i></a></span>
+        <span data-bs-toggle="tooltip" title="{% trans 'Show charts' %}"><a href="{% url 'money:report' 0 %}?{% url_params_period year=x.year month=x.month|default:None week=x.week|default:None date=x.date|default:None %}"><i class="fas fa-chart-pie fa-fw"></i></a></span>
       </td>
     </tr>
     {% endfor %}
