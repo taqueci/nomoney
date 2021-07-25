@@ -43,7 +43,14 @@ def url_params_sort(context, key):
 def url_params_period(context, **kwargs):
     query = context['request'].GET.copy()
 
-    s, e = date.period(kwargs['year'], kwargs.get('month'), kwargs.get('week'))
+    d = kwargs.get('date')
+
+    if d:
+        s, e = d, d
+    else:
+        s, e = date.period(
+            kwargs.get('year'), kwargs.get('month'), kwargs.get('week')
+        )
 
     query['start'] = s.strftime('%Y-%m-%d')
     query['end'] = e.strftime('%Y-%m-%d')
