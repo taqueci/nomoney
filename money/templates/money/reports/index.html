@@ -5,6 +5,7 @@
 {% load humanize %}
 {% load i18n %}
 
+{% load html %}
 {% load url %}
 
 {% block head %}
@@ -22,245 +23,35 @@
 {% block heading %}{% trans 'Report list' %}{% endblock %}
 
 {% block actions %}
+<div class="d-inline d-lg-none">
+  <div class="btn-group btn-group-sm">
+    <a href="{% url 'money:reports' %}?{% url_params unit='annual' %}" class="btn btn-outline-secondary {% html_string_if_eq_query 'unit' 'annual' 'active' %}">{% trans 'Annual' %}</a>
+    <a href="{% url 'money:reports' %}?{% url_params unit='monthly' %}" class="btn btn-outline-secondary {% html_string_if_eq_query 'unit' 'monthly' 'active' %}">{% trans 'Monthly' %}</a>
+    <a href="{% url 'money:reports' %}?{% url_params unit='weekly' %}" class="btn btn-outline-secondary {% html_string_if_eq_query 'unit' 'weekly' 'active' %}">{% trans 'Weekly' %}</a>
+    <a href="{% url 'money:reports' %}?{% url_params unit='daily' %}" class="btn btn-outline-secondary  {% html_string_if_eq_query 'unit' 'daily' 'active' %}">{% trans 'Daily' %}</a>
+  </div>
+</div>
 {% endblock %}
 
 {% block content %}
-<h3 class="mb-3">{% trans 'Recently' %}</h3>
+<div class="d-flex justify-content-end mb-2">
+  <span class="badge rounded-pill bg-light text-dark">{% trans 'Total' %} {{ total|intcomma }}</span>
+</div>
 
 <table class="table table-sm">
   <thead>
     <tr>
-      <th>{% trans 'Period' %}</th>
-      <th class="text-end">{% trans 'Incoming' %}</th>
-      <th class="text-end">{% trans 'Outgoing' %}</th>
-      <th class="text-end">{% trans 'Balance' %}</th>
+      <th><a href="?{% url_params_sort 'date' %}" class="text-decoration-none">{% trans 'Period' %}</a></th>
+      <th class="text-end"><a href="?{% url_params_sort 'income' %}" class="text-decoration-none">{% trans 'Incoming' %}</a></th>
+      <th class="text-end"><a href="?{% url_params_sort 'expense' %}" class="text-decoration-none">{% trans 'Outgoing' %}</a></th>
+      <th class="text-end"><a href="?{% url_params_sort 'balance' %}" class="text-decoration-none">{% trans 'Balance' %}</a></th>
       <th colspan="2"></th>
     </tr>
   </thead>
   <tbody>
-    {% if weekly %}
-    {% with x=weekly|first %}
+    {% for x in page %}
     <tr>
-      <td>{{ x.year }}-W{{ x.week }}</td>
-      <td class="text-end">{{ x.income|intcomma }}</td>
-      <td class="text-end">{{ x.expense|intcomma }}</td>
-      <td class="text-end">
-        {% if x.balance < 0 %}
-        <span class=" text-danger">
-          <i class="fas fa-exclamation-triangle"></i>
-          {{ x.balance|intcomma }}
-        </span>
-        {% else %}
-        <span class=" text-success">
-          {{ x.balance|intcomma }}
-        </span>
-        {% endif %}
-      </td>
-      <td class="px-2 text-end">
-        <span data-bs-toggle="tooltip" title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?{% url_params_period year=x.year week=x.week %}"><i class="fas fa-list fa-fw"></i></a></span>
-      </td>
-      <td class="px-2 text-end">
-        <span data-bs-toggle="tooltip" title="{% trans 'Show charts' %}"><a href="{% url 'money:report' 0 %}?{% url_params_period year=x.year week=x.week %}"><i class="fas fa-chart-pie fa-fw"></i></a></span>
-      </td>
-    </tr>
-    {% endwith %}
-    {% endif %}
-    {% if monthly %}
-    {% with x=monthly|first %}
-    <tr>
-      <td>{{ x.year }}-{{ x.month }}</td>
-      <td class="text-end">{{ x.income|intcomma }}</td>
-      <td class="text-end">{{ x.expense|intcomma }}</td>
-      <td class="text-end">
-        {% if x.balance < 0 %}
-        <span class=" text-danger">
-          <i class="fas fa-exclamation-triangle"></i>
-          {{ x.balance|intcomma }}
-        </span>
-        {% else %}
-        <span class=" text-success">
-          {{ x.balance|intcomma }}
-        </span>
-        {% endif %}
-      </td>
-      <td class="px-2 text-end">
-        <span data-bs-toggle="tooltip" title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?{% url_params_period year=x.year month=x.month %}"><i class="fas fa-list fa-fw"></i></a></span>
-      </td>
-      <td class="px-2 text-end">
-        <span data-bs-toggle="tooltip" title="{% trans 'Show charts' %}"><a href="{% url 'money:report' 0 %}?{% url_params_period year=x.year month=x.month %}"><i class="fas fa-chart-pie fa-fw"></i></a></span>
-      </td>
-    </tr>
-    {% endwith %}
-    {% endif %}
-    {% if annual %}
-    {% with x=annual|first %}
-    <tr>
-      <td>{{ x.year }}</td>
-      <td class="text-end">{{ x.income|intcomma }}</td>
-      <td class="text-end">{{ x.expense|intcomma }}</td>
-      <td class="text-end">
-        {% if x.balance < 0 %}
-        <span class=" text-danger">
-          <i class="fas fa-exclamation-triangle"></i>
-          {{ x.balance|intcomma }}
-        </span>
-        {% else %}
-        <span class=" text-success">
-          {{ x.balance|intcomma }}
-        </span>
-        {% endif %}
-      </td>
-      <td class="px-2 text-end">
-        <span data-bs-toggle="tooltip" title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?{% url_params_period year=x.year %}"><i class="fas fa-list fa-fw"></i></a></span>
-      </td>
-      <td class="px-2 text-end">
-        <span data-bs-toggle="tooltip" title="{% trans 'Show charts' %}"><a href="{% url 'money:report' 0 %}?{% url_params_period year=x.year %}"><i class="fas fa-chart-pie fa-fw"></i></a></span>
-      </td>
-    </tr>
-    {% endwith %}
-    {% endif %}
-  </tbody>
-</table>
-
-<h3 class="mb-3">{% trans 'Daily' %}</h3>
-
-<table class="table table-sm">
-  <thead>
-    <tr>
-      <th>{% trans 'Date' %}</th>
-      <th class="text-end">{% trans 'Incoming' %}</th>
-      <th class="text-end">{% trans 'Outgoing' %}</th>
-      <th class="text-end">{% trans 'Balance' %}</th>
-      <th colspan="2"></th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for x in daily %}
-    <tr>
-      <td>{{ x.date|date:'Y-m-d' }}</td>
-      <td class="text-end">{{ x.income|intcomma }}</td>
-      <td class="text-end">{{ x.expense|intcomma }}</td>
-      <td class="text-end">
-        {% if x.balance < 0 %}
-        <span class=" text-danger">
-          <i class="fas fa-exclamation-triangle"></i>
-          {{ x.balance|intcomma }}
-        </span>
-        {% else %}
-        <span class=" text-success">
-          {{ x.balance|intcomma }}
-        </span>
-        {% endif %}
-      </td>
-      <td class="px-2 text-end">
-        <span data-bs-toggle="tooltip" title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?start={{ x.date|date:'Y-m-d' }}&end={{ x.date|date:'Y-m-d' }}"><i class="fas fa-list fa-fw"></i></a></span>
-      </td>
-      <td class="px-2 text-end">
-        <span data-bs-toggle="tooltip" title="{% trans 'Show charts' %}"><a href="{% url 'money:report' 0 %}?start={{ x.date|date:'Y-m-d' }}&end={{ x.date|date:'Y-m-d' }}"><i class="fas fa-chart-pie fa-fw"></i></a></span>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
-<h3 class="mb-3">{% trans 'Weekly' %}</h3>
-
-<table class="table table-sm">
-  <thead>
-    <tr>
-      <th>{% trans 'Week' %}</th>
-      <th class="text-end">{% trans 'Incoming' %}</th>
-      <th class="text-end">{% trans 'Outgoing' %}</th>
-      <th class="text-end">{% trans 'Balance' %}</th>
-      <th colspan="2"></th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for x in weekly %}
-    <tr>
-      <td>{{ x.year }}-W{{ x.week }}</td>
-      <td class="text-end">{{ x.income|intcomma }}</td>
-      <td class="text-end">{{ x.expense|intcomma }}</td>
-      <td class="text-end">
-        {% if x.balance < 0 %}
-        <span class=" text-danger">
-          <i class="fas fa-exclamation-triangle"></i>
-          {{ x.balance|intcomma }}
-        </span>
-        {% else %}
-        <span class=" text-success">
-          {{ x.balance|intcomma }}
-        </span>
-        {% endif %}
-      </td>
-      <td class="px-2 text-end">
-        <span data-bs-toggle="tooltip" title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?{% url_params_period year=x.year week=x.week %}"><i class="fas fa-list fa-fw"></i></a></span>
-      </td>
-      <td class="px-2 text-end">
-        <span data-bs-toggle="tooltip" title="{% trans 'Show charts' %}"><a href="{% url 'money:report' 0 %}?{% url_params_period year=x.year week=x.week %}"><i class="fas fa-chart-pie fa-fw"></i></a></span>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
-<h3 class="mb-3">{% trans 'Monthly' %}</h3>
-
-<table class="table table-sm">
-  <thead>
-    <tr>
-      <th>{% trans 'Month' %}</th>
-      <th class="text-end">{% trans 'Incoming' %}</th>
-      <th class="text-end">{% trans 'Outgoing' %}</th>
-      <th class="text-end">{% trans 'Balance' %}</th>
-      <th colspan="2"></th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for x in monthly %}
-    <tr>
-      <td>{{ x.year }}-{{ x.month }}</td>
-      <td class="text-end">{{ x.income|intcomma }}</td>
-      <td class="text-end">{{ x.expense|intcomma }}</td>
-      <td class="text-end">
-        {% if x.balance < 0 %}
-        <span class=" text-danger">
-          <i class="fas fa-exclamation-triangle"></i>
-          {{ x.balance|intcomma }}
-        </span>
-        {% else %}
-        <span class=" text-success">
-          {{ x.balance|intcomma }}
-        </span>
-        {% endif %}
-      </td>
-      <td class="px-2 text-end">
-        <span data-bs-toggle="tooltip" title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?{% url_params_period year=x.year month=x.month %}"><i class="fas fa-list fa-fw"></i></a></span>
-      </td>
-      <td class="px-2 text-end">
-        <span data-bs-toggle="tooltip" title="{% trans 'Show charts' %}"><a href="{% url 'money:report' 0 %}?{% url_params_period year=x.year month=x.month %}"><i class="fas fa-chart-pie fa-fw"></i></a></span>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
-<h3 class="mb-3">{% trans 'Annual' %}</h3>
-
-<table class="table table-sm">
-  <thead>
-    <tr>
-      <th>{% trans 'Year' %}</th>
-      <th class="text-end">{% trans 'Incoming' %}</th>
-      <th class="text-end">{% trans 'Outgoing' %}</th>
-      <th class="text-end">{% trans 'Balance' %}</th>
-      <th colspan="2"></th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for x in annual %}
-    <tr>
-      <td>{{ x.year }}</td>
+      <td>{{ x.label }}</td>
       <td class="text-end">{{ x.income|intcomma }}</td>
       <td class="text-end">{{ x.expense|intcomma }}</td>
       <td class="text-end">
@@ -285,12 +76,43 @@
     {% endfor %}
   </tbody>
 </table>
+
+{% include 'money/pagination.html' %}
 {% endblock %}
 
 {% block sidebar %}
-<h5 class="border-bottom pb-2 mb-3"><i class="fas fa-filter fa-fw"></i> {% trans 'Filter' %}</h5>
-
 <form id="filter" method="get" action="{% url 'money:reports' %}">
+
+<h5 class="border-bottom pb-2 mb-3"><i class="fas fa-sliders-h fa-fw"></i> {% trans 'Setting' %}</h5>
+
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="unit" value="annual" id="unitAnnual" checked>
+  <label class="form-check-label" for="unitAnnual">
+    {% trans 'Annual' %}
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="unit" value="monthly" id="unitMonthly" {% html_string_if_eq_query 'unit' 'monthly' 'checked' %}>
+  <label class="form-check-label" for="unitMonthly">
+    {% trans 'Monthly' %}
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="unit" value="weekly" id="unitWeekly" {% html_string_if_eq_query 'unit' 'weekly' 'checked' %}>
+  <label class="form-check-label" for="unitWeekly">
+    {% trans 'Weekly' %}
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="unit" value="daily" id="unitDaily" {% html_string_if_eq_query 'unit' 'daily' 'checked' %}>
+  <label class="form-check-label" for="unitDaily">
+    {% trans 'Daily' %}
+  </label>
+</div>
+
+<div class="mb-5"></div>
+
+<h5 class="border-bottom pb-2 mb-3"><i class="fas fa-filter fa-fw"></i> {% trans 'Filter' %}</h5>
 
 <div class="mb-3">
   <label class="form-label">{% trans 'Start date' %}</label>
@@ -328,6 +150,8 @@ $(function() {
   $('[data-bs-toggle="tooltip"]').tooltip();
 
   $('.datetimepicker').datetimepicker({format: 'YYYY-MM-DD'});
+
+  $('#setting').change(function() { $('#setting').submit() });
 
   $('#filter').change(function() { $('#filter').submit() });
   $('#filter').on('hide.datetimepicker', function() { $('#filter').submit() });

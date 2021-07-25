@@ -5,6 +5,13 @@ from django import template
 register = template.Library()
 
 
+@register.simple_tag(takes_context=True)
+def html_string_if_eq_query(context, key, value, string, default=''):
+    vals = list(context['request'].GET.getlist(key))
+
+    return string if str(value) in vals else default
+
+
 @register.simple_tag
 def html_selected_if_eq(a, b):
     return 'selected' if a == b else ''
