@@ -10,12 +10,12 @@ app_name = 'money'
 urlpatterns = [
     path('journals/', journals.index, name='journals'),
     path('journals/new', journals.new, name='new_journal'),
-    path('journals/<id>', journals.show, name='journal'),
-    path('journals/<id>/edit', journals.edit, name='edit_journal'),
-    path('journals/<id>/destroy', journals.destroy, name='destroy_journal'),
+    path('journals/<pk>', journals.show, name='journal'),
+    path('journals/<pk>/edit', journals.edit, name='edit_journal'),
+    path('journals/<pk>/destroy', journals.destroy, name='destroy_journal'),
 
     path('reports/', reports.index, name='reports'),
-    path('reports/<id>', reports.show, name='report'),
+    path('reports/<pk>', reports.show, name='report'),
 
     path('tags/new', tags.new, name='new_tag'),
 

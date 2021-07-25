@@ -35,7 +35,8 @@ def range_next_prev(start, end):
                 'end': datetime.date(e.year - n, e.month, e.day)
             }
         }
-    elif days >= 28:
+
+    if days >= 28:
         n = int(days / 28)
         d = relativedelta(months=n)
 
@@ -67,8 +68,8 @@ def _last_day_of_month(dt):
 def _date_for_month(src, dest):
     if src.day == _last_day_of_month(src):
         return dest.replace(day=_last_day_of_month(dest))
-    else:
-        return dest
+
+    return dest
 
 
 def period(year, month=None, week=None):

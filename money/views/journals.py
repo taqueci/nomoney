@@ -5,12 +5,11 @@ import datetime
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
-from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 
 from ..forms import JournalForm
-from ..models import Account, Journal, Tag, Template
+from ..models import Journal, Tag, Template
 from .shared import account, pagination
 
 
@@ -125,16 +124,16 @@ def new(request):
     })
 
 
-def show(request, id):
-    obj = get_object_or_404(Journal, pk=id)
+def show(request, pk):
+    obj = get_object_or_404(Journal, pk=pk)
 
     return render(request, 'money/journals/show.html', {
         'object': obj
     })
 
 
-def edit(request, id):
-    obj = get_object_or_404(Journal, pk=id)
+def edit(request, pk):
+    obj = get_object_or_404(Journal, pk=pk)
 
     if request.method == 'POST':
         if update(request, obj):
@@ -161,8 +160,8 @@ def edit(request, id):
     })
 
 
-def destroy(request, id):
-    obj = get_object_or_404(Journal, pk=id)
+def destroy(request, pk):
+    obj = get_object_or_404(Journal, pk=pk)
 
     if request.method == 'POST':
         if delete(request, obj):
@@ -217,9 +216,9 @@ def _template(pk):
     return obj
 
 
-def _template_date(str):
+def _template_date(s):
     try:
-        d = datetime.datetime.strptime(_template_text(str), '%Y-%m-%d').date()
+        d = datetime.datetime.strptime(_template_text(s), '%Y-%m-%d').date()
     except ValueError:
         d = ''
 

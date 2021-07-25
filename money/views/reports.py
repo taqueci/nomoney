@@ -2,52 +2,71 @@
 
 import datetime
 
-from django.db.models import F, Sum
+from django.core.paginator import Paginator
+from django.db.models import F, Sum, Value, CharField
+from django.db.models.functions import Concat
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 
 from ..models import Journal
-from .shared import chart, date, value
+from .shared import chart, date, pagination
 
-INDEX_NUM = 7
+INDEX_PER_PAGE = 20
+INDEX_DEFAULT_SORT = 'date'
+INDEX_SORTABLE_FIELDS = ('income', 'expense', 'balance', )
+INDEX_DEFAULT_UNIT = 'annual'
 
 
 def index(request):
-    start = value.valid_or(request.GET.get('start'), '1970-01-01')
-    end = value.valid_or(request.GET.get('end'), '2100-12-31')
+    n = request.GET.get('page')
+    sort = request.GET.get('sort', INDEX_DEFAULT_SORT)
+    order = request.GET.get('order')
 
-    q = Journal.objects.filter(disabled=False).filter(date__gte=start, date__lte=end)
+    f_start = request.GET.get('start')
+    f_end = request.GET.get('end')
 
-    annual = q.values('year').annotate(
+    f_unit = request.GET.get('unit', INDEX_DEFAULT_UNIT)
+
+    param = _index_query_param(f_unit)
+
+    q = Journal.objects.filter(disabled=False)
+
+    if f_start:
+        q = q.filter(date__gte=f_start)
+
+    if f_end:
+        q = q.filter(date__lte=f_end)
+
+    q = q.values(*param['fields']).annotate(
+        label=param['label'],
         income=Sum('income'), expense=Sum('expense'),
-        balance=F('income')-F('expense')
-    ).order_by('-year')[:INDEX_NUM]
+        balance=F('income')-F('expense'),
+    )
 
-    monthly = q.values('year', 'month').annotate(
-        income=Sum('income'), expense=Sum('expense'),
-        balance=F('income')-F('expense')
-    ).order_by('-year', '-month')[:INDEX_NUM]
+    if sort == 'date':
+        q = q.order_by(*param['fields'])
+        if order != 'asc':
+            q = q.reverse()
+    elif sort in INDEX_SORTABLE_FIELDS:
+        q = q.order_by(f'-{sort}' if order == 'desc' else sort)
+    else:
+        q = q.order_by(INDEX_DEFAULT_SORT)
 
-    weekly = q.values('year', 'week').annotate(
-        income=Sum('income'), expense=Sum('expense'),
-        balance=F('income')-F('expense')
-    ).order_by('-year', '-week')[:INDEX_NUM]
-
-    daily = q.values('date').annotate(
-        income=Sum('income'), expense=Sum('expense'),
-        balance=F('income')-F('expense')
-    ).order_by('-date')[:INDEX_NUM]
+    paginator = Paginator(q, INDEX_PER_PAGE)
+    page = pagination.page(paginator, n)
 
     return render(request, 'money/reports/index.html', {
-        'annual': annual, 'monthly': monthly, 'weekly': weekly, 'daily': daily,
+        'page': page, 'total': paginator.count,
     })
 
 
-def show(request, id):
-    start = value.valid_or(request.GET.get('start'), '1970-01-01')
-    end = value.valid_or(request.GET.get('end'), '2100-12-31')
+def show(request, pk): # pylint: disable=unused-argument
+    start = request.GET.get('start', '1970-01-01')
+    end = request.GET.get('end', '2100-12-31')
 
-    q = Journal.objects.filter(disabled=False).filter(date__gte=start, date__lte=end)
+    q = Journal.objects.filter(disabled=False).filter(
+        date__gte=start, date__lte=end
+    )
 
     summary = q.aggregate(
         income=Sum('income'), expense=Sum('expense'),
@@ -72,6 +91,31 @@ def show(request, id):
         'data_doughnut_outgoing': chart.data_doughnut_outgoing(outgoing),
         'data_charts': _chart_data_lines(q, start, end, incoming, outgoing),
     })
+
+
+def _index_query_param(unit):
+    PARAMS = {
+        'annual': {
+            'fields': ('year', ), 'label': F('year')
+        },
+        'monthly': {
+            'fields': ('year', 'month'),
+            'label': Concat(
+                F('year'), Value('-'), F('month'), output_field=CharField()
+            )
+        },
+        'weekly': {
+            'fields': ('year', 'week'),
+            'label': Concat(
+                F('year'), Value('-W'), F('week'), output_field=CharField()
+            )
+        },
+        'daily': {
+            'fields': ('year', 'date'), 'label': F('date')
+        },
+    }
+
+    return PARAMS.get(unit, PARAMS[INDEX_DEFAULT_UNIT])
 
 
 def _chart_data_lines(query, start, end, incoming, outgoing):
@@ -224,19 +268,19 @@ def _chart_data_stacked(label, query, accumulated, field, *keys):
 
     for x in query:
         val_x = _chart_data_val_x(x, *keys)
-        id = x[field_id]
+        pk = x[field_id]
 
         for y in datasets:
-            if y['_id'] == id:
+            if y['_id'] == pk:
                 if not val_x in data:
                     data[val_x] = {}
 
-                data[val_x][id] = x['sum']
+                data[val_x][pk] = x['sum']
 
     for t, val in data.items():
         for d in datasets:
-            id = d['_id']
-            y = val[id] if id in val else 0
+            pk = d['_id']
+            y = val[pk] if pk in val else 0
             offset = d['_sum'] if accumulated else 0
 
             d['data'].append({'t': t, 'y': y + offset})
@@ -246,13 +290,13 @@ def _chart_data_stacked(label, query, accumulated, field, *keys):
 
 
 def _chart_data_val_x(obj, *keys):
-    l = len(keys)
-
     if keys[0] == 'date':
         return obj['date']
-    elif len(keys) == 1:
+
+    if len(keys) == 1:
         return obj['year']
-    elif keys[1] == 'week':
+
+    if keys[1] == 'week':
         return f'{obj["year"]}W{obj["week"]:02}'
 
     return f'{obj["year"]}-{obj["month"]:02}'
