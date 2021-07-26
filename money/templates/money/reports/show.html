@@ -373,19 +373,10 @@ $(function() {
 
 // Line charts
 $(function() {
-  var number_format = function(value, index, values) {
-    return value.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
-
-  var number_format_tooltip = function(tooltipItem, data) {
-    return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
-
   var options = {
     maintainAspectRatio: false,
-    tooltips: {callbacks: {label: number_format_tooltip}},
     scales: {
-      xAxes: [{
+      x: {
         type: 'time',
         time: {
           displayFormats: {
@@ -394,21 +385,20 @@ $(function() {
             month: 'YYYY-MM'
           }
         }
-      }],
-      yAxes: [{
-        stacked: false,
-        ticks: {callback: number_format}
-      }]
+      },
+      y: {
+        stacked: false
+      }
     }
   };
 
   var setOption = function(category) {
     if ((category === 'balance') || (category === 'asset')) {
-      options.scales.xAxes[0].stacked = false;
-      options.scales.yAxes[0].stacked = false;
+      options.scales.x.stacked = false;
+      options.scales.y.stacked = false;
     } else {
-      options.scales.xAxes[0].stacked = true;
-      options.scales.yAxes[0].stacked = true;
+      options.scales.x.stacked = true;
+      options.scales.y.stacked = true;
     }
   };
 
