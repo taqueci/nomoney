@@ -195,17 +195,21 @@ def _chart_data_2lines(query, accumulated, label1, label2, *keys):
             'data': [],
             'radius': 2,
             'backgroundColor': 'rgba(153,255,51,0.4)',
-            'borderWidth': 0,
+            'borderWidth': 1,
             'borderColor': '#b2ff59',
             'hitRadius': 2,
+            'fill': True,
+            'tension': 0.25,
         }, {
             'label': label2,
             'data': [],
             'radius': 2,
             'backgroundColor': 'rgba(255,153,0,0.4)',
-            'borderWidth': 0,
+            'borderWidth': 1,
             'borderColor': '#ffab40',
             'hitRadius': 2,
+            'fill': True,
+            'tension': 0.25,
         }]
     }
 
@@ -259,9 +263,11 @@ def _chart_data_stacked(label, query, accumulated, field, *keys):
         'data': [],
         'radius': 2,
         'backgroundColor': chart.STACKED_COLOR[i % len(chart.STACKED_COLOR)],
-        'borderWidth': 0,
+        'borderWidth': 1,
         'borderColor': 'rgba(255,255,255,0.1)',
         'hitRadius': 2,
+        'fill': True,
+        'tension': 0.25,
     } for i, x in enumerate(label)]
 
     data = {}
@@ -283,7 +289,7 @@ def _chart_data_stacked(label, query, accumulated, field, *keys):
             y = val[pk] if pk in val else 0
             offset = d['_sum'] if accumulated else 0
 
-            d['data'].append({'t': t, 'y': y + offset})
+            d['data'].append({'x': t, 'y': y + offset})
             d['_sum'] += y
 
     return {'datasets': datasets}
