@@ -194,7 +194,7 @@
 <div class="mb-3">
   <label class="form-label">{% trans 'Debit' %}</label>
   <select name="debit" class="form-control select2" multiple="multiple" size="1">
-    {% for x in account %}
+    {% for x in accounts %}
     <optgroup label="{{ x.name }}" style="visibility: hidden">
       {% for y in x.data %}
       <option value="{{ y.id }}" {% html_selected_by_query_list 'debit' y.id %}>{{ y.name }}</option>
@@ -207,7 +207,7 @@
 <div class="mb-3">
   <label class="form-label">{% trans 'Credit' %}</label>
   <select name="credit" class="form-control select2" multiple="multiple" size="1">
-    {% for x in account %}
+    {% for x in accounts %}
     <optgroup label="{{ x.name }}" style="visibility: hidden">
       {% for y in x.data %}
       <option value="{{ y.id }}" {% html_selected_by_query_list 'credit' y.id %}>{{ y.name }}</option>
@@ -227,11 +227,11 @@
   <input type="number" name="min" value="{% url_param_value 'min' %}" min="0" class="form-control">
 </div>
 
-{% if tag %}
+{% if tags %}
 <div class="mb-3">
   <label class="form-label">{% trans 'Tag' %}</label>
   <select name="tag" class="form-control select2" multiple="multiple" size="1">
-    {% for x in tag %}
+    {% for x in tags %}
     <option value="{{ x.id }}" {% html_selected_by_query_list 'tag' x.id %} style="visibility: hidden">{{ x.name }}</option>
     {% endfor %}
   </select>

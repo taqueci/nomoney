@@ -63,14 +63,14 @@ def index(request):
     # For performance improvement
     q = q.select_related().prefetch_related('tags')
 
-    tag = Tag.objects.all()
-    grouped_account = account.grouped_objects()
+    tags = Tag.objects.all()
+    grouped_accounts = account.grouped_objects()
 
     paginator = Paginator(q, INDEX_PER_PAGE)
 
     return render(request, 'money/journals/index.html', {
         'page': pagination.page(paginator, n), 'total': paginator.count,
-        'account': grouped_account, 'tag': tag,
+        'accounts': grouped_accounts, 'tags': tags,
     })
 
 
@@ -88,16 +88,16 @@ def new(request):
     v_template = request.GET.get('template')
     v_base = request.GET.get('base')
 
-    tag = Tag.objects.all()
-    grouped_account = account.grouped_objects()
+    tags = Tag.objects.all()
+    grouped_accounts = account.grouped_objects()
 
-    popular_account = Journal.objects.values(
+    popular_accounts = Journal.objects.values(
         'debit__id', 'debit__name', 'credit__id', 'credit__name',
     ).annotate(
         debit_num=Count('debit__id'), credit_num=Count('credit__id')
     ).order_by('-debit_num', '-credit_num')[:POPULAR_ACCOUNT_NUM]
 
-    template = Template.objects.available().order_by('-rank')
+    templates = Template.objects.available().order_by('-rank')
 
     default = _template(v_template) if v_template else {
         'date': datetime.date.today()
@@ -108,8 +108,8 @@ def new(request):
         default.date = datetime.date.today()
 
     return render(request, 'money/journals/new.html', {
-        'object': default, 'template': template, 'tag': tag,
-        'account': grouped_account, 'popular_account': popular_account,
+        'object': default, 'templates': templates, 'tags': tags,
+        'accounts': grouped_accounts, 'popular_accounts': popular_accounts,
     })
 
 
@@ -134,18 +134,18 @@ def edit(request, pk):
 
         return redirect(request.GET.get('next', 'money:journals'))
 
-    tag = Tag.objects.all()
-    grouped_account = account.grouped_objects()
+    tags = Tag.objects.all()
+    grouped_accounts = account.grouped_objects()
 
-    popular_account = Journal.objects.values(
+    popular_accounts = Journal.objects.values(
         'debit__id', 'debit__name', 'credit__id', 'credit__name',
     ).annotate(
         debit_num=Count('debit__id'), credit_num=Count('credit__id')
     ).order_by('-debit_num', '-credit_num')[:POPULAR_ACCOUNT_NUM]
 
     return render(request, 'money/journals/edit.html', {
-        'object': obj, 'tag': tag,
-        'account': grouped_account, 'popular_account': popular_account,
+        'object': obj, 'tags': tags,
+        'accounts': grouped_accounts, 'popular_accounts': popular_accounts,
     })
 
 
