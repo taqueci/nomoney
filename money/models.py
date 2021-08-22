@@ -10,6 +10,15 @@ from config import settings
 from .views.shared import date
 
 
+class BaseQuerySet(models.QuerySet):
+    """Base query set."""
+
+    def available(self):
+        """Filter for getting available objects."""
+
+        return self.filter(disabled=False)
+
+
 class Account(models.Model):
     """Account model."""
 
@@ -34,6 +43,8 @@ class Account(models.Model):
 
     rank = models.IntegerField(default=0)
     disabled = models.BooleanField(default=False)
+
+    objects = BaseQuerySet.as_manager()
 
     def __str__(self):
         return self.name
@@ -86,6 +97,8 @@ class Journal(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    objects = BaseQuerySet.as_manager()
+
     def _entry_amount(self, entry):
         a_d = self.amount if self.debit.entry == entry else 0
         a_c = self.amount if self.credit.entry == entry else 0
@@ -130,6 +143,8 @@ class Template(models.Model):
 
     rank = models.IntegerField(default=0)
     disabled = models.BooleanField(default=False)
+
+    objects = BaseQuerySet.as_manager()
 
     def __str__(self):
         return self.name

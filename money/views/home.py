@@ -17,9 +17,7 @@ def index(request):
     start = today.replace(month=1, day=1)
     end = today.replace(month=12, day=31)
 
-    q = Journal.objects.filter(
-        disabled=False, date__gte=start, date__lte=end
-    )
+    q = Journal.objects.available().filter(date__gte=start, date__lte=end)
 
     summary = q.aggregate(
         income=Sum('income'), expense=Sum('expense'),
