@@ -36,7 +36,7 @@ class IndexFilter(django_filters.FilterSet):
 
 def index(request):
     n = request.GET.get('page')
-    q = Journal.objects.filter(disabled=False)
+    q = Journal.objects.available()
 
     param = _index_query_param(request.GET.get('unit'))
 
@@ -67,9 +67,7 @@ def show(request, pk): # pylint: disable=unused-argument
     start = request.GET.get('start', '1970-01-01')
     end = request.GET.get('end', '2100-12-31')
 
-    q = Journal.objects.filter(disabled=False).filter(
-        date__gte=start, date__lte=end
-    )
+    q = Journal.objects.available().filter(date__gte=start, date__lte=end)
 
     summary = q.aggregate(
         income=Sum('income'), expense=Sum('expense'),

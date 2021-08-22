@@ -23,7 +23,7 @@ class Export(APIView):
 
 
 def _query(request):
-    q = Journal.objects.filter(disabled=False).order_by(INDEX_DEFAULT_SORT)
+    q = Journal.objects.available().order_by(INDEX_DEFAULT_SORT)
 
     f_keyword = request.GET.get('keyword')
 

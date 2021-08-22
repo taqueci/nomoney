@@ -48,7 +48,7 @@ class IndexFilter(django_filters.FilterSet):
 
 def index(request):
     n = request.GET.get('page')
-    q = Journal.objects.filter(disabled=False).order_by(INDEX_DEFAULT_SORT)
+    q = Journal.objects.available().order_by(INDEX_DEFAULT_SORT)
 
     f_keyword = request.GET.get('keyword')
 
@@ -59,6 +59,9 @@ def index(request):
         )
 
     q = IndexFilter(request.GET, queryset=q).qs
+
+    # For performance improvement
+    q = q.select_related().prefetch_related('tags')
 
     tag = Tag.objects.all()
     grouped_account = account.grouped_objects()
@@ -94,7 +97,7 @@ def new(request):
         debit_num=Count('debit__id'), credit_num=Count('credit__id')
     ).order_by('-debit_num', '-credit_num')[:POPULAR_ACCOUNT_NUM]
 
-    template = Template.objects.filter(disabled=False).order_by('-rank')
+    template = Template.objects.available().order_by('-rank')
 
     default = _template(v_template) if v_template else {
         'date': datetime.date.today()
