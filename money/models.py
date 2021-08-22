@@ -22,24 +22,17 @@ class BaseQuerySet(models.QuerySet):
 class Account(models.Model):
     """Account model."""
 
-    ENTRY_ASSET = 1
-    ENTRY_LIABILITY = 2
-    ENTRY_INCOME = 3
-    ENTRY_EXPENSE = 4
-    ENTRY_EQUITY = 5
-
-    ENTRY_CHOICES = (
-        (ENTRY_ASSET, _('Asset')),
-        (ENTRY_LIABILITY, _('Liability')),
-        (ENTRY_INCOME, _('Income')),
-        (ENTRY_EXPENSE, _('Expense')),
-        (ENTRY_EQUITY, _('Equity')),
-    )
+    class Entry(models.IntegerChoices):
+        ASSET = 1, _('Asset')
+        LIABILITY = 2, _('Liability')
+        INCOME = 3, _('Income')
+        EXPENSE = 4, _('Expense')
+        EQUITY = 5, _('Equity')
 
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
 
-    entry = models.IntegerField(choices=ENTRY_CHOICES)
+    entry = models.IntegerField(choices=Entry.choices)
 
     rank = models.IntegerField(default=0)
     disabled = models.BooleanField(default=False)
@@ -106,11 +99,11 @@ class Journal(models.Model):
         return a_d - a_c
 
     def save(self, *args, **kwargs):
-        self.asset = self._entry_amount(Account.ENTRY_ASSET)
-        self.liability = -self._entry_amount(Account.ENTRY_LIABILITY)
-        self.income = -self._entry_amount(Account.ENTRY_INCOME)
-        self.expense = self._entry_amount(Account.ENTRY_EXPENSE)
-        self.equity = -self._entry_amount(Account.ENTRY_EQUITY)
+        self.asset = self._entry_amount(Account.Entry.ASSET)
+        self.liability = -self._entry_amount(Account.Entry.LIABILITY)
+        self.income = -self._entry_amount(Account.Entry.INCOME)
+        self.expense = self._entry_amount(Account.Entry.EXPENSE)
+        self.equity = -self._entry_amount(Account.Entry.EQUITY)
 
         self.fy = date.fy(
             self.date, settings.FY_START_MONTH, settings.FY_START_DAY
