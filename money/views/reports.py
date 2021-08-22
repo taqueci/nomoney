@@ -8,34 +8,37 @@ from django.db.models.functions import Concat
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 
+import django_filters
+
 from ..models import Journal
 from .shared import chart, date, pagination
 
 INDEX_PER_PAGE = 20
-INDEX_DEFAULT_SORT = 'date'
-INDEX_SORTABLE_FIELDS = ('income', 'expense', 'balance', )
+INDEX_DEFAULT_SORT = '-date'
 INDEX_DEFAULT_UNIT = 'annual'
+
+
+class IndexFilter(django_filters.FilterSet):
+    start = django_filters.DateFilter(field_name='date', lookup_expr='gte')
+    end = django_filters.DateFilter(field_name='date', lookup_expr='lte')
+
+    sort = django_filters.OrderingFilter(
+        fields=(
+            ('income', 'income'), ('expense', 'expense'),
+            ('balance', 'balance'),
+        )
+    )
+
+    class Meta:
+        model = Journal
+        exclude = ('created', 'updated')
 
 
 def index(request):
     n = request.GET.get('page')
-    sort = request.GET.get('sort', INDEX_DEFAULT_SORT)
-    order = request.GET.get('order')
-
-    f_start = request.GET.get('start')
-    f_end = request.GET.get('end')
-
-    f_unit = request.GET.get('unit', INDEX_DEFAULT_UNIT)
-
-    param = _index_query_param(f_unit)
-
     q = Journal.objects.filter(disabled=False)
 
-    if f_start:
-        q = q.filter(date__gte=f_start)
-
-    if f_end:
-        q = q.filter(date__lte=f_end)
+    param = _index_query_param(request.GET.get('unit'))
 
     q = q.values(*param['fields']).annotate(
         label=param['label'],
@@ -43,20 +46,20 @@ def index(request):
         balance=F('income')-F('expense'),
     )
 
-    if sort == 'date':
+    q = IndexFilter(request.GET, queryset=q).qs
+
+    sort = request.GET.get('sort', INDEX_DEFAULT_SORT)
+
+    if sort == 'date' or sort == '-date':
         q = q.order_by(*param['fields'])
-        if order != 'asc':
+
+        if sort == '-date':
             q = q.reverse()
-    elif sort in INDEX_SORTABLE_FIELDS:
-        q = q.order_by(f'-{sort}' if order == 'desc' else sort)
-    else:
-        q = q.order_by(INDEX_DEFAULT_SORT)
 
     paginator = Paginator(q, INDEX_PER_PAGE)
-    page = pagination.page(paginator, n)
 
     return render(request, 'money/reports/index.html', {
-        'page': page, 'total': paginator.count,
+        'page': pagination.page(paginator, n), 'total': paginator.count,
     })
 
 

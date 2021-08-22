@@ -1,5 +1,7 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
+import re
+
 from django import template
 
 from ..views.shared import date
@@ -26,15 +28,14 @@ def url_params(context, **kwargs):
 def url_params_sort(context, key):
     query = context['request'].GET.copy()
 
-    sort = context['request'].GET.get('sort')
-    order = context['request'].GET.get('order')
+    sort = context['request'].GET.get('sort', '')
 
-    query['sort'] = key
+    (order, field) = re.match(r'(-?)(.*)', sort).groups()
 
-    if (key == sort) and (order == 'asc'):
-        query['order'] = 'desc'
+    if (key == field) and (order == ''):
+        query['sort'] = f'-{key}'
     else:
-        query['order'] = 'asc'
+        query['sort'] = key
 
     return query.urlencode()
 
