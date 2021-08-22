@@ -8,6 +8,8 @@ from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 
+import django_filters
+
 from ..forms import JournalForm
 from ..models import Journal, Tag, Template
 from .shared import account, pagination
@@ -15,34 +17,40 @@ from .shared import account, pagination
 
 INDEX_PER_PAGE = 20
 INDEX_DEFAULT_SORT = '-date'
-INDEX_SORTABLE_FIELDS = (
-    'id', 'date', 'debit', 'credit', 'amount', 'summary',
-)
 
 POPULAR_ACCOUNT_NUM = 12
 
+
+class IndexFilter(django_filters.FilterSet):
+    debit = django_filters.AllValuesMultipleFilter(field_name='debit_id')
+    credit = django_filters.AllValuesMultipleFilter(field_name='credit_id')
+
+    start = django_filters.DateFilter(field_name='date', lookup_expr='gte')
+    end = django_filters.DateFilter(field_name='date', lookup_expr='lte')
+
+    min = django_filters.NumberFilter(field_name='amount', lookup_expr='gte')
+    max = django_filters.NumberFilter(field_name='amount', lookup_expr='lte')
+
+    tag = django_filters.AllValuesMultipleFilter(field_name='tags')
+
+    sort = django_filters.OrderingFilter(
+        fields=(
+            ('id', 'id'), ('date', 'date'),
+            ('debit', 'debit'), ('credit', 'credit'),
+            ('amount', 'amount'), ('summary', 'summary'),
+        )
+    )
+
+    class Meta:
+        model = Journal
+        exclude = ('created', 'updated')
+
+
 def index(request):
     n = request.GET.get('page')
-    sort = request.GET.get('sort')
-    order = request.GET.get('order')
+    q = Journal.objects.filter(disabled=False).order_by(INDEX_DEFAULT_SORT)
 
     f_keyword = request.GET.get('keyword')
-
-    f_start = request.GET.get('start')
-    f_end = request.GET.get('end')
-
-    f_debit = list(request.GET.getlist('debit'))
-    f_credit = list(request.GET.getlist('credit'))
-
-    f_max = request.GET.get('max')
-    f_min = request.GET.get('min')
-
-    f_tag = list(request.GET.getlist('tag'))
-
-    tag = Tag.objects.all()
-    grouped_account = account.grouped_objects()
-
-    q = Journal.objects.filter(disabled=False)
 
     if f_keyword:
         q = q.filter(
@@ -50,37 +58,15 @@ def index(request):
             Q(note__icontains=f_keyword)
         )
 
-    if f_start:
-        q = q.filter(date__gte=f_start)
+    q = IndexFilter(request.GET, queryset=q).qs
 
-    if f_end:
-        q = q.filter(date__lte=f_end)
-
-    if f_debit:
-        q = q.filter(debit__in=f_debit)
-
-    if f_credit:
-        q = q.filter(credit__in=f_credit)
-
-    if f_min and f_min.isdecimal():
-        q = q.filter(amount__gte=f_min)
-
-    if f_max and f_max.isdecimal():
-        q = q.filter(amount__lte=f_max)
-
-    if f_tag:
-        q = q.filter(tags__in=f_tag)
-
-    if sort and (sort in INDEX_SORTABLE_FIELDS):
-        q = q.order_by('-' + sort if order and (order == 'desc') else sort)
-    else:
-        q = q.order_by(INDEX_DEFAULT_SORT)
+    tag = Tag.objects.all()
+    grouped_account = account.grouped_objects()
 
     paginator = Paginator(q, INDEX_PER_PAGE)
-    page = pagination.page(paginator, n)
 
     return render(request, 'money/journals/index.html', {
-        'page': page, 'total': paginator.count,
+        'page': pagination.page(paginator, n), 'total': paginator.count,
         'account': grouped_account, 'tag': tag,
     })
 
