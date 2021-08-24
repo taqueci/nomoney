@@ -10,8 +10,8 @@ from django.utils.translation import gettext_lazy as _
 
 import django_filters
 
-from ..models import Journal
-from .shared import chart, date, pagination
+from money.models import Journal
+from money.views.shared import chart, date, pagination
 
 
 INDEX_PER_PAGE = 20
@@ -51,7 +51,7 @@ def index(request):
 
     sort = request.GET.get('sort', INDEX_DEFAULT_SORT)
 
-    if sort == 'date' or sort == '-date':
+    if sort in ('date', '-date'):
         q = q.order_by(*param['fields'])
 
         if sort == '-date':
@@ -255,6 +255,8 @@ def _chart_data_outgoing(label, query, *keys):
 
 
 def _chart_data_stacked(label, query, accumulated, field, *keys):
+    # pylint: disable=too-many-locals
+
     field_id = field + '__id'
     field_name = field + '__name'
 

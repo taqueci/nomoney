@@ -23,6 +23,8 @@ class Account(models.Model):
     """Account model."""
 
     class Entry(models.IntegerChoices):
+        """Choices for an account etnry."""
+
         ASSET = 1, _('Asset')
         LIABILITY = 2, _('Liability')
         INCOME = 3, _('Income')

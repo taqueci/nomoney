@@ -4,7 +4,7 @@ import re
 
 from django import template
 
-from ..views.shared import date
+from money.views.shared import date
 
 register = template.Library()
 

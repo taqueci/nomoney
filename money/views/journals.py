@@ -10,9 +10,9 @@ from django.utils.translation import gettext_lazy as _
 
 import django_filters
 
-from ..forms import JournalForm
-from ..models import Journal, Tag, Template
-from .shared import account, pagination
+from money.forms import JournalForm
+from money.models import Journal, Tag, Template
+from money.views.shared import account, pagination
 
 
 INDEX_PER_PAGE = 20
