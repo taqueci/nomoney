@@ -3,7 +3,7 @@
 from django.http import Http404
 from django.http.response import JsonResponse
 
-from ..models import Tag
+from money.models import Tag
 
 
 def new(request):

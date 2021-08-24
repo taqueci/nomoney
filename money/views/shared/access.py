@@ -6,7 +6,7 @@ def creatable(user):
 
 
 def readable(user):
-    return True
+    return not user.is_anonymous
 
 
 def updatable(user):
