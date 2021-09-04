@@ -57,7 +57,7 @@
 <div class="mb-3 row">
   <label class="col-sm-3 col-form-label">{% trans 'Debit' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
-    <select name="debit" class="form-control">
+    <select name="debit" class="form-select">
       {% for x in accounts %}
       <optgroup label="{{ x.name }}">
         {% for y in x.data %}
@@ -72,7 +72,7 @@
 <div class="mb-3 row">
   <label class="col-sm-3 col-form-label">{% trans 'Credit' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
-    <select name="credit" class="form-control">
+    <select name="credit" class="form-select">
       {% for x in accounts %}
       <optgroup label="{{ x.name }}">
         {% for y in x.data %}
