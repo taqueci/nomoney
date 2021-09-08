@@ -1,6 +1,5 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
-import re
 import urllib
 
 from django.http import HttpResponseRedirect
@@ -10,7 +9,9 @@ from django.urls import reverse
 from config.settings import LOGIN_URL, LOGOUT_URL, LOGIN_TARGETS
 
 
+# pylint: disable=too-few-public-methods
 class AuthMiddleware(MiddlewareMixin):
+    # pylint: disable=no-self-use
     def process_response(self, request, response):
         if request.user.is_authenticated:
             return response
