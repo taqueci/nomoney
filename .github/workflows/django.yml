@@ -35,4 +35,4 @@ jobs:
     - name: Run PyLint
       run: |
         pip install pylint pylint-django
-        pylint config api money system
+        pylint `git ls-files '*.py' | grep -v -e /migrations/ -v -e manage.py`

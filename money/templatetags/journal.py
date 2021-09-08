@@ -3,8 +3,8 @@
 from django import template
 from django.utils.translation import gettext_lazy as _
 
-from ..models import Account, Tag
-from ..views.shared import journal
+from money.models import Account, Tag
+from money.views.shared import journal
 
 register = template.Library()
 

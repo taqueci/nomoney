@@ -150,7 +150,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for x in incoming %}
+    {% for x in incomings %}
     <tr>
       <td>{{ x.credit__name }}</td>
       <td class="text-end">{{ x.sum|intcomma }}</td>
@@ -199,7 +199,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for x in outgoing %}
+    {% for x in outgoings %}
     <tr>
       <td>{{ x.debit__name }}</td>
       <td class="text-end">{{ x.sum|intcomma }}</td>
