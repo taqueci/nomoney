@@ -26,26 +26,26 @@
   <label class="btn btn-outline-secondary px-3" for="btn-other">{% trans 'Other' %}</label>
 </div>
 
-{% if popular_account %}
+{% if popular_accounts %}
 <div class="dropdown ms-2 mb-2">
   <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
     {% trans 'Popular account' %}
   </button>
   <div id="popular" class="dropdown-menu dropdown-menu-end">
-    {% for x in popular_account %}
+    {% for x in popular_accounts %}
     <a class="dropdown-item" href="#" data-debit="{{ x.debit__id }}" data-credit="{{ x.credit__id }}">{{ x.debit__name }} / {{ x.credit__name }}</a>
     {% endfor %}
   </div>
 </div>
 {% endif %}
 
-{% if template %}
+{% if templates %}
 <div class="dropdown ms-2">
   <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
     {% trans 'Template' %}
   </button>
   <div id="template" class="dropdown-menu dropdown-menu-end">
-    {% for x in template %}
+    {% for x in templates %}
     <a class="dropdown-item" href="?{% url_params template=x.id %}">{{ x.name }}</a>
     {% endfor %}
   </div>
@@ -57,8 +57,8 @@
 <div class="mb-3 row">
   <label class="col-sm-3 col-form-label">{% trans 'Debit' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
-    <select name="debit" class="form-control">
-      {% for x in account %}
+    <select name="debit" class="form-select">
+      {% for x in accounts %}
       <optgroup label="{{ x.name }}">
         {% for y in x.data %}
         <option value="{{ y.id }}" {% html_selected_if_eq object.debit.id y.id %}>{{ y.name }}</option>
@@ -72,8 +72,8 @@
 <div class="mb-3 row">
   <label class="col-sm-3 col-form-label">{% trans 'Credit' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
-    <select name="credit" class="form-control">
-      {% for x in account %}
+    <select name="credit" class="form-select">
+      {% for x in accounts %}
       <optgroup label="{{ x.name }}">
         {% for y in x.data %}
         <option value="{{ y.id }}" {% html_selected_if_eq object.credit.id y.id %}>{{ y.name }}</option>
@@ -121,7 +121,7 @@
   <label class="col-sm-3 col-form-label">{% trans 'Tags' %}</label>
   <div class="col-sm-9">
     <select name="tags" class="form-control select2" multiple="multiple" size="1">
-      {% for x in tag %}
+      {% for x in tags %}
       <option value="{{ x.id }}" style="visibility: hidden" {{ object|journal_html_selected_if_has_tag:x }}>{{ x.name }}</option>
       {% endfor %}
     </select>
@@ -143,7 +143,7 @@
 
 <div style="display: none">
   <select id="account-select">
-    {% for x in account %}
+    {% for x in accounts %}
     <optgroup label="{{ x.name }}" data-entry="{{ x.entry }}">
       {% for y in x.data %}
       <option value="{{ y.id }}">{{ y.name }}</option>

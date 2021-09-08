@@ -8,34 +8,38 @@ from django.db.models.functions import Concat
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 
-from ..models import Journal
-from .shared import chart, date, pagination
+import django_filters
+
+from money.models import Journal
+from money.views.shared import chart, date, pagination
+
 
 INDEX_PER_PAGE = 20
-INDEX_DEFAULT_SORT = 'date'
-INDEX_SORTABLE_FIELDS = ('income', 'expense', 'balance', )
+INDEX_DEFAULT_SORT = '-date'
 INDEX_DEFAULT_UNIT = 'annual'
+
+
+class IndexFilter(django_filters.FilterSet):
+    start = django_filters.DateFilter(field_name='date', lookup_expr='gte')
+    end = django_filters.DateFilter(field_name='date', lookup_expr='lte')
+
+    sort = django_filters.OrderingFilter(
+        fields=(
+            ('income', 'income'), ('expense', 'expense'),
+            ('balance', 'balance'),
+        )
+    )
+
+    class Meta:
+        model = Journal
+        exclude = ('created', 'updated')
 
 
 def index(request):
     n = request.GET.get('page')
-    sort = request.GET.get('sort', INDEX_DEFAULT_SORT)
-    order = request.GET.get('order')
+    q = Journal.objects.available()
 
-    f_start = request.GET.get('start')
-    f_end = request.GET.get('end')
-
-    f_unit = request.GET.get('unit', INDEX_DEFAULT_UNIT)
-
-    param = _index_query_param(f_unit)
-
-    q = Journal.objects.filter(disabled=False)
-
-    if f_start:
-        q = q.filter(date__gte=f_start)
-
-    if f_end:
-        q = q.filter(date__lte=f_end)
+    param = _index_query_param(request.GET.get('unit'))
 
     q = q.values(*param['fields']).annotate(
         label=param['label'],
@@ -43,20 +47,20 @@ def index(request):
         balance=F('income')-F('expense'),
     )
 
-    if sort == 'date':
+    q = IndexFilter(request.GET, queryset=q).qs
+
+    sort = request.GET.get('sort', INDEX_DEFAULT_SORT)
+
+    if sort in ('date', '-date'):
         q = q.order_by(*param['fields'])
-        if order != 'asc':
+
+        if sort == '-date':
             q = q.reverse()
-    elif sort in INDEX_SORTABLE_FIELDS:
-        q = q.order_by(f'-{sort}' if order == 'desc' else sort)
-    else:
-        q = q.order_by(INDEX_DEFAULT_SORT)
 
     paginator = Paginator(q, INDEX_PER_PAGE)
-    page = pagination.page(paginator, n)
 
     return render(request, 'money/reports/index.html', {
-        'page': page, 'total': paginator.count,
+        'page': pagination.page(paginator, n), 'total': paginator.count,
     })
 
 
@@ -64,9 +68,7 @@ def show(request, pk): # pylint: disable=unused-argument
     start = request.GET.get('start', '1970-01-01')
     end = request.GET.get('end', '2100-12-31')
 
-    q = Journal.objects.filter(disabled=False).filter(
-        date__gte=start, date__lte=end
-    )
+    q = Journal.objects.available().filter(date__gte=start, date__lte=end)
 
     summary = q.aggregate(
         income=Sum('income'), expense=Sum('expense'),
@@ -75,21 +77,21 @@ def show(request, pk): # pylint: disable=unused-argument
         net=Sum(F('asset')-F('liability')),
     )
 
-    incoming = q.exclude(income=0).values(
+    incomings = q.exclude(income=0).values(
         'credit__id', 'credit__name'
     ).annotate(sum=Sum('income')).order_by('-sum')
 
-    outgoing = q.exclude(expense=0).values(
+    outgoings = q.exclude(expense=0).values(
         'debit__id', 'debit__name'
     ).annotate(sum=Sum('expense')).order_by('-sum')
 
     return render(request, 'money/reports/show.html', {
         'object': {'name': _('All')},
         'page': date.range_next_prev(start, end),
-        'summary': summary, 'incoming': incoming, 'outgoing': outgoing,
-        'data_doughnut_incoming': chart.data_doughnut_incoming(incoming),
-        'data_doughnut_outgoing': chart.data_doughnut_outgoing(outgoing),
-        'data_charts': _chart_data_lines(q, start, end, incoming, outgoing),
+        'summary': summary, 'incomings': incomings, 'outgoings': outgoings,
+        'data_doughnut_incoming': chart.data_doughnut_incoming(incomings),
+        'data_doughnut_outgoing': chart.data_doughnut_outgoing(outgoings),
+        'data_charts': _chart_data_lines(q, start, end, incomings, outgoings),
     })
 
 
@@ -118,7 +120,7 @@ def _index_query_param(unit):
     return PARAMS.get(unit, PARAMS[INDEX_DEFAULT_UNIT])
 
 
-def _chart_data_lines(query, start, end, incoming, outgoing):
+def _chart_data_lines(query, start, end, incomings, outgoings):
     s = datetime.datetime.strptime(start, '%Y-%m-%d')
     e = datetime.datetime.strptime(end, '%Y-%m-%d')
 
@@ -130,31 +132,31 @@ def _chart_data_lines(query, start, end, incoming, outgoing):
         data['annual'] = {
             'balance': _chart_data_balance(query, 'year'),
             'asset': _chart_data_asset(query, 'year'),
-            'incoming': _chart_data_incoming(incoming, query, 'year'),
-            'outgoing': _chart_data_outgoing(outgoing, query, 'year'),
+            'incoming': _chart_data_incoming(incomings, query, 'year'),
+            'outgoing': _chart_data_outgoing(outgoings, query, 'year'),
         }
     else:
         data['daily'] = {
             'balance': _chart_data_balance(query, 'date'),
             'asset': _chart_data_asset(query, 'year'),
-            'incoming': _chart_data_incoming(incoming, query, 'date'),
-            'outgoing': _chart_data_outgoing(outgoing, query, 'date'),
+            'incoming': _chart_data_incoming(incomings, query, 'date'),
+            'outgoing': _chart_data_outgoing(outgoings, query, 'date'),
         }
 
     if days > 31:
         data['monthly'] = {
             'balance': _chart_data_balance(query, 'year', 'month'),
             'asset': _chart_data_asset(query, 'year', 'month'),
-            'incoming': _chart_data_incoming(incoming, query, 'year', 'month'),
-            'outgoing': _chart_data_outgoing(outgoing, query, 'year', 'month'),
+            'incoming': _chart_data_incoming(incomings, query, 'year', 'month'),
+            'outgoing': _chart_data_outgoing(outgoings, query, 'year', 'month'),
         }
 
     if 365 * 5 >= days > 7:
         data['weekly'] = {
             'balance': _chart_data_balance(query, 'year', 'week'),
             'asset': _chart_data_asset(query, 'year', 'week'),
-            'incoming': _chart_data_incoming(incoming, query, 'year', 'week'),
-            'outgoing': _chart_data_outgoing(outgoing, query, 'year', 'week'),
+            'incoming': _chart_data_incoming(incomings, query, 'year', 'week'),
+            'outgoing': _chart_data_outgoing(outgoings, query, 'year', 'week'),
         }
 
     return data
@@ -253,6 +255,8 @@ def _chart_data_outgoing(label, query, *keys):
 
 
 def _chart_data_stacked(label, query, accumulated, field, *keys):
+    # pylint: disable=too-many-locals
+
     field_id = field + '__id'
     field_name = field + '__name'
 
