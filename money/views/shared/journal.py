@@ -9,11 +9,11 @@ REPAYMENT = 3
 
 
 def category(obj):
-    if obj.credit.entry == Account.ENTRY_INCOME:
+    if obj.credit.entry == Account.Entry.INCOME:
         return INCOMING
-    if obj.debit.entry == Account.ENTRY_EXPENSE:
+    if obj.debit.entry == Account.Entry.EXPENSE:
         return OUTGOING
-    if obj.debit.entry == Account.ENTRY_LIABILITY:
+    if obj.debit.entry == Account.Entry.LIABILITY:
         return REPAYMENT
 
     return UNDEFINED

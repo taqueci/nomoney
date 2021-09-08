@@ -5,8 +5,8 @@ import datetime
 from django.db.models import F, Sum
 from django.shortcuts import render
 
-from ..models import Journal
-from .shared import chart
+from money.models import Journal
+from money.views.shared import chart
 
 INDEX_NUM = 5
 
@@ -17,9 +17,7 @@ def index(request):
     start = today.replace(month=1, day=1)
     end = today.replace(month=12, day=31)
 
-    q = Journal.objects.filter(
-        disabled=False, date__gte=start, date__lte=end
-    )
+    q = Journal.objects.available().filter(date__gte=start, date__lte=end)
 
     summary = q.aggregate(
         income=Sum('income'), expense=Sum('expense'),
