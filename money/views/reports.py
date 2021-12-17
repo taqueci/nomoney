@@ -2,17 +2,15 @@
 
 import datetime
 
+import django_filters
 from django.core.paginator import Paginator
-from django.db.models import F, Sum, Value, CharField
+from django.db.models import CharField, F, Sum, Value
 from django.db.models.functions import Concat
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 
-import django_filters
-
 from money.models import Journal
 from money.views.shared import chart, date, pagination
-
 
 INDEX_PER_PAGE = 20
 INDEX_DEFAULT_SORT = '-date'

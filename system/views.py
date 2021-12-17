@@ -3,9 +3,8 @@
 """Views for system."""
 
 from django.contrib.auth.views import (
-    PasswordChangeView, PasswordChangeDoneView
+    PasswordChangeDoneView, PasswordChangeView,
 )
-
 from django.urls import reverse_lazy
 
 from .forms import UserPasswordChangeForm

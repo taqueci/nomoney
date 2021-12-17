@@ -5,12 +5,10 @@ import csv
 from django.db.models import Q
 from django.http import HttpResponse
 from django.utils.translation import gettext as _
-
 from rest_framework.views import APIView
 
 from money.models import Journal
 from money.views.journals import IndexFilter
-
 
 INDEX_DEFAULT_SORT = '-date'
 
