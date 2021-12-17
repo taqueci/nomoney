@@ -2,18 +2,16 @@
 
 import datetime
 
+import django_filters
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 
-import django_filters
-
 from money.forms import JournalForm
 from money.models import Journal, Tag, Template
 from money.views.shared import account, pagination
-
 
 INDEX_PER_PAGE = 20
 INDEX_DEFAULT_SORT = '-date'

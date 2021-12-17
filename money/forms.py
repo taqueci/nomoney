@@ -3,6 +3,7 @@
 """Forms for money application."""
 
 from django import forms
+
 from .models import Journal
 
 

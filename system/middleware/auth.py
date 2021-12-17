@@ -3,10 +3,10 @@
 import urllib
 
 from django.http import HttpResponseRedirect
-from django.utils.deprecation import MiddlewareMixin
 from django.urls import reverse
+from django.utils.deprecation import MiddlewareMixin
 
-from config.settings import LOGIN_URL, LOGOUT_URL, LOGIN_TARGETS
+from config.settings import LOGIN_TARGETS, LOGIN_URL, LOGOUT_URL
 
 
 # pylint: disable=too-few-public-methods

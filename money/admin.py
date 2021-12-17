@@ -5,6 +5,7 @@
 from django.contrib import admin
 
 from config.settings import SITE_URL
+
 from .models import Account, Journal, Tag, Template
 
 admin.site.site_url = SITE_URL
