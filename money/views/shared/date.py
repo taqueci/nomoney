@@ -10,7 +10,9 @@ def fy(date=None, month=4, day=1):
     if not date:
         date = datetime.date.today()
 
-    return date.year if date >= date.replace(month=month, day=day) else date.year -1
+    return date.year if date >= date.replace(
+        month=month, day=day
+    ) else date.year - 1
 
 
 def range_next_prev(start, end):
@@ -53,7 +55,9 @@ def range_next_prev(start, end):
             }
         }
 
-    d = relativedelta(weeks=int(days / 7)) if days >= 7 else relativedelta(days=days)
+    d = relativedelta(weeks=int(days / 7)) if days >= 7 else relativedelta(
+        days=days
+    )
 
     return {
         'base': {'start': start, 'end': end},
