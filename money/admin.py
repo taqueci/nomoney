@@ -22,7 +22,9 @@ class AccountAdmin(admin.ModelAdmin):
 class JournalAdmin(admin.ModelAdmin):
     """The representation of journal model."""
 
-    list_display = ('date', 'debit', 'credit', 'amount', 'summary', 'disabled',)
+    list_display = (
+        'date', 'debit', 'credit', 'amount', 'summary', 'disabled',
+    )
     filter_horizontal = ('tags', )
 
 
