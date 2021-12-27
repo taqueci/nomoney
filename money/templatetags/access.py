@@ -1,6 +1,7 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
 from django import template
+
 from money.views.shared import access
 
 register = template.Library()

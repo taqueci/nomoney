@@ -3,6 +3,7 @@
 """URL configuration for money application."""
 
 from django.urls import path
+
 from .views import home, journals, reports, tags
 
 app_name = 'money'

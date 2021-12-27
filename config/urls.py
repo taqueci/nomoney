@@ -3,10 +3,9 @@
 """URL Configuration"""
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 
 from .settings import DEBUG, ROUTE_PREFIX
-
 
 urlpatterns = [
     path(f'{ROUTE_PREFIX}/admin/', admin.site.urls),
@@ -18,7 +17,8 @@ urlpatterns = [
 
 if DEBUG:
     from django.contrib.staticfiles.urls import static
-    from .settings import MEDIA_URL, MEDIA_ROOT
+
+    from .settings import MEDIA_ROOT, MEDIA_URL
 
     urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
 
