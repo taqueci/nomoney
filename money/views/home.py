@@ -29,7 +29,7 @@ def index(request):
     ).annotate(sum=Sum('expense')).order_by('-sum')
 
     return render(request, 'money/home/index.html', {
-        'start': start, 'end':end,
+        'start': start, 'end': end,
         'page': q.order_by('-id')[:INDEX_NUM],
         'summary': summary, 'outgoing': outgoing,
         'data_doughnut_outgoing': chart.data_doughnut_outgoing(outgoing),

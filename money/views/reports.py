@@ -2,17 +2,15 @@
 
 import datetime
 
+import django_filters
 from django.core.paginator import Paginator
-from django.db.models import F, Sum, Value, CharField
+from django.db.models import CharField, F, Sum, Value
 from django.db.models.functions import Concat
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 
-import django_filters
-
 from money.models import Journal
 from money.views.shared import chart, date, pagination
-
 
 INDEX_PER_PAGE = 20
 INDEX_DEFAULT_SORT = '-date'
@@ -64,7 +62,7 @@ def index(request):
     })
 
 
-def show(request, pk): # pylint: disable=unused-argument
+def show(request, pk):  # pylint: disable=unused-argument
     start = request.GET.get('start', '1970-01-01')
     end = request.GET.get('end', '2100-12-31')
 
@@ -147,8 +145,12 @@ def _chart_data_lines(query, start, end, incomings, outgoings):
         data['monthly'] = {
             'balance': _chart_data_balance(query, 'year', 'month'),
             'asset': _chart_data_asset(query, 'year', 'month'),
-            'incoming': _chart_data_incoming(incomings, query, 'year', 'month'),
-            'outgoing': _chart_data_outgoing(outgoings, query, 'year', 'month'),
+            'incoming': _chart_data_incoming(
+                incomings, query, 'year', 'month'
+            ),
+            'outgoing': _chart_data_outgoing(
+                outgoings, query, 'year', 'month'
+            ),
         }
 
     if 365 * 5 >= days > 7:
@@ -171,7 +173,7 @@ def _chart_data_balance(query, *keys):
     l2 = _('Outgoing')
 
     return {
-        'normal': _chart_data_2lines(q, False, l1, l2,*keys),
+        'normal': _chart_data_2lines(q, False, l1, l2, *keys),
         'accumulated': _chart_data_2lines(q, True, l1, l2, *keys),
     }
 
@@ -282,7 +284,7 @@ def _chart_data_stacked(label, query, accumulated, field, *keys):
 
         for y in datasets:
             if y['_id'] == pk:
-                if not val_x in data:
+                if val_x not in data:
                     data[val_x] = {}
 
                 data[val_x][pk] = x['sum']

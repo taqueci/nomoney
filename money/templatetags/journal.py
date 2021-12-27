@@ -28,13 +28,13 @@ def journal_category_badge_class(obj):
     category = journal.category(obj)
 
     if category == journal.INCOMING:
-        return 'badge badge-success'
+        return 'badge bg-success'
     if category == journal.OUTGOING:
-        return 'badge badge-danger'
+        return 'badge bg-danger'
     if category == journal.REPAYMENT:
-        return 'badge badge-warning'
+        return 'badge bg-warning'
 
-    return 'badge badge-secondary'
+    return 'badge bg-secondary'
 
 
 @register.filter
