@@ -22,10 +22,10 @@ msgid "Date"
 msgstr "日付"
 
 msgid "Debit"
-msgstr "貸方"
+msgstr "借方"
 
 msgid "Credit"
-msgstr "借方"
+msgstr "貸方"
 
 msgid "Amount"
 msgstr "金額"
