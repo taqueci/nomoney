@@ -78,34 +78,40 @@
   </div>
 </div>
 
-<div class="d-flex flex-wrap align-items-stretch">
-  <div class="d-flex flex-column justify-content-between">
-    <div class="text-center">
-      <span class="badge bg-secondary">{% trans 'Assets' %}</span>
-    </div>
-    <div class="h5 text-center">{{ summary.asset|default:'0'|intcomma }}</div>
-  </div>
-  <div class="h5 align-self-end mx-2">-</div>
-  <div class="d-flex flex-column justify-content-between">
-    <div class="text-center">
-      <span class="badge bg-secondary">{% trans 'Liabilities' %}</span>
-    </div>
-    <div class="h5 text-center">{{ summary.liability|default:'0'|intcomma }}</div>
-  </div>
-  <div class="h5 align-self-end mx-2">=</div>
+<div class="d-flex flex-wrap align-items-stretch me-5">
   <div class="d-flex flex-column justify-content-between">
     <div class="text-center mb-1">
-      <span class="badge bg-secondary">{% trans 'Net assets' %}</span>
+      <span class="badge bg-secondary">{% trans 'Asset' %}</span>
     </div>
     <div class="h4 text-center">
-      {% if summary.net < 0 %}
+      {% if summary.asset < 0 %}
       <span class=" text-danger">
         <i class="fas fa-exclamation-triangle"></i>
-        {{ summary.net|default:'0'|intcomma }}
+        {{ summary.asset|default:'0'|intcomma }}
       </span>
       {% else %}
       <span class=" text-success">
-        {{ summary.net|default:'0'|intcomma }}
+        {{ summary.asset|default:'0'|intcomma }}
+      </span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="d-flex flex-wrap align-items-stretch me-5">
+  <div class="d-flex flex-column justify-content-between">
+    <div class="text-center mb-1">
+      <span class="badge bg-secondary">{% trans 'Liability' %}</span>
+    </div>
+    <div class="h4 text-center">
+      {% if summary.liability > 0 %}
+      <span class=" text-danger">
+        <i class="fas fa-exclamation-triangle"></i>
+        {{ summary.liability|default:'0'|intcomma }}
+      </span>
+      {% else %}
+      <span class=" text-success">
+        {{ summary.liability|default:'0'|intcomma }}
       </span>
       {% endif %}
     </div>
