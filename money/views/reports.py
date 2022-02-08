@@ -94,7 +94,7 @@ def show(request, pk):  # pylint: disable=unused-argument
 
 
 def _index_query_param(unit):
-    PARAMS = {
+    params = {
         'annual': {
             'fields': ('year', ), 'label': F('year')
         },
@@ -115,7 +115,7 @@ def _index_query_param(unit):
         },
     }
 
-    return PARAMS.get(unit, PARAMS[INDEX_DEFAULT_UNIT])
+    return params.get(unit, params[INDEX_DEFAULT_UNIT])
 
 
 def _chart_data_lines(query, start, end, incomings, outgoings):
@@ -169,12 +169,12 @@ def _chart_data_balance(query, *keys):
         data1=Sum('income'), data2=Sum('expense')
     ).order_by(*keys)
 
-    l1 = _('Incoming')
-    l2 = _('Outgoing')
+    label1 = _('Incoming')
+    label2 = _('Outgoing')
 
     return {
-        'normal': _chart_data_2lines(q, False, l1, l2, *keys),
-        'accumulated': _chart_data_2lines(q, True, l1, l2, *keys),
+        'normal': _chart_data_2lines(q, False, label1, label2, *keys),
+        'accumulated': _chart_data_2lines(q, True, label1, label2, *keys),
     }
 
 
@@ -183,12 +183,12 @@ def _chart_data_asset(query, *keys):
         data1=Sum('asset'), data2=Sum('liability')
     ).order_by(*keys)
 
-    l1 = _('Asset')
-    l2 = _('Liability')
+    label1 = _('Asset')
+    label2 = _('Liability')
 
     return {
-        'normal': _chart_data_2lines(q, False, l1, l2, *keys),
-        'accumulated': _chart_data_2lines(q, True, l1, l2, *keys),
+        'normal': _chart_data_2lines(q, False, label1, label2, *keys),
+        'accumulated': _chart_data_2lines(q, True, label1, label2, *keys),
     }
 
 
