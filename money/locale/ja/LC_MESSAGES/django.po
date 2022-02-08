@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-28 15:10+0000\n"
+"POT-Creation-Date: 2022-01-28 04:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,11 +21,14 @@ msgstr ""
 msgid "Date"
 msgstr "日付"
 
+msgid "Entry"
+msgstr "エントリー"
+
 msgid "Debit"
-msgstr "貸方"
+msgstr "借方"
 
 msgid "Credit"
-msgstr "借方"
+msgstr "貸方"
 
 msgid "Amount"
 msgstr "金額"
@@ -195,8 +198,17 @@ msgstr "本当に削除しますか?"
 msgid "Report list"
 msgstr "レポートリスト"
 
-msgid "Recently"
-msgstr "最近"
+msgid "Annual"
+msgstr "年間"
+
+msgid "Monthly"
+msgstr "マンスリー"
+
+msgid "Weekly"
+msgstr "ウィークリー"
+
+msgid "Daily"
+msgstr "デイリー"
 
 msgid "Period"
 msgstr "期間"
@@ -204,26 +216,8 @@ msgstr "期間"
 msgid "Show charts"
 msgstr "チャートを見る"
 
-msgid "Daily"
-msgstr "デイリー"
-
-msgid "Weekly"
-msgstr "ウィークリー"
-
-msgid "Week"
-msgstr "週"
-
-msgid "Monthly"
-msgstr "マンスリー"
-
-msgid "Month"
-msgstr "月"
-
-msgid "Annual"
-msgstr "年間"
-
-msgid "Year"
-msgstr "年"
+msgid "Setting"
+msgstr "設定"
 
 msgid "Report"
 msgstr "レポート"
@@ -243,11 +237,17 @@ msgstr "負債"
 msgid "Net assets"
 msgstr "純資産"
 
+msgid "Year"
+msgstr "年"
+
+msgid "Month"
+msgstr "月"
+
+msgid "Week"
+msgstr "週"
+
 msgid "Day"
 msgstr "日"
-
-msgid "Setting"
-msgstr "設定"
 
 msgid "New journal has been successfully created"
 msgstr "新しい記録の作成に成功しました"

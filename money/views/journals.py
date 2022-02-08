@@ -2,12 +2,15 @@
 
 import datetime
 
-import django_filters
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
+from django_filters import (
+    AllValuesMultipleFilter, DateFilter, FilterSet, NumberFilter,
+    OrderingFilter,
+)
 
 from money.forms import JournalForm
 from money.models import Journal, Tag, Template
@@ -19,19 +22,19 @@ INDEX_DEFAULT_SORT = '-date'
 POPULAR_ACCOUNT_NUM = 12
 
 
-class IndexFilter(django_filters.FilterSet):
-    debit = django_filters.AllValuesMultipleFilter(field_name='debit_id')
-    credit = django_filters.AllValuesMultipleFilter(field_name='credit_id')
+class IndexFilter(FilterSet):
+    debit = AllValuesMultipleFilter(field_name='debit_id')
+    credit = AllValuesMultipleFilter(field_name='credit_id')
 
-    start = django_filters.DateFilter(field_name='date', lookup_expr='gte')
-    end = django_filters.DateFilter(field_name='date', lookup_expr='lte')
+    start = DateFilter(field_name='date', lookup_expr='gte')
+    end = DateFilter(field_name='date', lookup_expr='lte')
 
-    min = django_filters.NumberFilter(field_name='amount', lookup_expr='gte')
-    max = django_filters.NumberFilter(field_name='amount', lookup_expr='lte')
+    min = NumberFilter(field_name='amount', lookup_expr='gte')
+    max = NumberFilter(field_name='amount', lookup_expr='lte')
 
-    tag = django_filters.AllValuesMultipleFilter(field_name='tags')
+    tag = AllValuesMultipleFilter(field_name='tags')
 
-    sort = django_filters.OrderingFilter(
+    sort = OrderingFilter(
         fields=(
             ('id', 'id'), ('date', 'date'),
             ('debit', 'debit'), ('credit', 'credit'),

@@ -40,14 +40,17 @@ def _response_csv(name, query):
 
     w = csv.writer(r)
     w.writerow([
-        '#', _('Date'), _('Debit'), _('Credit'), _('Amount'), _('Summary'),
-        _('Note'),
+        '#', _('Date'), _('Entry'), _('Debit'), _('Credit'),
+        _('Amount'), _('Summary'), _('Note'),
     ])
 
     for x in query:
+        entry_d = x.debit.get_entry_display()
+        entry_c = x.credit.get_entry_display()
+
         w.writerow([
-            x.pk, x.date, x.debit.name, x.credit.name, x.amount, x.summary,
-            x.note,
+            x.pk, x.date, f'{entry_d}/{entry_c}', x.debit.name, x.credit.name,
+            x.amount, x.summary, x.note,
         ])
 
     return r
