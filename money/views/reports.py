@@ -2,35 +2,30 @@
 
 import datetime
 
-import django_filters
 from django.core.paginator import Paginator
 from django.db.models import CharField, F, Sum, Value
 from django.db.models.functions import Concat
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
+from django_filters import OrderingFilter
 
 from money.models import Journal
 from money.views.shared import chart, date, pagination
+
+from . import journals
 
 INDEX_PER_PAGE = 20
 INDEX_DEFAULT_SORT = '-date'
 INDEX_DEFAULT_UNIT = 'annual'
 
 
-class IndexFilter(django_filters.FilterSet):
-    start = django_filters.DateFilter(field_name='date', lookup_expr='gte')
-    end = django_filters.DateFilter(field_name='date', lookup_expr='lte')
-
-    sort = django_filters.OrderingFilter(
+class IndexFilter(journals.IndexFilter):
+    sort = OrderingFilter(
         fields=(
             ('income', 'income'), ('expense', 'expense'),
             ('balance', 'balance'),
         )
     )
-
-    class Meta:
-        model = Journal
-        exclude = ('created', 'updated')
 
 
 def index(request):
