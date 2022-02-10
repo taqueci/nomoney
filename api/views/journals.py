@@ -27,8 +27,7 @@ def _query(request):
 
     if f_keyword:
         q = q.filter(
-            Q(summary__icontains=f_keyword) |
-            Q(note__icontains=f_keyword)
+            Q(summary__icontains=f_keyword) | Q(note__icontains=f_keyword)
         )
 
     return IndexFilter(request.GET, queryset=q).qs.select_related()
