@@ -2,7 +2,6 @@
 
 import csv
 
-from django.db.models import Q
 from django.http import HttpResponse
 from django.utils.translation import gettext as _
 from rest_framework.views import APIView
@@ -22,13 +21,6 @@ class Export(APIView):
 
 def _query(request):
     q = Journal.objects.available().order_by(INDEX_DEFAULT_SORT)
-
-    f_keyword = request.GET.get('keyword')
-
-    if f_keyword:
-        q = q.filter(
-            Q(summary__icontains=f_keyword) | Q(note__icontains=f_keyword)
-        )
 
     return IndexFilter(request.GET, queryset=q).qs.select_related()
 

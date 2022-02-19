@@ -9,7 +9,7 @@ from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 from django_filters import (
-    AllValuesMultipleFilter, DateFilter, FilterSet, NumberFilter,
+    AllValuesMultipleFilter, CharFilter, DateFilter, FilterSet, NumberFilter,
     OrderingFilter,
 )
 
@@ -22,6 +22,14 @@ INDEX_PER_PAGE = 20
 INDEX_DEFAULT_SORT = '-date'
 
 POPULAR_ACCOUNT_NUM = 12
+
+
+class KeywordFilter(CharFilter):
+    def filter(self, qs, value):
+        for x in value.split():
+            qs = qs.filter(Q(summary__icontains=x) | Q(note__icontains=x))
+
+        return qs
 
 
 class EntryFilter(AnyValuesMultipleFilter):
@@ -52,6 +60,7 @@ class IndexFilter(FilterSet):
 
     tag = AllValuesMultipleFilter(field_name='tags')
 
+    keyword = KeywordFilter()
     entry = EntryFilter()
 
     sort = OrderingFilter(
@@ -69,16 +78,8 @@ class IndexFilter(FilterSet):
 
 def index(request):
     n = request.GET.get('page')
+
     q = Journal.objects.available().order_by(INDEX_DEFAULT_SORT)
-
-    f_keyword = request.GET.get('keyword')
-
-    if f_keyword:
-        q = q.filter(
-            Q(summary__icontains=f_keyword) |
-            Q(note__icontains=f_keyword)
-        )
-
     q = IndexFilter(request.GET, queryset=q).qs
 
     # For performance improvement
