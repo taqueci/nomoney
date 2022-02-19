@@ -245,6 +245,7 @@
 <h5 class="border-bottom pb-2 mb-3 mt-5"><i class="fas fa-wrench"></i> {% trans 'Operation' %}</h5>
 
 <ul class="list-unstyled">
+  <li class="py-1"><a href="{% url 'money:report' 0 %}?{% url_params %}" class="text-decoration-none">{% trans 'Report' %}</a></li>
   <li class="py-1"><a href="{% url 'api:journals_export' %}?{% url_params %}" class="text-decoration-none">{% trans 'Export as CSV' %}</a></li>
 </ul>
 

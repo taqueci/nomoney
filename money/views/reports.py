@@ -9,8 +9,8 @@ from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django_filters import OrderingFilter
 
-from money.models import Journal
-from money.views.shared import chart, date, pagination
+from money.models import Journal, Tag
+from money.views.shared import account, chart, date, pagination
 
 from . import journals
 
@@ -61,7 +61,7 @@ def show(request, pk):  # pylint: disable=unused-argument
     start = request.GET.get('start', '1970-01-01')
     end = request.GET.get('end', '2100-12-31')
 
-    q = Journal.objects.available().filter(date__gte=start, date__lte=end)
+    q = IndexFilter(request.GET, queryset=Journal.objects.available()).qs
 
     summary = q.aggregate(
         income=Sum('income'), expense=Sum('expense'),
@@ -78,6 +78,9 @@ def show(request, pk):  # pylint: disable=unused-argument
         'debit__id', 'debit__name'
     ).annotate(sum=Sum('expense')).order_by('-sum')
 
+    tags = Tag.objects.all()
+    grouped_accounts = account.grouped_objects()
+
     return render(request, 'money/reports/show.html', {
         'object': {'name': _('All')},
         'page': date.range_next_prev(start, end),
@@ -85,6 +88,7 @@ def show(request, pk):  # pylint: disable=unused-argument
         'data_doughnut_incoming': chart.data_doughnut_incoming(incomings),
         'data_doughnut_outgoing': chart.data_doughnut_outgoing(outgoings),
         'data_charts': _chart_data_lines(q, start, end, incomings, outgoings),
+        'accounts': grouped_accounts, 'tags': tags,
     })
 
 
