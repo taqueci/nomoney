@@ -212,7 +212,7 @@ def update(request, obj):
 
 
 def delete(request, obj):
-    obj.disabled = True
+    obj.enabled = False
     obj.save()
 
     return True
