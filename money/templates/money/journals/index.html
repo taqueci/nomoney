@@ -53,7 +53,7 @@
       <th class="text-end"><a href="?{% url_params_sort 'amount' %}" class="text-decoration-none">{% trans 'Amount' %}</a></th>
       <th></th>
       <th><a href="?{% url_params_sort 'summary' %}" class="text-decoration-none">{% trans 'Summary' %}</a></th>
-      <th colspan="2"></th>
+      <th colspan="3"></th>
     </tr>
   </thead>
   <tbody>
@@ -73,6 +73,11 @@
         {% endif %}
         <small><a href="?{% url_params tag=y.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ y.name }}</a></small>
         {% endfor %}
+      </td>
+      <td class="px-2">
+        {% if x.note %}
+        <span class="mx-2 text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="top" title="{% trans 'Note' %}" data-bs-content="{{ x.note }}"><i class="fas fa-comment fa-fw"></i></span>
+        {% endif %}
       </td>
       <td class="px-2">
         {% if request.user|access_updatable %}
@@ -272,6 +277,7 @@
 <script>
 $(function() {
   $('[data-bs-toggle="tooltip"]').tooltip();
+  $('[data-bs-toggle="popover"]').popover();
 
   $('.datetimepicker').datetimepicker({format: 'YYYY-MM-DD'});
   $('.select2').select2();
