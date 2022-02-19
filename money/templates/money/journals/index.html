@@ -192,6 +192,15 @@
 </div>
 
 <div class="mb-3">
+  <label class="form-label">{% trans 'Entry' %} <small>({% trans 'Debit' %} / {% trans 'Credit' %})</small></label>
+  <select name="entry" class="form-control select2" multiple="multiple" size="1">
+    {% for x in entry_sets %}
+    <option value="{{ x.value }}" {% html_selected_by_query_list 'entry' x.value %} style="visibility: hidden">{{ x.debit.label }} / {{ x.credit.label }}</option>
+    {% endfor %}
+  </select>
+</div>
+
+<div class="mb-3">
   <label class="form-label">{% trans 'Debit' %}</label>
   <select name="debit" class="form-control select2" multiple="multiple" size="1">
     {% for x in accounts %}

@@ -1,6 +1,7 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
 import datetime
+from functools import reduce
 
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -15,11 +16,28 @@ from django_filters import (
 from money.forms import JournalForm
 from money.models import Journal, Tag, Template
 from money.views.shared import account, pagination
+from money.views.shared.filters import AnyValuesMultipleFilter
 
 INDEX_PER_PAGE = 20
 INDEX_DEFAULT_SORT = '-date'
 
 POPULAR_ACCOUNT_NUM = 12
+
+
+class EntryFilter(AnyValuesMultipleFilter):
+    def filter(self, qs, value):
+        if not value:
+            return qs
+
+        params = []
+
+        for x in value:
+            entry_d = int(int(x) / 10)
+            entry_c = int(x) % 10
+
+            params.append(Q(debit__entry=entry_d, credit__entry=entry_c))
+
+        return qs.filter(reduce(lambda x, y: x | y, params))
 
 
 class IndexFilter(FilterSet):
@@ -33,6 +51,8 @@ class IndexFilter(FilterSet):
     max = NumberFilter(field_name='amount', lookup_expr='lte')
 
     tag = AllValuesMultipleFilter(field_name='tags')
+
+    entry = EntryFilter()
 
     sort = OrderingFilter(
         fields=(
@@ -65,13 +85,14 @@ def index(request):
     q = q.select_related().prefetch_related('tags')
 
     tags = Tag.objects.all()
+    entry_sets = account.entry_sets()
     grouped_accounts = account.grouped_objects()
 
     paginator = Paginator(q, INDEX_PER_PAGE)
 
     return render(request, 'money/journals/index.html', {
         'page': pagination.page(paginator, n), 'total': paginator.count,
-        'accounts': grouped_accounts, 'tags': tags,
+        'entry_sets': entry_sets, 'accounts': grouped_accounts, 'tags': tags,
     })
 
 
