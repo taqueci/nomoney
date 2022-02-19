@@ -52,6 +52,7 @@ def journal_filter_items(request):
     f_keyword = request.GET.get('keyword')
     f_start = request.GET.get('start')
     f_end = request.GET.get('end')
+    f_entry = list(request.GET.getlist('entry'))
     f_debit = list(request.GET.getlist('debit'))
     f_credit = list(request.GET.getlist('credit'))
     f_max = request.GET.get('max')
@@ -66,6 +67,13 @@ def journal_filter_items(request):
 
     if f_end:
         item.append({'key': _('End date'), 'value': f_end})
+
+    if f_entry:
+        for x in f_entry:
+            label_d = Account.Entry(int(int(x) / 10)).label
+            label_c = Account.Entry(int(x) % 10).label
+
+            item.append({'key': _('Entry'), 'value': f'{label_d} / {label_c}'})
 
     if f_debit:
         for x in Account.objects.filter(id__in=f_debit):
