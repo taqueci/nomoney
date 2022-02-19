@@ -305,6 +305,53 @@
   </div>
 </div>
 
+<div class="mb-3">
+  <label class="form-label">{% trans 'Debit' %}</label>
+  <select name="debit" class="form-control select2" multiple="multiple" size="1">
+    {% for x in accounts %}
+    <optgroup label="{{ x.name }}" style="visibility: hidden">
+      {% for y in x.data %}
+      <option value="{{ y.id }}" {% html_selected_by_query_list 'debit' y.id %}>{{ y.name }}</option>
+      {% endfor %}
+    </optgroup>
+    {% endfor %}
+  </select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">{% trans 'Credit' %}</label>
+  <select name="credit" class="form-control select2" multiple="multiple" size="1">
+    {% for x in accounts %}
+    <optgroup label="{{ x.name }}" style="visibility: hidden">
+      {% for y in x.data %}
+      <option value="{{ y.id }}" {% html_selected_by_query_list 'credit' y.id %}>{{ y.name }}</option>
+      {% endfor %}
+    </optgroup>
+    {% endfor %}
+  </select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">{% trans 'Max amount' %}</label>
+  <input type="number" name="max" value="{% url_param_value 'max' %}" min="0" class="form-control">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">{% trans 'Min amount' %}</label>
+  <input type="number" name="min" value="{% url_param_value 'min' %}" min="0" class="form-control">
+</div>
+
+{% if tags %}
+<div class="mb-3">
+  <label class="form-label">{% trans 'Tag' %}</label>
+  <select name="tag" class="form-control select2" multiple="multiple" size="1">
+    {% for x in tags %}
+    <option value="{{ x.id }}" {% html_selected_by_query_list 'tag' x.id %} style="visibility: hidden">{{ x.name }}</option>
+    {% endfor %}
+  </select>
+</div>
+{% endif %}
+
 <button type="submit" class="btn btn-primary mt-2"><i class="fas fa-check fa-fw"></i> {% trans 'Submit' %}</button>
 
 </form>
@@ -317,6 +364,7 @@
 {% include 'money/js_moment.html' %}
 {% include 'money/js_datetimepicker.html' %}
 {% include 'money/js_chartjs.html' %}
+{% include 'money/js_select2.html' %}
 {{ data_doughnut_incoming|json_script:'doughnut-data-incoming' }}
 {{ data_doughnut_outgoing|json_script:'doughnut-data-outgoing' }}
 {{ data_charts|json_script:'chart-data' }}
@@ -325,6 +373,7 @@ $(function() {
   $('[data-bs-toggle="tooltip"]').tooltip();
 
   $('.datetimepicker').datetimepicker({format: 'YYYY-MM-DD'});
+  $('.select2').select2();
 
   $('input[type="radio"]').on('click', function() {
     var group = $(this).data('group');
