@@ -5,8 +5,8 @@ import datetime
 from django.db.models import F, Sum
 from django.shortcuts import render
 
-from money.models import Journal
-from money.views.shared import chart
+from ..models import Journal
+from .shared import chart
 
 INDEX_NUM = 5
 

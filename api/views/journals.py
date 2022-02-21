@@ -7,7 +7,7 @@ from django.utils.translation import gettext as _
 from rest_framework.views import APIView
 
 from money.models import Journal
-from money.views.journals import IndexFilter
+from money.views.shared.journal import Filter
 
 INDEX_DEFAULT_SORT = '-date'
 
@@ -22,7 +22,7 @@ class Export(APIView):
 def _query(request):
     q = Journal.objects.available().order_by(INDEX_DEFAULT_SORT)
 
-    return IndexFilter(request.GET, queryset=q).qs.select_related()
+    return Filter(request.GET, queryset=q).qs.select_related()
 
 
 def _response_csv(name, query):
