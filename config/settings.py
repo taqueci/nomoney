@@ -91,11 +91,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': env.get('N_DATABASE_ENGINE'),
+        'HOST': env.get('N_DATABASE_HOST'),
+        'PORT': env.get('N_DATABASE_PORT'),
         'NAME': env.get('N_DATABASE_NAME'),
         'USER': env.get('N_DATABASE_USER'),
         'PASSWORD': env.get('N_DATABASE_PASSWORD'),
-        'HOST': env.get('N_DATABASE_HOST'),
-        'PORT': env.get('N_DATABASE_PORT'),
     }
 }
 
@@ -235,7 +235,7 @@ LOGGING = {
 }
 
 try:
-    # pylint: disable=W0401,W0614
+    # pylint: disable=wildcard-import,unused-wildcard-import
     from .local_settings import *
 except ImportError:
     pass

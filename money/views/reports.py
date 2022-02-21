@@ -9,17 +9,15 @@ from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django_filters import OrderingFilter
 
-from money.models import Journal, Tag
-from money.views.shared import account, chart, date, pagination
-
-from . import journals
+from ..models import Journal, Tag
+from .shared import account, chart, date, journal, pagination
 
 INDEX_PER_PAGE = 20
 INDEX_DEFAULT_SORT = '-date'
 INDEX_DEFAULT_UNIT = 'annual'
 
 
-class IndexFilter(journals.IndexFilter):
+class Filter(journal.Filter):
     sort = OrderingFilter(
         fields=(
             ('income', 'income'), ('expense', 'expense'),
@@ -30,9 +28,9 @@ class IndexFilter(journals.IndexFilter):
 
 def index(request):
     n = request.GET.get('page')
-    q = Journal.objects.available()
-
     param = _index_query_param(request.GET.get('unit'))
+
+    q = Journal.objects.available()
 
     q = q.values(*param['fields']).annotate(
         label=param['label'],
@@ -40,7 +38,7 @@ def index(request):
         balance=F('income')-F('expense'),
     )
 
-    q = IndexFilter(request.GET, queryset=q).qs
+    q = Filter(request.GET, queryset=q).qs
 
     sort = request.GET.get('sort', INDEX_DEFAULT_SORT)
 
@@ -61,7 +59,7 @@ def show(request, pk):  # pylint: disable=unused-argument
     start = request.GET.get('start') or '1970-01-01'
     end = request.GET.get('end') or '2100-12-31'
 
-    q = IndexFilter(request.GET, queryset=Journal.objects.available()).qs
+    q = Filter(request.GET, queryset=Journal.objects.available()).qs
 
     summary = q.aggregate(
         incomes=Sum('income'), expenses=Sum('expense'),

@@ -1,22 +1,17 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
 import datetime
-from functools import reduce
 
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.db.models import Count, Q
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
-from django_filters import (
-    AllValuesMultipleFilter, CharFilter, DateFilter, FilterSet, NumberFilter,
-    OrderingFilter,
-)
 
-from money.forms import JournalForm
-from money.models import Journal, Tag, Template
-from money.views.shared import account, pagination
-from money.views.shared.filters import AnyValuesMultipleFilter
+from ..forms import JournalForm
+from ..models import Journal, Tag, Template
+from .shared import account, pagination
+from .shared.journal import Filter
 
 INDEX_PER_PAGE = 20
 INDEX_DEFAULT_SORT = '-date'
@@ -24,63 +19,11 @@ INDEX_DEFAULT_SORT = '-date'
 POPULAR_ACCOUNT_NUM = 12
 
 
-class KeywordFilter(CharFilter):
-    def filter(self, qs, value):
-        for x in value.split():
-            qs = qs.filter(Q(summary__icontains=x) | Q(note__icontains=x))
-
-        return qs
-
-
-class EntryFilter(AnyValuesMultipleFilter):
-    def filter(self, qs, value):
-        if not value:
-            return qs
-
-        params = []
-
-        for x in value:
-            entry_d = int(int(x) / 10)
-            entry_c = int(x) % 10
-
-            params.append(Q(debit__entry=entry_d, credit__entry=entry_c))
-
-        return qs.filter(reduce(lambda x, y: x | y, params))
-
-
-class IndexFilter(FilterSet):
-    debit = AllValuesMultipleFilter(field_name='debit_id')
-    credit = AllValuesMultipleFilter(field_name='credit_id')
-
-    start = DateFilter(field_name='date', lookup_expr='gte')
-    end = DateFilter(field_name='date', lookup_expr='lte')
-
-    min = NumberFilter(field_name='amount', lookup_expr='gte')
-    max = NumberFilter(field_name='amount', lookup_expr='lte')
-
-    tag = AllValuesMultipleFilter(field_name='tags')
-
-    keyword = KeywordFilter()
-    entry = EntryFilter()
-
-    sort = OrderingFilter(
-        fields=(
-            ('id', 'id'), ('date', 'date'),
-            ('debit', 'debit'), ('credit', 'credit'),
-            ('amount', 'amount'), ('summary', 'summary'),
-        )
-    )
-
-    class Meta:
-        model = Journal
-        exclude = ('created', 'updated')
-
-
 def index(request):
     n = request.GET.get('page')
 
     q = Journal.objects.available().order_by(INDEX_DEFAULT_SORT)
-    q = IndexFilter(request.GET, queryset=q).qs
+    q = Filter(request.GET, queryset=q).qs
 
     # For performance improvement
     q = q.select_related().prefetch_related('tags')
