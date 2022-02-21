@@ -58,8 +58,8 @@ def index(request):
 
 
 def show(request, pk):  # pylint: disable=unused-argument
-    start = request.GET.get('start', '1970-01-01')
-    end = request.GET.get('end', '2100-12-31')
+    start = request.GET.get('start') or '1970-01-01'
+    end = request.GET.get('end') or '2100-12-31'
 
     q = IndexFilter(request.GET, queryset=Journal.objects.available()).qs
 
