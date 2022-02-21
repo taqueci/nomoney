@@ -64,8 +64,8 @@ def show(request, pk):  # pylint: disable=unused-argument
     q = IndexFilter(request.GET, queryset=Journal.objects.available()).qs
 
     summary = q.aggregate(
-        income=Sum('income'), expense=Sum('expense'),
-        asset=Sum('asset'), liability=Sum('liability'), equity=Sum('equity'),
+        incomes=Sum('income'), expenses=Sum('expense'),
+        assets=Sum('asset'), liabilities=Sum('liability'),
         balance=Sum(F('income')-F('expense')),
         net=Sum(F('asset')-F('liability')),
     )
