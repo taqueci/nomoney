@@ -2,7 +2,7 @@
 
 from django import template
 
-from money.views.shared import access
+from ..views.shared import access
 
 register = template.Library()
 

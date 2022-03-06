@@ -3,8 +3,8 @@
 from django import template
 from django.utils.translation import gettext_lazy as _
 
-from money.models import Account, Tag
-from money.views.shared import journal
+from ..models import Account, Tag
+from ..views.shared import journal
 
 register = template.Library()
 
@@ -47,46 +47,50 @@ def journal_html_selected_if_has_tag(obj, tag):
 
 @register.filter
 def journal_filter_items(request):
-    item = []
+    items = []
 
     f_keyword = request.GET.get('keyword')
     f_start = request.GET.get('start')
     f_end = request.GET.get('end')
-    f_debit = list(request.GET.getlist('debit'))
-    f_credit = list(request.GET.getlist('credit'))
+    f_entries = request.GET.getlist('entry')
+    f_debits = request.GET.getlist('debit')
+    f_credits = request.GET.getlist('credit')
     f_max = request.GET.get('max')
     f_min = request.GET.get('min')
-    f_tag = list(request.GET.getlist('tag'))
+    f_tags = request.GET.getlist('tag')
 
     if f_keyword:
-        item.append({'key': _('Keyword'), 'value': f_keyword})
+        items.append({'key': _('Keyword'), 'value': f_keyword})
 
     if f_start:
-        item.append({'key': _('Start date'), 'value': f_start})
+        items.append({'key': _('Start date'), 'value': f_start})
 
     if f_end:
-        item.append({'key': _('End date'), 'value': f_end})
+        items.append({'key': _('End date'), 'value': f_end})
 
-    if f_debit:
-        for x in Account.objects.filter(id__in=f_debit):
-            item.append({'key': _('Debit'), 'value': x.name})
+    for x in f_entries:
+        label_d = Account.Entry(int(int(x) / 10)).label
+        label_c = Account.Entry(int(x) % 10).label
 
-    if f_credit:
-        for x in Account.objects.filter(id__in=f_credit):
-            item.append({'key': _('Credit'), 'value': x.name})
+        items.append({'key': _('Entry'), 'value': f'{label_d} / {label_c}'})
+
+    for x in Account.objects.filter(id__in=f_debits):
+        items.append({'key': _('Debit'), 'value': x.name})
+
+    for x in Account.objects.filter(id__in=f_credits):
+        items.append({'key': _('Credit'), 'value': x.name})
 
     if f_max and f_max.isdecimal():
-        item.append({
+        items.append({
             'key': _('Max amount'), 'value': f'{int(f_max):,}'
         })
 
     if f_min and f_min.isdecimal():
-        item.append({
+        items.append({
             'key': _('Min amount'), 'value': f'{int(f_min):,}'
         })
 
-    if f_tag:
-        for x in Tag.objects.filter(id__in=f_tag):
-            item.append({'key': _('Tag'), 'value': x.name})
+    for x in Tag.objects.filter(id__in=f_tags):
+        items.append({'key': _('Tag'), 'value': x.name})
 
-    return item
+    return items
