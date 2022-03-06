@@ -133,7 +133,7 @@ def _chart_data_lines(query, start, end, incomings, outgoings):
     else:
         data['daily'] = {
             'balance': _chart_data_balance(query, 'date'),
-            'asset': _chart_data_asset(query, 'year'),
+            'asset': _chart_data_asset(query, 'date'),
             'incoming': _chart_data_incoming(incomings, query, 'date'),
             'outgoing': _chart_data_outgoing(outgoings, query, 'date'),
         }
