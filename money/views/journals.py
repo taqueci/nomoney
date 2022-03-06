@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 
 from ..forms import JournalForm
 from ..models import Journal, Tag, Template
-from .shared import account, pagination
+from .shared import account, model, pagination
 from .shared.journal import Filter
 
 INDEX_PER_PAGE = 20
@@ -135,6 +135,7 @@ def create(request):
     if form.is_valid():
         obj = form.save(commit=False)
         obj.author = request.user
+        model.normalize_string_fields(obj, 'summary', 'note')
         obj.save()
         form.save_m2m()
 
@@ -147,7 +148,9 @@ def update(request, obj):
     form = JournalForm(request.POST, instance=obj)
 
     if form.is_valid():
-        form.save()
+        obj = form.save(commit=False)
+        model.normalize_string_fields(obj, 'summary', 'note')
+        obj.save()
 
         return True
 
