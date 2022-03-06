@@ -15,7 +15,7 @@ admin.site.site_url = SITE_URL
 class AccountAdmin(admin.ModelAdmin):
     """The representation of account model."""
 
-    list_display = ('name', 'description', 'entry', 'rank', 'disabled',)
+    list_display = ('name', 'description', 'entry', 'rank', 'enabled',)
 
 
 @admin.register(Journal)
@@ -23,7 +23,7 @@ class JournalAdmin(admin.ModelAdmin):
     """The representation of journal model."""
 
     list_display = (
-        'date', 'debit', 'credit', 'amount', 'summary', 'disabled',
+        'date', 'debit', 'credit', 'amount', 'summary', 'enabled',
     )
     filter_horizontal = ('tags', )
 
@@ -39,4 +39,4 @@ class TagAdmin(admin.ModelAdmin):
 class TemplateAdmin(admin.ModelAdmin):
     """The representation of template model."""
 
-    list_display = ('name', 'description', 'rank', 'disabled')
+    list_display = ('name', 'description', 'rank', 'enabled')

@@ -1,26 +1,28 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
+"""Middleware for authentication."""
+
 import urllib
 
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.utils.deprecation import MiddlewareMixin
 
 from config.settings import LOGIN_TARGETS, LOGIN_URL, LOGOUT_URL
 
 
-# pylint: disable=too-few-public-methods
-class AuthMiddleware(MiddlewareMixin):
-    # pylint: disable=no-self-use
-    def process_response(self, request, response):
+class AuthMiddleware:  # pylint: disable=too-few-public-methods
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
         if request.user.is_authenticated:
-            return response
+            return self.get_response(request)
 
         path = request.path
         login = reverse(LOGIN_URL)
 
         if path == login or not path.startswith(LOGIN_TARGETS):
-            return response
+            return self.get_response(request)
 
         if path == reverse(LOGOUT_URL):
             url = login

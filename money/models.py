@@ -17,7 +17,7 @@ class BaseQuerySet(models.QuerySet):
     def available(self):
         """Filter for getting available objects."""
 
-        return self.filter(disabled=False)
+        return self.filter(enabled=True)
 
 
 class Account(models.Model):
@@ -38,7 +38,7 @@ class Account(models.Model):
     entry = models.IntegerField(choices=Entry.choices)
 
     rank = models.IntegerField(default=0)
-    disabled = models.BooleanField(default=False)
+    enabled = models.BooleanField(default=True)
 
     objects = BaseQuerySet.as_manager()
 
@@ -87,7 +87,7 @@ class Journal(models.Model):
     month = models.IntegerField(blank=True, default=0)
     week = models.IntegerField(blank=True, default=0)
 
-    disabled = models.BooleanField(default=False)
+    enabled = models.BooleanField(default=True)
 
     author = models.ForeignKey(get_user_model(), on_delete=models.PROTECT)
     created = models.DateTimeField(auto_now_add=True)
@@ -138,7 +138,7 @@ class Template(models.Model):
     note = models.TextField(null=True, blank=True)
 
     rank = models.IntegerField(default=0)
-    disabled = models.BooleanField(default=False)
+    enabled = models.BooleanField(default=True)
 
     objects = BaseQuerySet.as_manager()
 

@@ -9,17 +9,15 @@ from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django_filters import OrderingFilter
 
-from money.models import Journal
-from money.views.shared import chart, date, pagination
-
-from . import journals
+from ..models import Journal, Tag
+from .shared import account, chart, date, journal, pagination
 
 INDEX_PER_PAGE = 20
 INDEX_DEFAULT_SORT = '-date'
 INDEX_DEFAULT_UNIT = 'annual'
 
 
-class IndexFilter(journals.IndexFilter):
+class Filter(journal.Filter):
     sort = OrderingFilter(
         fields=(
             ('income', 'income'), ('expense', 'expense'),
@@ -30,9 +28,9 @@ class IndexFilter(journals.IndexFilter):
 
 def index(request):
     n = request.GET.get('page')
-    q = Journal.objects.available()
-
     param = _index_query_param(request.GET.get('unit'))
+
+    q = Journal.objects.available()
 
     q = q.values(*param['fields']).annotate(
         label=param['label'],
@@ -40,7 +38,7 @@ def index(request):
         balance=F('income')-F('expense'),
     )
 
-    q = IndexFilter(request.GET, queryset=q).qs
+    q = Filter(request.GET, queryset=q).qs
 
     sort = request.GET.get('sort', INDEX_DEFAULT_SORT)
 
@@ -58,14 +56,14 @@ def index(request):
 
 
 def show(request, pk):  # pylint: disable=unused-argument
-    start = request.GET.get('start', '1970-01-01')
-    end = request.GET.get('end', '2100-12-31')
+    start = request.GET.get('start') or '1970-01-01'
+    end = request.GET.get('end') or '2100-12-31'
 
-    q = Journal.objects.available().filter(date__gte=start, date__lte=end)
+    q = Filter(request.GET, queryset=Journal.objects.available()).qs
 
     summary = q.aggregate(
-        income=Sum('income'), expense=Sum('expense'),
-        asset=Sum('asset'), liability=Sum('liability'), equity=Sum('equity'),
+        incomes=Sum('income'), expenses=Sum('expense'),
+        assets=Sum('asset'), liabilities=Sum('liability'),
         balance=Sum(F('income')-F('expense')),
         net=Sum(F('asset')-F('liability')),
     )
@@ -78,6 +76,9 @@ def show(request, pk):  # pylint: disable=unused-argument
         'debit__id', 'debit__name'
     ).annotate(sum=Sum('expense')).order_by('-sum')
 
+    tags = Tag.objects.all()
+    grouped_accounts = account.grouped_objects()
+
     return render(request, 'money/reports/show.html', {
         'object': {'name': _('All')},
         'page': date.range_next_prev(start, end),
@@ -85,6 +86,7 @@ def show(request, pk):  # pylint: disable=unused-argument
         'data_doughnut_incoming': chart.data_doughnut_incoming(incomings),
         'data_doughnut_outgoing': chart.data_doughnut_outgoing(outgoings),
         'data_charts': _chart_data_lines(q, start, end, incomings, outgoings),
+        'accounts': grouped_accounts, 'tags': tags,
     })
 
 
@@ -131,7 +133,7 @@ def _chart_data_lines(query, start, end, incomings, outgoings):
     else:
         data['daily'] = {
             'balance': _chart_data_balance(query, 'date'),
-            'asset': _chart_data_asset(query, 'year'),
+            'asset': _chart_data_asset(query, 'date'),
             'incoming': _chart_data_incoming(incomings, query, 'date'),
             'outgoing': _chart_data_outgoing(outgoings, query, 'date'),
         }
