@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'f28)f6n)+po@miei(tn**ki05n@@5z-caf8y!hrz#&-n8p09i@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = env.get('H3_DEBUG', 'false') == 'true'
 
 ALLOWED_HOSTS = env.get('N_ALLOWED_HOSTS', 'localhost').split(',')
 

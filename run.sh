@@ -1,7 +1,5 @@
 #!/bin/sh
 
-sh init.sh
-
 exec uwsgi \
     --http-socket :49152 \
     --wsgi-file config/wsgi.py \

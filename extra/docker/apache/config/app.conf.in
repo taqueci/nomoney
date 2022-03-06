@@ -1,0 +1,28 @@
+<Directory  /opt/app/staticfiles/>
+  Require all granted
+</Directory>
+
+<Directory  /opt/app/media/>
+  Require all granted
+</Directory>
+
+<VirtualHost *:80>
+  KeepAlive On
+  KeepAliveTimeout 120
+  ProxyTimeout 300
+  setEnv proxy-initial-not-pooled 1
+
+  ErrorLog /dev/stdout
+  CustomLog /dev/stdout combined
+
+  ProxyRequests Off
+
+  ProxyPassMatch ^@APP_STATIC_PATH@ !
+  ProxyPassMatch ^@APP_MEDIA_PATH@ !
+
+  ProxyPass        @APP_PATH@ @APP_URL@
+  ProxyPassReverse @APP_PATH@ @APP_URL@
+
+  Alias @APP_STATIC_PATH@ /opt/app/staticfiles/
+  Alias @APP_MEDIA_PATH@  /opt/app/media/
+</VirtualHost>
