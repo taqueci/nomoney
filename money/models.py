@@ -10,6 +10,8 @@ from config import settings
 
 from .views.shared import date
 
+UserModel = get_user_model()
+
 
 class BaseQuerySet(models.QuerySet):
     """Base query set."""
@@ -89,7 +91,7 @@ class Journal(models.Model):
 
     enabled = models.BooleanField(default=True)
 
-    author = models.ForeignKey(get_user_model(), on_delete=models.PROTECT)
+    author = models.ForeignKey(UserModel, on_delete=models.PROTECT)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

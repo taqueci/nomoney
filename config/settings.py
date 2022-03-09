@@ -183,9 +183,9 @@ AUTHENTICATION_BACKENDS = (
 FY_START_MONTH = 4
 FY_START_DAY = 1
 
-NAME = env.get('N_NAME', 'NoMoney')
-
 VERSION = version.VERSION
+
+NAME = env.get('N_NAME', 'NoMoney')
 
 LOG_FILE = os.path.join(BASE_DIR, 'logs/django.log')
 
