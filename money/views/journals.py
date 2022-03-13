@@ -5,18 +5,21 @@ import datetime
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Count
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 
 from ..forms import JournalForm
 from ..models import Journal, Tag, Template
-from .shared import account, model, pagination
+from .shared import access, account, model, pagination
 from .shared.journal import Filter
 
 INDEX_PER_PAGE = 20
 INDEX_DEFAULT_SORT = '-date'
 
 POPULAR_ACCOUNT_NUM = 12
+
+FIELDS_NORMALIZED = ('summary', 'note')
 
 
 def index(request):
@@ -41,6 +44,9 @@ def index(request):
 
 
 def new(request):
+    if not access.creatable(request.user):
+        raise Http404()
+
     if request.method == 'POST':
         if create(request):
             messages.success(
@@ -90,6 +96,9 @@ def show(request, pk):
 def edit(request, pk):
     obj = get_object_or_404(Journal, pk=pk)
 
+    if not access.updatable(request.user):
+        raise Http404()
+
     if request.method == 'POST':
         if update(request, obj):
             messages.success(
@@ -118,6 +127,9 @@ def edit(request, pk):
 def destroy(request, pk):
     obj = get_object_or_404(Journal, pk=pk)
 
+    if not access.deletable(request.user):
+        raise Http404()
+
     if request.method == 'POST':
         if delete(request, obj):
             messages.success(
@@ -135,7 +147,7 @@ def create(request):
     if form.is_valid():
         obj = form.save(commit=False)
         obj.author = request.user
-        model.normalize_string_fields(obj, 'summary', 'note')
+        model.normalize_string_fields(obj, *FIELDS_NORMALIZED)
         obj.save()
         form.save_m2m()
 
@@ -149,8 +161,9 @@ def update(request, obj):
 
     if form.is_valid():
         obj = form.save(commit=False)
-        model.normalize_string_fields(obj, 'summary', 'note')
+        model.normalize_string_fields(obj, *FIELDS_NORMALIZED)
         obj.save()
+        form.save_m2m()
 
         return True
 
