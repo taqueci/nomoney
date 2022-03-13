@@ -163,6 +163,7 @@ def update(request, obj):
         obj = form.save(commit=False)
         model.normalize_string_fields(obj, *FIELDS_NORMALIZED)
         obj.save()
+        form.save_m2m()
 
         return True
 
