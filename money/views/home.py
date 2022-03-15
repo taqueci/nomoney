@@ -24,13 +24,13 @@ def index(request):
         balance=Sum(F('income')-F('expense')),
     )
 
-    outgoing = q.exclude(expense=0).values(
+    outgoings = q.exclude(expense=0).values(
         'debit__id', 'debit__name'
     ).annotate(sum=Sum('expense')).order_by('-sum')
 
     return render(request, 'money/home/index.html', {
         'start': start, 'end': end,
         'page': q.order_by('-id')[:INDEX_NUM],
-        'summary': summary, 'outgoing': outgoing,
-        'data_doughnut_outgoing': chart.data_doughnut_outgoing(outgoing),
+        'summary': summary, 'outgoings': outgoings,
+        'data_doughnut_outgoing': chart.data_doughnut_outgoing(outgoings),
     })
