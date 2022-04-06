@@ -31,11 +31,11 @@
   <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
     {% trans 'Popular account' %}
   </button>
-  <div id="popular" class="dropdown-menu dropdown-menu-end">
+  <ul id="popular" class="dropdown-menu dropdown-menu-end">
     {% for x in popular_accounts %}
-    <a class="dropdown-item" href="#" data-debit="{{ x.debit__id }}" data-credit="{{ x.credit__id }}">{{ x.debit__name }} / {{ x.credit__name }}</a>
+    <li><a class="dropdown-item" href="#" data-debit="{{ x.debit__id }}" data-credit="{{ x.credit__id }}">{{ x.debit__name }} / {{ x.credit__name }}</a></li>
     {% endfor %}
-  </div>
+  </ul>
 </div>
 {% endif %}
 
@@ -44,11 +44,11 @@
   <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
     {% trans 'Template' %}
   </button>
-  <div id="template" class="dropdown-menu dropdown-menu-end">
+  <ul id="template" class="dropdown-menu dropdown-menu-end">
     {% for x in templates %}
-    <a class="dropdown-item" href="?{% url_params template=x.id %}">{{ x.name }}</a>
+    <li><a class="dropdown-item" href="?{% url_params template=x.id %}">{{ x.name }}</a></li>
     {% endfor %}
-  </div>
+  </ul>
 </div>
 {% endif %}
 
