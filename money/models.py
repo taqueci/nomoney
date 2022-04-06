@@ -97,6 +97,9 @@ class Journal(models.Model):
 
     objects = BaseQuerySet.as_manager()
 
+    def __str__(self):
+        return f'#{self.pk}'
+
     def _entry_amount(self, entry):
         a_d = self.amount if self.debit.entry == entry else 0
         a_c = self.amount if self.credit.entry == entry else 0
