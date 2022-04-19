@@ -80,8 +80,9 @@ def new(request):
         default.date = datetime.date.today()
 
     return render(request, 'money/journals/new.html', {
-        'object': default, 'templates': templates, 'tags': tags,
-        'accounts': grouped_accounts, 'popular_accounts': popular_accounts,
+        'object': default, 'templates': templates,
+        'popular_accounts': popular_accounts,
+        'accounts': grouped_accounts,  'tags': tags,
     })
 
 
@@ -119,8 +120,9 @@ def edit(request, pk):
     ).order_by('-debit_num', '-credit_num')[:POPULAR_ACCOUNT_NUM]
 
     return render(request, 'money/journals/edit.html', {
-        'object': obj, 'tags': tags,
-        'accounts': grouped_accounts, 'popular_accounts': popular_accounts,
+        'object': obj,
+        'popular_accounts': popular_accounts,
+        'accounts': grouped_accounts, 'tags': tags,
     })
 
 

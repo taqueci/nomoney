@@ -75,19 +75,19 @@ class Journal(models.Model):
 
     tags = models.ManyToManyField(Tag, blank=True)
 
-    asset = models.IntegerField(blank=True, default=0)
-    liability = models.IntegerField(blank=True, default=0)
-    income = models.IntegerField(blank=True, default=0)
-    expense = models.IntegerField(blank=True, default=0)
-    equity = models.IntegerField(blank=True, default=0)
+    asset = models.IntegerField(blank=True, default=0, editable=False)
+    liability = models.IntegerField(blank=True, default=0, editable=False)
+    income = models.IntegerField(blank=True, default=0, editable=False)
+    expense = models.IntegerField(blank=True, default=0, editable=False)
+    equity = models.IntegerField(blank=True, default=0, editable=False)
 
     # pylint: disable=C0103
     fy = models.IntegerField(
-        blank=True, default=0, verbose_name=_('Financial year')
+        blank=True, default=0, editable=False, verbose_name=_('Financial year')
     )
-    year = models.IntegerField(blank=True, default=0)
-    month = models.IntegerField(blank=True, default=0)
-    week = models.IntegerField(blank=True, default=0)
+    year = models.IntegerField(blank=True, default=0, editable=False)
+    month = models.IntegerField(blank=True, default=0, editable=False)
+    week = models.IntegerField(blank=True, default=0, editable=False)
 
     enabled = models.BooleanField(default=True)
 
@@ -96,6 +96,9 @@ class Journal(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     objects = BaseQuerySet.as_manager()
+
+    def __str__(self):
+        return f'#{self.pk}'
 
     def _entry_amount(self, entry):
         a_d = self.amount if self.debit.entry == entry else 0
