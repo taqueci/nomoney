@@ -49,14 +49,14 @@
     <div class="text-center">
       <span class="badge bg-secondary">{% trans 'Incoming' %}</span>
     </div>
-    <div class="h5 text-center">{{ summary.incomes|default:'0'|intcomma }}</div>
+    <div class="h5 text-center">{{ summary.incomes|intcomma }}</div>
   </div>
   <div class="h5 align-self-end mx-2">-</div>
   <div class="d-flex flex-column justify-content-between">
     <div class="text-center">
       <span class="badge bg-secondary">{% trans 'Outgoing' %}</span>
     </div>
-    <div class="h5 text-center">{{ summary.expenses|default:'0'|intcomma }}</div>
+    <div class="h5 text-center">{{ summary.expenses|intcomma }}</div>
   </div>
   <div class="h5 align-self-end mx-2">=</div>
   <div class="d-flex flex-column justify-content-between">
@@ -67,11 +67,11 @@
       {% if summary.balance < 0 %}
       <span class=" text-danger">
         <i class="fas fa-exclamation-triangle"></i>
-        {{ summary.balance|default:'0'|intcomma }}
+        {{ summary.balance|intcomma }}
       </span>
       {% else %}
       <span class=" text-success">
-        {{ summary.balance|default:'0'|intcomma }}
+        {{ summary.balance|intcomma }}
       </span>
       {% endif %}
     </div>
@@ -87,11 +87,11 @@
       {% if summary.assets < 0 %}
       <span class=" text-danger">
         <i class="fas fa-exclamation-triangle"></i>
-        {{ summary.assets|default:'0'|intcomma }}
+        {{ summary.assets|intcomma }}
       </span>
       {% else %}
       <span class=" text-success">
-        {{ summary.assets|default:'0'|intcomma }}
+        {{ summary.assets|intcomma }}
       </span>
       {% endif %}
     </div>
@@ -107,11 +107,11 @@
       {% if summary.liabilities > 0 %}
       <span class=" text-danger">
         <i class="fas fa-exclamation-triangle"></i>
-        {{ summary.liabilities|default:'0'|intcomma }}
+        {{ summary.liabilities|intcomma }}
       </span>
       {% else %}
       <span class=" text-success">
-        {{ summary.liabilities|default:'0'|intcomma }}
+        {{ summary.liabilities|intcomma }}
       </span>
       {% endif %}
     </div>

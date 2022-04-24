@@ -34,7 +34,7 @@ def index(request):
 
     q = q.values(*param['fields']).annotate(
         label=param['label'],
-        income=Sum('income'), expense=Sum('expense'),
+        income=Sum('income', default=0), expense=Sum('expense', default=0),
         balance=F('income')-F('expense'),
     )
 
@@ -62,19 +62,20 @@ def show(request, pk):  # pylint: disable=unused-argument
     q = Filter(request.GET, queryset=Journal.objects.available()).qs
 
     summary = q.aggregate(
-        incomes=Sum('income'), expenses=Sum('expense'),
-        assets=Sum('asset'), liabilities=Sum('liability'),
-        balance=Sum(F('income')-F('expense')),
-        net=Sum(F('asset')-F('liability')),
+        incomes=Sum('income', default=0), expenses=Sum('expense', default=0),
+        assets=Sum('asset', default=0),
+        liabilities=Sum('liability', default=0),
+        balance=Sum(F('income')-F('expense'), default=0),
+        net=Sum(F('asset')-F('liability'), default=0),
     )
 
     incomings = q.exclude(income=0).values(
         'credit__id', 'credit__name'
-    ).annotate(sum=Sum('income')).order_by('-sum')
+    ).annotate(sum=Sum('income', default=0)).order_by('-sum')
 
     outgoings = q.exclude(expense=0).values(
         'debit__id', 'debit__name'
-    ).annotate(sum=Sum('expense')).order_by('-sum')
+    ).annotate(sum=Sum('expense', default=0)).order_by('-sum')
 
     tags = Tag.objects.all()
     grouped_accounts = account.grouped_objects()
@@ -163,7 +164,7 @@ def _chart_data_lines(query, start, end, incomings, outgoings):
 
 def _chart_data_balance(query, *keys):
     q = query.values(*keys).annotate(
-        data1=Sum('income'), data2=Sum('expense')
+        data1=Sum('income', default=0), data2=Sum('expense', default=0)
     ).order_by(*keys)
 
     label1 = _('Incoming')
@@ -177,7 +178,7 @@ def _chart_data_balance(query, *keys):
 
 def _chart_data_asset(query, *keys):
     q = query.values(*keys).annotate(
-        data1=Sum('asset'), data2=Sum('liability')
+        data1=Sum('asset', default=0), data2=Sum('liability', default=0)
     ).order_by(*keys)
 
     label1 = _('Asset')
@@ -234,7 +235,7 @@ def _chart_data_2lines(query, accumulated, label1, label2, *keys):
 def _chart_data_incoming(label, query, *keys):
     q = query.values(
         *keys, 'credit__id', 'credit__name',
-    ).annotate(sum=Sum('income')).order_by(*keys)
+    ).annotate(sum=Sum('income', default=0)).order_by(*keys)
 
     return {
         'normal': _chart_data_stacked(label, q, False, 'credit', *keys),
@@ -245,7 +246,7 @@ def _chart_data_incoming(label, query, *keys):
 def _chart_data_outgoing(label, query, *keys):
     q = query.values(
         *keys, 'debit__id', 'debit__name',
-    ).annotate(sum=Sum('expense')).order_by(*keys)
+    ).annotate(sum=Sum('expense', default=0)).order_by(*keys)
 
     return {
         'normal': _chart_data_stacked(label, q, False, 'debit', *keys),
