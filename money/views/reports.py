@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from django_filters import OrderingFilter
 
 from ..models import Journal, Tag
-from .shared import account, chart, date, journal, pagination
+from .shared import account, chart, date, journal
 
 INDEX_PER_PAGE = 20
 INDEX_DEFAULT_SORT = '-date'
@@ -51,7 +51,7 @@ def index(request):
     paginator = Paginator(q, INDEX_PER_PAGE)
 
     return render(request, 'money/reports/index.html', {
-        'page': pagination.page(paginator, n), 'total': paginator.count,
+        'page': paginator.get_page(n), 'total': paginator.count,
     })
 
 
