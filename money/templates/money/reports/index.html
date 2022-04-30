@@ -6,6 +6,7 @@
 {% load i18n %}
 
 {% load html %}
+{% load sort %}
 {% load url %}
 
 {% block head %}
@@ -41,10 +42,10 @@
 <table class="table table-sm">
   <thead>
     <tr>
-      <th><a href="?{% url_params_sort 'date' %}" class="text-decoration-none">{% trans 'Period' %}</a></th>
-      <th class="text-end"><a href="?{% url_params_sort 'income' %}" class="text-decoration-none">{% trans 'Incoming' %}</a></th>
-      <th class="text-end"><a href="?{% url_params_sort 'expense' %}" class="text-decoration-none">{% trans 'Outgoing' %}</a></th>
-      <th class="text-end"><a href="?{% url_params_sort 'balance' %}" class="text-decoration-none">{% trans 'Balance' %}</a></th>
+      <th><a href="?{% sort_url_params 'date' %}" class="text-decoration-none">{% trans 'Period' %}</a> {% sort_icon 'date' %}</th>
+      <th class="text-end"><a href="?{% sort_url_params 'income' %}" class="text-decoration-none">{% trans 'Incoming' %}</a> {% sort_icon 'income' %}</th>
+      <th class="text-end"><a href="?{% sort_url_params 'expense' %}" class="text-decoration-none">{% trans 'Outgoing' %}</a> {% sort_icon 'expense' %}</th>
+      <th class="text-end"><a href="?{% sort_url_params 'balance' %}" class="text-decoration-none">{% trans 'Balance' %}</a> {% sort_icon 'balance' %}</th>
       <th colspan="2"></th>
     </tr>
   </thead>

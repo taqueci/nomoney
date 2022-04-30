@@ -11,7 +11,7 @@ from django.utils.translation import gettext_lazy as _
 
 from ..forms import JournalForm
 from ..models import Journal, Tag, Template
-from .shared import access, account, model, pagination
+from .shared import access, account, model
 from .shared.journal import Filter
 
 INDEX_PER_PAGE = 20
@@ -38,7 +38,7 @@ def index(request):
     paginator = Paginator(q, INDEX_PER_PAGE)
 
     return render(request, 'money/journals/index.html', {
-        'page': pagination.page(paginator, n), 'total': paginator.count,
+        'page': paginator.get_page(n), 'total': paginator.count,
         'entry_sets': entry_sets, 'accounts': grouped_accounts, 'tags': tags,
     })
 

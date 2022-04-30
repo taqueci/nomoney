@@ -7,6 +7,7 @@
 
 {% load access %}
 {% load html %}
+{% load sort %}
 {% load url %}
 
 {% load journal %}
@@ -45,13 +46,13 @@
 <table class="table">
   <thead>
     <tr>
-      <th><a href="?{% url_params_sort 'id' %}" class="text-decoration-none">#</a></th>
-      <th><a href="?{% url_params_sort 'date' %}" class="text-decoration-none">{% trans 'Date' %}</a></th>
-      <th><a href="?{% url_params_sort 'debit' %}" class="text-decoration-none">{% trans 'Debit' %}</a></th>
-      <th><a href="?{% url_params_sort 'credit' %}" class="text-decoration-none">{% trans 'Credit' %}</a></th>
-      <th class="text-end"><a href="?{% url_params_sort 'amount' %}" class="text-decoration-none">{% trans 'Amount' %}</a></th>
+      <th><a href="?{% sort_url_params 'id' %}" class="text-decoration-none">#</a> {% sort_icon 'id' %}</th>
+      <th><a href="?{% sort_url_params 'date' %}" class="text-decoration-none">{% trans 'Date' %}</a> {% sort_icon 'date' %}</th>
+      <th><a href="?{% sort_url_params 'debit' %}" class="text-decoration-none">{% trans 'Debit' %}</a> {% sort_icon 'debit' %}</th>
+      <th><a href="?{% sort_url_params 'credit' %}" class="text-decoration-none">{% trans 'Credit' %}</a> {% sort_icon 'credit' %}</th>
+      <th class="text-end"><a href="?{% sort_url_params 'amount' %}" class="text-decoration-none">{% trans 'Amount' %}</a> {% sort_icon 'amount' %}</th>
       <th></th>
-      <th><a href="?{% url_params_sort 'summary' %}" class="text-decoration-none">{% trans 'Summary' %}</a></th>
+      <th><a href="?{% sort_url_params 'summary' %}" class="text-decoration-none">{% trans 'Summary' %}</a> {% sort_icon 'summary' %}</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -107,12 +108,12 @@
 {% endwith %}
 
 <div class="d-flex flex-wrap justify-content-end mb-2">
-  <div class="ms-3"><i class="fas fa-sort me-1"></i> <a href="?{% url_params_sort 'id' %}" class="text-decoration-none">ID</a></div>
-  <div class="ms-3"><i class="fas fa-sort me-1"></i> <a href="?{% url_params_sort 'date' %}" class="text-decoration-none">{% trans 'Date' %}</a></div>
-  <div class="ms-3"><i class="fas fa-sort me-1"></i> <a href="?{% url_params_sort 'debit' %}" class="text-decoration-none">{% trans 'Debit' %}</a></div>
-  <div class="ms-3"><i class="fas fa-sort me-1"></i> <a href="?{% url_params_sort 'credit' %}" class="text-decoration-none">{% trans 'Credit' %}</a></div>
-  <div class="ms-3"><i class="fas fa-sort me-1"></i> <a href="?{% url_params_sort 'amount' %}" class="text-decoration-none">{% trans 'Amount' %}</a></div>
-  <div class="ms-3"><i class="fas fa-sort me-1"></i> <a href="?{% url_params_sort 'summary' %}" class="text-decoration-none">{% trans 'Summary' %}</a></div>
+  <div class="ms-3"><i class="fas fa-sort me-1"></i> <a href="?{% sort_url_params 'id' %}" class="text-decoration-none">ID</a></div>
+  <div class="ms-3"><i class="fas fa-sort me-1"></i> <a href="?{% sort_url_params 'date' %}" class="text-decoration-none">{% trans 'Date' %}</a></div>
+  <div class="ms-3"><i class="fas fa-sort me-1"></i> <a href="?{% sort_url_params 'debit' %}" class="text-decoration-none">{% trans 'Debit' %}</a></div>
+  <div class="ms-3"><i class="fas fa-sort me-1"></i> <a href="?{% sort_url_params 'credit' %}" class="text-decoration-none">{% trans 'Credit' %}</a></div>
+  <div class="ms-3"><i class="fas fa-sort me-1"></i> <a href="?{% sort_url_params 'amount' %}" class="text-decoration-none">{% trans 'Amount' %}</a></div>
+  <div class="ms-3"><i class="fas fa-sort me-1"></i> <a href="?{% sort_url_params 'summary' %}" class="text-decoration-none">{% trans 'Summary' %}</a></div>
 </div>
 
 <div class="list-group mb-4">

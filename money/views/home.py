@@ -20,13 +20,13 @@ def index(request):
     q = Journal.objects.available().filter(date__gte=start, date__lte=end)
 
     summary = q.aggregate(
-        income=Sum('income'), expense=Sum('expense'),
-        balance=Sum(F('income')-F('expense')),
+        income=Sum('income', default=0), expense=Sum('expense', default=0),
+        balance=Sum(F('income')-F('expense'), default=0),
     )
 
     outgoings = q.exclude(expense=0).values(
         'debit__id', 'debit__name'
-    ).annotate(sum=Sum('expense')).order_by('-sum')
+    ).annotate(sum=Sum('expense', default=0)).order_by('-sum')
 
     return render(request, 'money/home/index.html', {
         'start': start, 'end': end,
