@@ -22,6 +22,8 @@ class Filter(journal.Filter):
         fields=(
             ('income', 'income'), ('expense', 'expense'),
             ('balance', 'balance'),
+            ('year', 'year'), ('month', 'month'),
+            ('week', 'week'), ('date', 'date'),
         )
     )
 
@@ -29,24 +31,17 @@ class Filter(journal.Filter):
 def index(request):
     n = request.GET.get('page')
     param = _index_query_param(request.GET.get('unit'))
+    fields = param['fields']
 
     q = Journal.objects.available()
 
-    q = q.values(*param['fields']).annotate(
+    q = q.values(*fields).annotate(
         label=param['label'],
         income=Sum('income', default=0), expense=Sum('expense', default=0),
         balance=F('income')-F('expense'),
     )
 
-    q = Filter(request.GET, queryset=q).qs
-
-    sort = request.GET.get('sort', INDEX_DEFAULT_SORT)
-
-    if sort in ('date', '-date'):
-        q = q.order_by(*param['fields'])
-
-        if sort == '-date':
-            q = q.reverse()
+    q = Filter(_index_query_dict(request.GET, fields), queryset=q).qs
 
     paginator = Paginator(q, INDEX_PER_PAGE)
 
@@ -89,6 +84,28 @@ def show(request, pk):  # pylint: disable=unused-argument
         'data_charts': _chart_data_lines(q, start, end, incomings, outgoings),
         'accounts': grouped_accounts, 'tags': tags,
     })
+
+
+def _index_query_dict(data, fields):
+    val = data.get('sort')
+
+    if val is None:
+        return data
+
+    params = []
+
+    for x in val.split(','):
+        if x == 'date':
+            params.extend(fields)
+        elif x == '-date':
+            params.extend([f'-{x}' for x in fields])
+        else:
+            params.append(x)
+
+    qd = data.copy()
+    qd['sort'] = ','.join(params)
+
+    return qd
 
 
 def _index_query_param(unit):
