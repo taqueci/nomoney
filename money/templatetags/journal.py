@@ -47,6 +47,15 @@ def journal_html_selected_if_has_tag(obj, tag):
 
 @register.filter
 def journal_filter_items(request):
+    SORT_LABEL = {
+        'id': 'ID',
+        'date': _('Date'),
+        'debit': _('Debit'),
+        'credit': _('Credit'),
+        'amount': _('Amount'),
+        'summary': _('Summary'),
+    }
+
     items = []
 
     f_keyword = request.GET.get('keyword')
@@ -58,39 +67,56 @@ def journal_filter_items(request):
     f_max = request.GET.get('max')
     f_min = request.GET.get('min')
     f_tags = request.GET.getlist('tag')
+    f_sort = request.GET.get('sort')
 
     if f_keyword:
-        items.append({'key': _('Keyword'), 'value': f_keyword})
+        items.append({
+            'icon': 'filter', 'key': _('Keyword'), 'value': f_keyword
+        })
 
     if f_start:
-        items.append({'key': _('Start date'), 'value': f_start})
+        items.append({
+            'icon': 'filter', 'key': _('Start date'), 'value': f_start
+        })
 
     if f_end:
-        items.append({'key': _('End date'), 'value': f_end})
+        items.append({'icon': 'filter', 'key': _('End date'), 'value': f_end})
 
     for x in f_entries:
         label_d = Account.Entry(int(int(x) / 10)).label
         label_c = Account.Entry(int(x) % 10).label
 
-        items.append({'key': _('Entry'), 'value': f'{label_d} / {label_c}'})
+        items.append({
+            'icon': 'filter', 'key': _('Entry'),
+            'value': f'{label_d} / {label_c}'
+        })
 
     for x in Account.objects.filter(id__in=f_debits):
-        items.append({'key': _('Debit'), 'value': x.name})
+        items.append({'icon': 'filter', 'key': _('Debit'), 'value': x.name})
 
     for x in Account.objects.filter(id__in=f_credits):
-        items.append({'key': _('Credit'), 'value': x.name})
+        items.append({'icon': 'filter', 'key': _('Credit'), 'value': x.name})
 
     if f_max and f_max.isdecimal():
         items.append({
-            'key': _('Max amount'), 'value': f'{int(f_max):,}'
+            'icon': 'filter', 'key': _('Max amount'),
+            'value': f'{int(f_max):,}'
         })
 
     if f_min and f_min.isdecimal():
         items.append({
-            'key': _('Min amount'), 'value': f'{int(f_min):,}'
+            'icon': 'filter', 'key': _('Min amount'),
+            'value': f'{int(f_min):,}'
         })
 
     for x in Tag.objects.filter(id__in=f_tags):
-        items.append({'key': _('Tag'), 'value': x.name})
+        items.append({'icon': 'filter', 'key': _('Tag'), 'value': x.name})
+
+    for x in f_sort.split(',') if f_sort else []:
+        key, val = (x[1:], '&uarr;') if x.startswith('-') else (x, '&darr;')
+
+        items.append({
+            'icon': 'sort', 'key': SORT_LABEL[key], 'value': val
+        })
 
     return items

@@ -100,7 +100,7 @@
 <div class="mb-2 bg-light rounded px-3 py-2">
   {% for x in items %}
   <div class="d-inline-block me-2">
-    <small><i class="fas fa-filter"></i> <strong class="me-1">{{ x.key }}</strong> {{ x.value}}</small>
+    <small><i class="fas fa-{{ x.icon }}"></i> <strong class="me-1">{{ x.key }}</strong> {{ x.value|safe }}</small>
   </div>
   {% endfor %}
 </div>
