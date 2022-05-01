@@ -252,6 +252,8 @@
 </div>
 {% endif %}
 
+<input type="hidden" name="sort" value="{{ request.GET.sort }}">
+
 </form>
 
 <a class="btn btn-secondary mt-2" href="{% url 'money:journals' %}"><i class="fas fa-ban"></i> {% trans 'Reset' %}</a>
