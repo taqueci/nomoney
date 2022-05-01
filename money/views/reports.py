@@ -87,11 +87,7 @@ def show(request, pk):  # pylint: disable=unused-argument
 
 
 def _index_query_dict(data, fields):
-    val = data.get('sort')
-
-    if val is None:
-        return data
-
+    val = data.get('sort', INDEX_DEFAULT_SORT)
     params = []
 
     for x in val.split(','):
