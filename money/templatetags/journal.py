@@ -8,6 +8,15 @@ from ..views.shared import journal
 
 register = template.Library()
 
+SORT_LABEL = {
+    'id': 'ID',
+    'date': _('Date'),
+    'debit': _('Debit'),
+    'credit': _('Credit'),
+    'amount': _('Amount'),
+    'summary': _('Summary'),
+}
+
 
 @register.filter
 def journal_category_text(obj):
@@ -47,15 +56,6 @@ def journal_html_selected_if_has_tag(obj, tag):
 
 @register.filter
 def journal_filter_items(request):
-    SORT_LABEL = {
-        'id': 'ID',
-        'date': _('Date'),
-        'debit': _('Debit'),
-        'credit': _('Credit'),
-        'amount': _('Amount'),
-        'summary': _('Summary'),
-    }
-
     items = []
 
     f_keyword = request.GET.get('keyword')
@@ -113,10 +113,12 @@ def journal_filter_items(request):
         items.append({'icon': 'filter', 'key': _('Tag'), 'value': x.name})
 
     for x in f_sort.split(',') if f_sort else []:
-        key, val = (x[1:], '&uarr;') if x.startswith('-') else (x, '&darr;')
-
-        items.append({
-            'icon': 'sort', 'key': SORT_LABEL[key], 'value': val
-        })
+        items.append(_sort_item(x))
 
     return items
+
+
+def _sort_item(arg):
+    key, val = (arg[1:], '&uarr;') if arg.startswith('-') else (arg, '&darr;')
+
+    return {'icon': 'sort', 'key': SORT_LABEL[key], 'value': val}

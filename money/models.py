@@ -85,9 +85,6 @@ class Journal(models.Model):
     fy = models.IntegerField(
         blank=True, default=0, editable=False, verbose_name=_('Financial year')
     )
-    year = models.IntegerField(blank=True, default=0, editable=False)
-    month = models.IntegerField(blank=True, default=0, editable=False)
-    week = models.IntegerField(blank=True, default=0, editable=False)
 
     enabled = models.BooleanField(default=True)
 
@@ -116,10 +113,6 @@ class Journal(models.Model):
         self.fy = date.fy(
             self.date, settings.FY_START_MONTH, settings.FY_START_DAY
         )
-
-        self.year = self.date.year
-        self.month = self.date.month
-        self.week = self.date.isocalendar()[1]
 
         super().save(*args, **kwargs)
 
