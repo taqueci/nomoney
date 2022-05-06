@@ -33,7 +33,7 @@ def index(request):
 
     q = Journal.objects.available()
 
-    q = q.values('date__year').annotate(
+    q = q.values('date__iso_year').annotate(
         date=Trunc('date', unit),
         income=Sum('income', default=0), expense=Sum('expense', default=0),
         balance=F('income')-F('expense'),
@@ -122,7 +122,7 @@ def _chart_data(query, incomings, outgoings, unit):
 
 
 def _chart_data_balance(query, unit):
-    q = query.values('date__year').annotate(
+    q = query.values('date__iso_year').annotate(
         date=Trunc('date', unit),
         data1=Sum('income', default=0), data2=Sum('expense', default=0)
     ).order_by('date')
@@ -137,7 +137,7 @@ def _chart_data_balance(query, unit):
 
 
 def _chart_data_asset(query, unit):
-    q = query.values('date__year').annotate(
+    q = query.values('date__iso_year').annotate(
         date=Trunc('date', unit),
         data1=Sum('asset', default=0), data2=Sum('liability', default=0)
     ).order_by('date')
