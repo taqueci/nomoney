@@ -3,8 +3,8 @@
 import datetime
 
 from django.core.paginator import Paginator
-from django.db.models import CharField, F, Sum, Value
-from django.db.models.functions import Concat
+from django.db.models import F, Sum
+from django.db.models.functions import Trunc
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django_filters import OrderingFilter
@@ -14,7 +14,7 @@ from .shared import account, chart, date, journal
 
 INDEX_PER_PAGE = 20
 INDEX_DEFAULT_SORT = '-date'
-INDEX_DEFAULT_UNIT = 'annual'
+INDEX_DEFAULT_UNIT = 'year'
 
 
 class Filter(journal.Filter):
@@ -22,26 +22,24 @@ class Filter(journal.Filter):
         fields=(
             ('income', 'income'), ('expense', 'expense'),
             ('balance', 'balance'),
-            ('year', 'year'), ('month', 'month'),
-            ('week', 'week'), ('date', 'date'),
+            ('date', 'date'),
         )
     )
 
 
 def index(request):
     n = request.GET.get('page')
-    param = _index_query_param(request.GET.get('unit'))
-    fields = param['fields']
+    unit = _unit(request.GET.get('unit'))
 
     q = Journal.objects.available()
 
-    q = q.values(*fields).annotate(
-        label=param['label'],
+    q = q.values('date__year').annotate(
+        date=Trunc('date', unit),
         income=Sum('income', default=0), expense=Sum('expense', default=0),
         balance=F('income')-F('expense'),
-    )
+    ).order_by(INDEX_DEFAULT_SORT)
 
-    q = Filter(_index_query_dict(request.GET, fields), queryset=q).qs
+    q = Filter(request.GET, queryset=q).qs
 
     paginator = Paginator(q, INDEX_PER_PAGE)
 
@@ -86,47 +84,10 @@ def show(request, pk):  # pylint: disable=unused-argument
     })
 
 
-def _index_query_dict(data, fields):
-    val = data.get('sort', INDEX_DEFAULT_SORT)
-    params = []
+def _unit(unit):
+    unit_choices = ('year', 'month', 'week', 'day')
 
-    for x in val.split(','):
-        if x == 'date':
-            params.extend(fields)
-        elif x == '-date':
-            params.extend([f'-{x}' for x in fields])
-        else:
-            params.append(x)
-
-    qd = data.copy()
-    qd['sort'] = ','.join(params)
-
-    return qd
-
-
-def _index_query_param(unit):
-    params = {
-        'annual': {
-            'fields': ('year', ), 'label': F('year')
-        },
-        'monthly': {
-            'fields': ('year', 'month'),
-            'label': Concat(
-                F('year'), Value('-'), F('month'), output_field=CharField()
-            )
-        },
-        'weekly': {
-            'fields': ('year', 'week'),
-            'label': Concat(
-                F('year'), Value('-W'), F('week'), output_field=CharField()
-            )
-        },
-        'daily': {
-            'fields': ('year', 'date'), 'label': F('date')
-        },
-    }
-
-    return params.get(unit, params[INDEX_DEFAULT_UNIT])
+    return unit if unit in unit_choices else INDEX_DEFAULT_UNIT
 
 
 def _chart_data_lines(query, start, end, incomings, outgoings):
@@ -138,72 +99,59 @@ def _chart_data_lines(query, start, end, incomings, outgoings):
     data = {}
 
     if days >= 365:
-        data['annual'] = {
-            'balance': _chart_data_balance(query, 'year'),
-            'asset': _chart_data_asset(query, 'year'),
-            'incoming': _chart_data_incoming(incomings, query, 'year'),
-            'outgoing': _chart_data_outgoing(outgoings, query, 'year'),
-        }
+        data['annual'] = _chart_data(query, incomings, outgoings, 'year')
     else:
-        data['daily'] = {
-            'balance': _chart_data_balance(query, 'date'),
-            'asset': _chart_data_asset(query, 'date'),
-            'incoming': _chart_data_incoming(incomings, query, 'date'),
-            'outgoing': _chart_data_outgoing(outgoings, query, 'date'),
-        }
+        data['daily'] = _chart_data(query, incomings, outgoings, 'day')
 
     if days > 31:
-        data['monthly'] = {
-            'balance': _chart_data_balance(query, 'year', 'month'),
-            'asset': _chart_data_asset(query, 'year', 'month'),
-            'incoming': _chart_data_incoming(
-                incomings, query, 'year', 'month'
-            ),
-            'outgoing': _chart_data_outgoing(
-                outgoings, query, 'year', 'month'
-            ),
-        }
+        data['monthly'] = _chart_data(query, incomings, outgoings, 'month')
 
     if 365 * 5 >= days > 7:
-        data['weekly'] = {
-            'balance': _chart_data_balance(query, 'year', 'week'),
-            'asset': _chart_data_asset(query, 'year', 'week'),
-            'incoming': _chart_data_incoming(incomings, query, 'year', 'week'),
-            'outgoing': _chart_data_outgoing(outgoings, query, 'year', 'week'),
-        }
+        data['weekly'] = _chart_data(query, incomings, outgoings, 'week')
 
     return data
 
 
-def _chart_data_balance(query, *keys):
-    q = query.values(*keys).annotate(
+def _chart_data(query, incomings, outgoings, unit):
+    return {
+        'balance': _chart_data_balance(query, unit),
+        'asset': _chart_data_asset(query, unit),
+        'incoming': _chart_data_incoming(incomings, query, unit),
+        'outgoing': _chart_data_outgoing(outgoings, query, unit),
+    }
+
+
+def _chart_data_balance(query, unit):
+    q = query.values('date__year').annotate(
+        date=Trunc('date', unit),
         data1=Sum('income', default=0), data2=Sum('expense', default=0)
-    ).order_by(*keys)
+    ).order_by('date')
 
     label1 = _('Incoming')
     label2 = _('Outgoing')
 
     return {
-        'normal': _chart_data_2lines(q, False, label1, label2, *keys),
-        'accumulated': _chart_data_2lines(q, True, label1, label2, *keys),
+        'normal': _chart_data_2lines(q, False, label1, label2),
+        'accumulated': _chart_data_2lines(q, True, label1, label2),
     }
 
 
-def _chart_data_asset(query, *keys):
-    q = query.values(*keys).annotate(
+def _chart_data_asset(query, unit):
+    q = query.values('date__year').annotate(
+        date=Trunc('date', unit),
         data1=Sum('asset', default=0), data2=Sum('liability', default=0)
-    ).order_by(*keys)
+    ).order_by('date')
 
     label1 = _('Asset')
     label2 = _('Liability')
 
     return {
-        'normal': _chart_data_2lines(q, False, label1, label2, *keys),
-        'accumulated': _chart_data_2lines(q, True, label1, label2, *keys),
+        'normal': _chart_data_2lines(q, False, label1, label2),
+        'accumulated': _chart_data_2lines(q, True, label1, label2),
     }
 
 
-def _chart_data_2lines(query, accumulated, label1, label2, *keys):
+def _chart_data_2lines(query, accumulated, label1, label2):
     data = {
         'datasets': [{
             'label': label1,
@@ -232,7 +180,7 @@ def _chart_data_2lines(query, accumulated, label1, label2, *keys):
     val_y2 = 0
 
     for x in query:
-        val_x = _chart_data_val_x(x, *keys)
+        val_x = x['date']
         val_y1 = x['data1'] + val_y1 if accumulated else x['data1']
         val_y2 = x['data2'] + val_y2 if accumulated else x['data2']
 
@@ -245,29 +193,33 @@ def _chart_data_2lines(query, accumulated, label1, label2, *keys):
     return data
 
 
-def _chart_data_incoming(label, query, *keys):
+def _chart_data_incoming(label, query, unit):
     q = query.values(
-        *keys, 'credit__id', 'credit__name',
-    ).annotate(sum=Sum('income', default=0)).order_by(*keys)
+        'credit__id', 'credit__name',
+    ).annotate(
+        date=Trunc('date', unit), sum=Sum('income', default=0)
+    ).order_by('date')
 
     return {
-        'normal': _chart_data_stacked(label, q, False, 'credit', *keys),
-        'accumulated': _chart_data_stacked(label, q, True, 'credit', *keys),
+        'normal': _chart_data_stacked(label, q, False, 'credit'),
+        'accumulated': _chart_data_stacked(label, q, True, 'credit'),
     }
 
 
-def _chart_data_outgoing(label, query, *keys):
+def _chart_data_outgoing(label, query, unit):
     q = query.values(
-        *keys, 'debit__id', 'debit__name',
-    ).annotate(sum=Sum('expense', default=0)).order_by(*keys)
+        'debit__id', 'debit__name',
+    ).annotate(
+        date=Trunc('date', unit), sum=Sum('expense', default=0)
+    ).order_by('date')
 
     return {
-        'normal': _chart_data_stacked(label, q, False, 'debit', *keys),
-        'accumulated': _chart_data_stacked(label, q, True, 'debit', *keys),
+        'normal': _chart_data_stacked(label, q, False, 'debit'),
+        'accumulated': _chart_data_stacked(label, q, True, 'debit'),
     }
 
 
-def _chart_data_stacked(label, query, accumulated, field, *keys):
+def _chart_data_stacked(label, query, accumulated, field):
     # pylint: disable=too-many-locals
 
     field_id = field + '__id'
@@ -290,7 +242,7 @@ def _chart_data_stacked(label, query, accumulated, field, *keys):
     data = {}
 
     for x in query:
-        val_x = _chart_data_val_x(x, *keys)
+        val_x = x['date']
         pk = x[field_id]
 
         for y in datasets:
@@ -310,16 +262,3 @@ def _chart_data_stacked(label, query, accumulated, field, *keys):
             d['_sum'] += y
 
     return {'datasets': datasets}
-
-
-def _chart_data_val_x(obj, *keys):
-    if keys[0] == 'date':
-        return obj['date']
-
-    if len(keys) == 1:
-        return obj['year']
-
-    if keys[1] == 'week':
-        return f'{obj["year"]}W{obj["week"]:02}'
-
-    return f'{obj["year"]}-{obj["month"]:02}'

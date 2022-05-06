@@ -6,6 +6,7 @@
 {% load i18n %}
 
 {% load html %}
+{% load report %}
 {% load sort %}
 {% load url %}
 
@@ -26,10 +27,10 @@
 {% block actions %}
 <div class="d-inline d-lg-none">
   <div class="btn-group btn-group-sm">
-    <a href="{% url 'money:reports' %}?{% url_params unit='annual' %}" class="btn btn-outline-secondary {% html_string_if_eq_query 'unit' 'annual' 'active' %}">{% trans 'Annual' %}</a>
-    <a href="{% url 'money:reports' %}?{% url_params unit='monthly' %}" class="btn btn-outline-secondary {% html_string_if_eq_query 'unit' 'monthly' 'active' %}">{% trans 'Monthly' %}</a>
-    <a href="{% url 'money:reports' %}?{% url_params unit='weekly' %}" class="btn btn-outline-secondary {% html_string_if_eq_query 'unit' 'weekly' 'active' %}">{% trans 'Weekly' %}</a>
-    <a href="{% url 'money:reports' %}?{% url_params unit='daily' %}" class="btn btn-outline-secondary  {% html_string_if_eq_query 'unit' 'daily' 'active' %}">{% trans 'Daily' %}</a>
+    <a href="{% url 'money:reports' %}?{% url_params unit='year' %}" class="btn btn-outline-secondary {% html_string_if_eq_query 'unit' 'year' 'active' %}">{% trans 'Annual' %}</a>
+    <a href="{% url 'money:reports' %}?{% url_params unit='month' %}" class="btn btn-outline-secondary {% html_string_if_eq_query 'unit' 'month' 'active' %}">{% trans 'Monthly' %}</a>
+    <a href="{% url 'money:reports' %}?{% url_params unit='week' %}" class="btn btn-outline-secondary {% html_string_if_eq_query 'unit' 'week' 'active' %}">{% trans 'Weekly' %}</a>
+    <a href="{% url 'money:reports' %}?{% url_params unit='day' %}" class="btn btn-outline-secondary  {% html_string_if_eq_query 'unit' 'day' 'active' %}">{% trans 'Daily' %}</a>
   </div>
 </div>
 {% endblock %}
@@ -52,7 +53,7 @@
   <tbody>
     {% for x in page %}
     <tr>
-      <td>{{ x.label }}</td>
+      <td>{% report_item_label x.date %}</td>
       <td class="text-end">{{ x.income|intcomma }}</td>
       <td class="text-end">{{ x.expense|intcomma }}</td>
       <td class="text-end">
@@ -68,10 +69,10 @@
         {% endif %}
       </td>
       <td class="px-2 text-end">
-        <span data-bs-toggle="tooltip" title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?{% url_params_period year=x.year month=x.month|default:None week=x.week|default:None date=x.date|default:None %}"><i class="fas fa-list fa-fw"></i></a></span>
+        <span data-bs-toggle="tooltip" title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?{% url_params_period x.date %}"><i class="fas fa-list fa-fw"></i></a></span>
       </td>
       <td class="px-2 text-end">
-        <span data-bs-toggle="tooltip" title="{% trans 'Show charts' %}"><a href="{% url 'money:report' 0 %}?{% url_params_period year=x.year month=x.month|default:None week=x.week|default:None date=x.date|default:None %}"><i class="fas fa-chart-pie fa-fw"></i></a></span>
+        <span data-bs-toggle="tooltip" title="{% trans 'Show charts' %}"><a href="{% url 'money:report' 0 %}?{% url_params_period x.date %}"><i class="fas fa-chart-pie fa-fw"></i></a></span>
       </td>
     </tr>
     {% endfor %}
@@ -87,25 +88,25 @@
 <h5 class="border-bottom pb-2 mb-3"><i class="fas fa-sliders-h fa-fw"></i> {% trans 'Setting' %}</h5>
 
 <div class="form-check">
-  <input class="form-check-input" type="radio" name="unit" value="annual" id="unitAnnual" checked>
+  <input class="form-check-input" type="radio" name="unit" value="year" id="unitAnnual" checked>
   <label class="form-check-label" for="unitAnnual">
     {% trans 'Annual' %}
   </label>
 </div>
 <div class="form-check">
-  <input class="form-check-input" type="radio" name="unit" value="monthly" id="unitMonthly" {% html_string_if_eq_query 'unit' 'monthly' 'checked' %}>
+  <input class="form-check-input" type="radio" name="unit" value="month" id="unitMonthly" {% html_string_if_eq_query 'unit' 'month' 'checked' %}>
   <label class="form-check-label" for="unitMonthly">
     {% trans 'Monthly' %}
   </label>
 </div>
 <div class="form-check">
-  <input class="form-check-input" type="radio" name="unit" value="weekly" id="unitWeekly" {% html_string_if_eq_query 'unit' 'weekly' 'checked' %}>
+  <input class="form-check-input" type="radio" name="unit" value="week" id="unitWeekly" {% html_string_if_eq_query 'unit' 'week' 'checked' %}>
   <label class="form-check-label" for="unitWeekly">
     {% trans 'Weekly' %}
   </label>
 </div>
 <div class="form-check">
-  <input class="form-check-input" type="radio" name="unit" value="daily" id="unitDaily" {% html_string_if_eq_query 'unit' 'daily' 'checked' %}>
+  <input class="form-check-input" type="radio" name="unit" value="day" id="unitDaily" {% html_string_if_eq_query 'unit' 'day' 'checked' %}>
   <label class="form-check-label" for="unitDaily">
     {% trans 'Daily' %}
   </label>

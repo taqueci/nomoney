@@ -79,8 +79,7 @@ def _date_for_month(src, dest):
 
 def period(year, month=None, week=None):
     if week is not None:
-        s = datetime.datetime.strptime(f'{year}-W{week-1}-1',
-                                       '%Y-W%W-%w').date()
+        s = datetime.datetime.strptime(f'{year}-W{week}-1', '%Y-W%W-%w').date()
         e = s + datetime.timedelta(days=6.9)
 
         return (s, e)

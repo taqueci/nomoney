@@ -23,17 +23,18 @@ def url_params(context, **kwargs):
 
 
 @register.simple_tag(takes_context=True)
-def url_params_period(context, **kwargs):
+def url_params_period(context, date_obj):
     query = context['request'].GET.copy()
+    unit = query.get('unit', 'year')
 
-    d = kwargs.get('date')
-
-    if d:
-        s, e = d, d
+    if unit == 'year':
+        s, e = date.period(date_obj.year, None, None)
+    elif unit == 'month':
+        s, e = date.period(date_obj.year, date_obj.month, None)
+    elif unit == 'week':
+        s, e = date.period(date_obj.year, None, date_obj.isocalendar()[1])
     else:
-        s, e = date.period(
-            kwargs.get('year'), kwargs.get('month'), kwargs.get('week')
-        )
+        s, e = date_obj, date_obj
 
     query['start'] = s.strftime('%Y-%m-%d')
     query['end'] = e.strftime('%Y-%m-%d')
