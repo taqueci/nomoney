@@ -6,9 +6,9 @@
 {% load i18n %}
 
 {% load access %}
-{% load html %}
 {% load sort %}
 {% load url %}
+{% load value %}
 
 {% load journal %}
 
@@ -200,7 +200,7 @@
   <label class="form-label">{% trans 'Entry' %} <small>({% trans 'Debit' %} / {% trans 'Credit' %})</small></label>
   <select name="entry" class="form-control select2" multiple="multiple" size="1">
     {% for x in entry_sets %}
-    <option value="{{ x.value }}" {% html_selected_by_query_list 'entry' x.value %} style="visibility: hidden">{{ x.debit.label }} / {{ x.credit.label }}</option>
+    <option value="{{ x.value }}" {% value_if_eq_query 'entry' x.value 'selected' %} style="visibility: hidden">{{ x.debit.label }} / {{ x.credit.label }}</option>
     {% endfor %}
   </select>
 </div>
@@ -211,7 +211,7 @@
     {% for x in accounts %}
     <optgroup label="{{ x.name }}" style="visibility: hidden">
       {% for y in x.data %}
-      <option value="{{ y.id }}" {% html_selected_by_query_list 'debit' y.id %}>{{ y.name }}</option>
+      <option value="{{ y.id }}" {% value_if_eq_query 'debit' y.id 'selected' %}>{{ y.name }}</option>
       {% endfor %}
     </optgroup>
     {% endfor %}
@@ -224,7 +224,7 @@
     {% for x in accounts %}
     <optgroup label="{{ x.name }}" style="visibility: hidden">
       {% for y in x.data %}
-      <option value="{{ y.id }}" {% html_selected_by_query_list 'credit' y.id %}>{{ y.name }}</option>
+      <option value="{{ y.id }}" {% value_if_eq_query 'credit' y.id 'selected' %}>{{ y.name }}</option>
       {% endfor %}
     </optgroup>
     {% endfor %}
@@ -246,7 +246,7 @@
   <label class="form-label">{% trans 'Tag' %}</label>
   <select name="tag" class="form-control select2" multiple="multiple" size="1">
     {% for x in tags %}
-    <option value="{{ x.id }}" {% html_selected_by_query_list 'tag' x.id %} style="visibility: hidden">{{ x.name }}</option>
+    <option value="{{ x.id }}" {% value_if_eq_query 'tag' x.id 'selected' %} style="visibility: hidden">{{ x.name }}</option>
     {% endfor %}
   </select>
 </div>

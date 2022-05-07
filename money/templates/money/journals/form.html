@@ -3,9 +3,9 @@
 {% load humanize %}
 {% load i18n %}
 
-{% load html %}
 {% load journal %}
 {% load url %}
+{% load value %}
 
 <form method="post">
   {% csrf_token %}
@@ -61,7 +61,7 @@
       {% for x in accounts %}
       <optgroup label="{{ x.name }}">
         {% for y in x.data %}
-        <option value="{{ y.id }}" {% html_selected_if_eq object.debit.id y.id %}>{{ y.name }}</option>
+        <option value="{{ y.id }}" {% value_if_eq object.debit.id y.id 'selected' %}>{{ y.name }}</option>
         {% endfor %}
       </optgroup>
       {% endfor %}
@@ -76,7 +76,7 @@
       {% for x in accounts %}
       <optgroup label="{{ x.name }}">
         {% for y in x.data %}
-        <option value="{{ y.id }}" {% html_selected_if_eq object.credit.id y.id %}>{{ y.name }}</option>
+        <option value="{{ y.id }}" {% value_if_eq object.credit.id y.id 'selected' %}>{{ y.name }}</option>
         {% endfor %}
       </optgroup>
       {% endfor %}
