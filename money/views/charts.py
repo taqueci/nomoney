@@ -43,7 +43,7 @@ def index(request):
 
     paginator = Paginator(q, INDEX_PER_PAGE)
 
-    return render(request, 'money/reports/index.html', {
+    return render(request, 'money/charts/index.html', {
         'page': paginator.get_page(n), 'total': paginator.count,
     })
 
@@ -73,7 +73,7 @@ def show(request, pk):  # pylint: disable=unused-argument
     tags = Tag.objects.all()
     grouped_accounts = account.grouped_objects()
 
-    return render(request, 'money/reports/show.html', {
+    return render(request, 'money/charts/show.html', {
         'object': {'name': _('All')},
         'page': date.range_next_prev(start, end),
         'summary': summary, 'incomings': incomings, 'outgoings': outgoings,
