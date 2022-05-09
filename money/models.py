@@ -2,6 +2,9 @@
 
 """Models for money application."""
 
+import hashlib
+import os
+
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -48,6 +51,42 @@ class Account(models.Model):
         return self.name
 
 
+class Attachment(models.Model):
+    """Attachment model."""
+
+    FILE_PATH_PREFIX = 'attachments'
+
+    def upload_to(self, filename):
+        """ File path for attachment."""
+
+        md5 = self.md5
+
+        return os.path.join(self.FILE_PATH_PREFIX, md5[:2], md5, filename)
+
+    file = models.FileField(upload_to=upload_to)
+    md5 = models.CharField(max_length=36, editable=False)
+
+    author = models.ForeignKey(UserModel, on_delete=models.PROTECT)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.file.name
+
+    def save(self, *args, **kwargs):
+        md5 = hashlib.md5()
+
+        for chunk in self.file.chunks():
+            md5.update(chunk)
+
+        self.md5 = md5.hexdigest()
+
+        super().save(*args, **kwargs)
+
+    @property
+    def base_name(self):
+        return os.path.basename(self.file.name)
+
+
 class Tag(models.Model):
     """Tag model."""
 
@@ -74,6 +113,7 @@ class Journal(models.Model):
     note = models.TextField(null=True, blank=True)
 
     tags = models.ManyToManyField(Tag, blank=True)
+    attachments = models.ManyToManyField(Attachment, blank=True)
 
     asset = models.IntegerField(blank=True, default=0, editable=False)
     liability = models.IntegerField(blank=True, default=0, editable=False)
