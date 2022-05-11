@@ -30,10 +30,11 @@ class Filter(journal.Filter):
 def index(request):
     n = request.GET.get('page')
     unit = _unit(request.GET.get('unit'))
+    field = 'date__iso_year' if unit == 'week' else 'date__year'
 
     q = Journal.objects.available()
 
-    q = q.values('date__iso_year').annotate(
+    q = q.values(field).annotate(
         date=Trunc('date', unit),
         income=Sum('income', default=0), expense=Sum('expense', default=0),
         balance=F('income')-F('expense'),
