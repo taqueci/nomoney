@@ -91,6 +91,16 @@
     -
     {% endfor %}
   </dd>
+  <dt class="col-4">{% trans 'Attachments' %}</dt>
+  <dd class="col-8">
+    <ul class="list-unstyled">
+      {% for x in object.attachments.all %}
+      <li><a href="{{ x.file.url }}" class="text-decoration-none">{{ x.base_name }}</a></li>
+      {% empty %}
+      -
+      {% endfor %}
+    </ul>
+  </dd>
 </dl>
 
 <dl class="row mb-2">

@@ -14,4 +14,5 @@ class JournalForm(forms.ModelForm):
         model = Journal
         fields = (
             'debit', 'credit', 'date', 'amount', 'summary', 'note', 'tags',
+            'attachments',
         )

@@ -6,7 +6,7 @@ from django.contrib import admin
 
 from config.settings import SITE_URL
 
-from .models import Account, Journal, Tag, Template
+from .models import Account, Attachment, Journal, Tag, Template
 
 admin.site.site_url = SITE_URL
 
@@ -18,6 +18,13 @@ class AccountAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'entry', 'rank', 'enabled',)
 
 
+@admin.register(Attachment)
+class AttachmentAdmin(admin.ModelAdmin):
+    """The representation of attachment model."""
+
+    list_display = ('id', 'file', 'author', 'created')
+
+
 @admin.register(Journal)
 class JournalAdmin(admin.ModelAdmin):
     """The representation of journal model."""
@@ -25,7 +32,7 @@ class JournalAdmin(admin.ModelAdmin):
     list_display = (
         'date', 'debit', 'credit', 'amount', 'summary', 'enabled',
     )
-    filter_horizontal = ('tags', )
+    filter_horizontal = ('tags', 'attachments')
 
 
 @admin.register(Tag)

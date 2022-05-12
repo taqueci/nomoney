@@ -128,6 +128,20 @@
   </div>
 </div>
 
+<div class="mb-3 row">
+  <label class="col-sm-3 col-form-label">{% trans 'Attachments' %}</label>
+  <div id="attachments" class="col-sm-9">
+    {% for x in object.attachments.all %}
+    <div class="input-group mb-3">
+      <input type="text" readonly class="form-control" value="{{ x.base_name }}">
+      <input type="hidden" name="attachments" value="{{ x.pk }}">
+      <button class="btn btn-outline-secondary remove-attachment" type="button"><i class="fas fa-trash"></i></button>
+    </div>
+    {% endfor %}
+    <input type="file" name="file" id="new-attachment" class="form-control">
+  </div>
+</div>
+
 <div class="row mt-4">
   <div class="col">
     <button type="submit" class="btn btn-primary me-2"><i class="fas fa-check fa-fw"></i> {% trans 'Submit' %}</button>
@@ -247,6 +261,50 @@ $(function() {
       $('#account-select').children().clone().appendTo(debit);
       $('#account-select').children().clone().appendTo(credit);
     }
+  });
+
+  $('#attachments').on('click', '.remove-attachment', e => {
+    $(e.currentTarget).parent().remove();
+  });
+
+  const fileFormObject = (id, name) => {
+    return $('<div>', {
+      'class': 'input-group mb-3'
+    }).append($('<input>', {
+      type: 'text',
+      readonly: true,
+      'class': 'form-control',
+      value: name
+    })).append($('<input>', {
+      type: 'hidden',
+      name: 'attachments',
+      value: id
+    })).append($('<button>', {
+      type: 'button',
+      'class': 'btn btn-outline-secondary remove-attachment'
+    }).append($('<i>', {
+      'class': 'fas fa-trash'
+    })));
+  };
+
+  $('#new-attachment').on('change', e => {
+    const target = $(e.currentTarget);
+
+    const formData = new FormData()
+    formData.append('file', target.get(0).files[0]);
+
+    $.ajax({
+      url: "{% url 'api:attachments' %}",
+      type: 'POST',
+      headers: {'X-CSRFToken': '{{ csrf_token }}'},
+      data: formData,
+      processData: false,
+      contentType: false,
+      cache: false
+    }).done(data => {
+      target.before(fileFormObject(data.id, data.base_name));
+      target.val(null);
+    });
   });
 });
 </script>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-28 04:36+0000\n"
+"POT-Creation-Date: 2022-05-10 11:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,17 +72,29 @@ msgstr "管理"
 msgid "Logout"
 msgstr "ログアウト"
 
-msgid "Dashboard"
-msgstr "ダッシュボード"
+msgid "Home"
+msgstr "ホーム"
 
-msgid "New"
-msgstr "新規"
+msgid "Report list"
+msgstr "レポートリスト"
 
-msgid "Search"
-msgstr "検索"
+msgid "Annual"
+msgstr "年間"
 
-msgid "Chart"
-msgstr "チャート"
+msgid "Monthly"
+msgstr "マンスリー"
+
+msgid "Weekly"
+msgstr "ウィークリー"
+
+msgid "Daily"
+msgstr "デイリー"
+
+msgid "Total"
+msgstr "合計"
+
+msgid "Period"
+msgstr "期間"
 
 msgid "Incoming"
 msgstr "収入"
@@ -93,23 +105,83 @@ msgstr "支出"
 msgid "Balance"
 msgstr "収支"
 
+msgid "More information"
+msgstr "詳細情報"
+
+msgid "Show charts"
+msgstr "チャートを見る"
+
+msgid "Setting"
+msgstr "設定"
+
+msgid "Filter"
+msgstr "フィルター"
+
+msgid "Start date"
+msgstr "開始日"
+
+msgid "End date"
+msgstr "終了日"
+
+msgid "Reset"
+msgstr "リセット"
+
+msgid "Report"
+msgstr "レポート"
+
+msgid "Previous chart"
+msgstr "前のチャート"
+
+msgid "Next chart"
+msgstr "次のチャート"
+
 msgid "No data"
 msgstr "データがありません"
 
 msgid "Account"
 msgstr "科目"
 
-msgid "More information"
-msgstr "詳細情報"
+msgid "Chart"
+msgstr "チャート"
+
+msgid "Year"
+msgstr "年"
+
+msgid "Month"
+msgstr "月"
+
+msgid "Week"
+msgstr "週"
+
+msgid "Day"
+msgstr "日"
+
+msgid "Max amount"
+msgstr "最高金額"
+
+msgid "Min amount"
+msgstr "最低金額"
+
+msgid "Tag"
+msgstr "タグ"
+
+msgid "Submit"
+msgstr "送信"
+
+msgid "Dashboard"
+msgstr "ダッシュボード"
+
+msgid "New"
+msgstr "新規"
+
+msgid "Search"
+msgstr "検索"
 
 msgid "Recent journals"
 msgstr "最近の記録"
 
 msgid "Edit journal"
 msgstr "記録の編集"
-
-msgid "Home"
-msgstr "ホーム"
 
 msgid "Edit"
 msgstr "編集"
@@ -129,8 +201,8 @@ msgstr "テンプレート"
 msgid "Tags"
 msgstr "タグ"
 
-msgid "Submit"
-msgstr "送信"
+msgid "Attachments"
+msgstr "添付ファイル"
 
 msgid "Cancel"
 msgstr "キャンセル"
@@ -138,32 +210,8 @@ msgstr "キャンセル"
 msgid "Journal list"
 msgstr "記録リスト"
 
-msgid "Filter"
-msgstr "フィルター"
-
-msgid "Total"
-msgstr "合計"
-
 msgid "Keyword"
 msgstr "キーワード"
-
-msgid "Start date"
-msgstr "開始日"
-
-msgid "End date"
-msgstr "終了日"
-
-msgid "Max amount"
-msgstr "最高金額"
-
-msgid "Min amount"
-msgstr "最低金額"
-
-msgid "Tag"
-msgstr "タグ"
-
-msgid "Reset"
-msgstr "リセット"
 
 msgid "Operation"
 msgstr "操作"
@@ -195,59 +243,8 @@ msgstr "更新日"
 msgid "Are you sure you want to delete?"
 msgstr "本当に削除しますか?"
 
-msgid "Report list"
-msgstr "レポートリスト"
-
-msgid "Annual"
-msgstr "年間"
-
-msgid "Monthly"
-msgstr "マンスリー"
-
-msgid "Weekly"
-msgstr "ウィークリー"
-
-msgid "Daily"
-msgstr "デイリー"
-
-msgid "Period"
-msgstr "期間"
-
-msgid "Show charts"
-msgstr "チャートを見る"
-
-msgid "Setting"
-msgstr "設定"
-
-msgid "Report"
-msgstr "レポート"
-
-msgid "Previous chart"
-msgstr "前のチャート"
-
-msgid "Next chart"
-msgstr "次のチャート"
-
-msgid "Assets"
-msgstr "資産"
-
-msgid "Liabilities"
-msgstr "負債"
-
-msgid "Net assets"
-msgstr "純資産"
-
-msgid "Year"
-msgstr "年"
-
-msgid "Month"
-msgstr "月"
-
-msgid "Week"
-msgstr "週"
-
-msgid "Day"
-msgstr "日"
+msgid "All"
+msgstr "すべて"
 
 msgid "New journal has been successfully created"
 msgstr "新しい記録の作成に成功しました"
@@ -266,9 +263,6 @@ msgstr "記録の削除に成功しました"
 
 msgid "Failed to delete journal"
 msgstr "記録の削除に失敗しました"
-
-msgid "All"
-msgstr "すべて"
 
 msgid "Personal info"
 msgstr "個人情報"
