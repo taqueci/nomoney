@@ -13,10 +13,13 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
-from os import environ as env
 from pathlib import Path
 
+import environ
+
 from . import version
+
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,9 +32,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'f28)f6n)+po@miei(tn**ki05n@@5z-caf8y!hrz#&-n8p09i@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.get('H3_DEBUG', 'false') == 'true'
+DEBUG = env.bool('N_DEBUG', default=False)
 
-ALLOWED_HOSTS = env.get('N_ALLOWED_HOSTS', 'localhost').split(',')
+ALLOWED_HOSTS = env.list('N_ALLOWED_HOSTS', default=['localhost'])
 
 
 # Application definition
@@ -90,12 +93,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': env.get('N_DATABASE_ENGINE'),
-        'HOST': env.get('N_DATABASE_HOST'),
-        'PORT': env.get('N_DATABASE_PORT'),
-        'NAME': env.get('N_DATABASE_NAME'),
-        'USER': env.get('N_DATABASE_USER'),
-        'PASSWORD': env.get('N_DATABASE_PASSWORD'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'HOST': env('N_DATABASE_HOST', default=''),
+        'PORT': env('N_DATABASE_PORT', default=''),
+        'NAME': env('N_DATABASE_NAME', default=''),
+        'USER': env('N_DATABASE_USER', default=''),
+        'PASSWORD': env('N_DATABASE_PASSWORD', default=''),
     }
 }
 
@@ -122,9 +125,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = env.get('N_LANGUAGE_CODE', 'en-us')
+LANGUAGE_CODE = env('N_LANGUAGE_CODE', default='en-us')
 
-TIME_ZONE = env.get('N_TIME_ZONE', 'UTC')
+TIME_ZONE = env('N_TIME_ZONE', default='UTC')
 
 USE_I18N = True
 
@@ -132,20 +135,22 @@ USE_L10N = True
 
 USE_TZ = True
 
-URL_PREFIX = env.get('N_URL_PREFIX', '/n')
+URL_PREFIX = env('N_URL_PREFIX', default='/n')
 
 ROUTE_PREFIX = URL_PREFIX[1:]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = env.get('N_STATIC_URL', f'{URL_PREFIX}/static/')
+STATIC_URL = env('N_STATIC_URL', default=f'{URL_PREFIX}/static/')
 
-STATIC_ROOT = env.get('N_STATIC_ROOT', os.path.join(BASE_DIR, 'staticfiles'))
+STATIC_ROOT = env(
+    'N_STATIC_ROOT', default=os.path.join(BASE_DIR, 'staticfiles')
+)
 
-MEDIA_URL = env.get('N_MEDIA_URL', f'{URL_PREFIX}/media/')
+MEDIA_URL = env('N_MEDIA_URL', default=f'{URL_PREFIX}/media/')
 
-MEDIA_ROOT = env.get('N_MEDIA_ROOT',  os.path.join(BASE_DIR, 'media'))
+MEDIA_ROOT = env('N_MEDIA_ROOT',  default=os.path.join(BASE_DIR, 'media'))
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -185,7 +190,7 @@ FY_START_DAY = 1
 
 VERSION = version.VERSION
 
-NAME = env.get('N_NAME', 'NoMoney')
+NAME = env('N_NAME', default='NoMoney')
 
 LOG_FILE = os.path.join(BASE_DIR, 'logs/django.log')
 
