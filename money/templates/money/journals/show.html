@@ -81,7 +81,7 @@
 
 <dl class="row mb-2">
   <dt class="col-4">{% trans 'Note' %}</dt>
-  <dd class="col-8">{{ object.note|default:'-'|linebreaksbr }}</dd>
+  <dd class="col-8">{{ object.note|urlize|default:'-'|linebreaksbr }}</dd>
 
   <dt class="col-4">{% trans 'Tags' %}</dt>
   <dd class="col-8">
