@@ -26,8 +26,8 @@ services:
       POSTGRES_USER: nmoney
       POSTGRES_PASSWORD: nmoney
     volumes:
-      - ./extra/docker/postgresql/init:/docker-entrypoint-initdb.d
-      - ./data/postgresql:/var/lib/postgresql/data
+      - ./_data/postgresql-init:/docker-entrypoint-initdb.d
+      - ./_data/postgresql:/var/lib/postgresql/data
 
   app:
     build: .
