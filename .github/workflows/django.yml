@@ -34,5 +34,5 @@ jobs:
     #     python manage.py test
     - name: Run PyLint
       run: |
-        pip install pylint pylint-django
+        pip install pylint==2.14.5 pylint-django
         pylint config system money api
