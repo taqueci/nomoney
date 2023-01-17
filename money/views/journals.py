@@ -15,7 +15,7 @@ from .shared import access, account, model
 from .shared.journal import Filter
 
 INDEX_PER_PAGE = 20
-INDEX_DEFAULT_SORT = '-date'
+INDEX_DEFAULT_SORT = ('-date', '-id')
 
 POPULAR_ACCOUNT_NUM = 12
 
@@ -25,7 +25,7 @@ FIELDS_NORMALIZED = ('summary', 'note')
 def index(request):
     n = request.GET.get('page')
 
-    q = Journal.objects.available().order_by(INDEX_DEFAULT_SORT)
+    q = Journal.objects.available().order_by(*INDEX_DEFAULT_SORT)
     q = Filter(request.GET, queryset=q).qs
 
     # For performance improvement
