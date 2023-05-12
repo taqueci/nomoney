@@ -1,0 +1,10 @@
+services:
+  web:
+    ports:
+      - "8000:80"
+
+  app:
+    depends_on:
+      - db
+    environment:
+      N_CSRF_TRUSTED_ORIGINS: http://localhost:8000

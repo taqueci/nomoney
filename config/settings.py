@@ -38,6 +38,7 @@ DEBUG = env.bool('N_DEBUG', default=False)
 
 ALLOWED_HOSTS = env.list('N_ALLOWED_HOSTS', default=['localhost'])
 
+CSRF_TRUSTED_ORIGINS = env.list('N_CSRF_TRUSTED_ORIGINS', default=[])
 
 # Application definition
 
@@ -97,7 +98,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'HOST': env('N_DATABASE_HOST', default=''),
-        'PORT': env('N_DATABASE_PORT', default=''),
+        'PORT': env('N_DATABASE_PORT', default='5432'),
         'NAME': env('N_DATABASE_NAME', default=''),
         'USER': env('N_DATABASE_USER', default=''),
         'PASSWORD': env('N_DATABASE_PASSWORD', default=''),

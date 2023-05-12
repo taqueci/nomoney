@@ -4,6 +4,8 @@
 *.orig
 *.tmp
 
+/docker-compose.override.yml
+
 /_data/
 
 # Created by https://www.gitignore.io/api/django
