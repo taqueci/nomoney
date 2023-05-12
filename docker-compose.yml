@@ -4,9 +4,6 @@ services:
   web:
     build:
       context: ./extra/docker/apache
-    container_name: n-web
-    ports:
-      - "8000:80"
     volumes:
       - .:/opt/app
     depends_on:
@@ -15,11 +12,10 @@ services:
       APP_PATH: /n/
       APP_STATIC_PATH: /n/static/
       APP_MEDIA_PATH: /n/media/
-      APP_URL: http://n-app:49152/h3/
+      APP_URL: http://app:49152/n/
 
   db:
     image: postgres:alpine
-    container_name: n-db
     environment:
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
       POSTGRES_DB: nmoney
@@ -31,16 +27,12 @@ services:
 
   app:
     build: .
-    container_name: n-app
     volumes:
       - .:/opt/nomoney
-    depends_on:
-      - db
     environment:
-      N_ALLOWED_HOSTS: n-app
-      N_DATABASE_ENGINE: django.db.backends.postgresql_psycopg2
-      N_DATABASE_HOST: n-db
-      N_DATABASE_PORT: "5432"
+      N_ALLOWED_HOSTS: app
+      N_CSRF_TRUSTED_ORIGINS:
+      N_DATABASE_HOST: db
       N_DATABASE_NAME: nmoney
       N_DATABASE_USER: nmoney
       N_DATABASE_PASSWORD: nmoney
