@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'system',
+    'doc',
     'money',
     'api',
 ]
