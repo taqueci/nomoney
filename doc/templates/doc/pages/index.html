@@ -29,13 +29,23 @@
 {% endblock %}
 
 {% block content %}
+<div id="doc-index"></div>
 {% endblock %}
 
 {% block sidebar %}
+<form method="get" action="{% url 'doc:pages' %}">
+
+<div class="mb-3">
+  <div class="input-group">
+    <input type="text" name="q" class="form-control">
+    <button class="btn btn-secondary" type="submit"><i class="fas fa-search fa-fw"></i></button>
+  </div>
+</div>
+
+</form>
 {% endblock %}
 
 {% block content_full %}
-<div id="doc-index"></div>
 {% endblock %}
 
 {% block js %}

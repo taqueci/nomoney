@@ -5,6 +5,9 @@
 from functools import reduce
 
 from bs4 import BeautifulSoup
+from django.contrib.postgres.search import (
+    SearchHeadline, SearchQuery, SearchRank, SearchVector,
+)
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.http import Http404, HttpResponse, JsonResponse
@@ -69,6 +72,9 @@ def render_page(request, template_name, context=None):
 
 def pages(request):
     """Document index view."""
+    if request.GET.get('q'):
+        return search(request)
+
     lang = request.GET.get('lang', get_language())
     objs = _page_objects(request.user, lang, request.GET.get('all'))
     context = {'objs': _reduced_pages(objs)}
@@ -97,6 +103,27 @@ def page(request, slug):
 
     context = {'obj': obj, 'objs': _reduced_pages(objs)}
     return render_page(request, 'doc/pages/show.html', context)
+
+
+def search(request):
+    """Document search view."""
+    vector = SearchVector('title', 'content')
+    query = SearchQuery(request.GET['q'])
+
+    objs = Page.objects.annotate(
+        rank=SearchRank(vector, query),
+        headline=SearchHeadline(
+            'content',
+            query,
+            start_sel='<mark><span class="text-danger">',
+            stop_sel='</span></mark>',
+        ),
+    ).filter(
+        rank__gt=0,
+        status=Page.Status.PUBLISHED,
+    ).order_by('-rank')
+
+    return render(request, 'doc/pages/search.html', {'objs': objs})
 
 
 def _page_objects(user, lang, all_pages=False):
