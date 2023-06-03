@@ -1,0 +1,35 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% load static %}
+
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{% static 'system/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'system/font/fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'doc/content.css' %}">
+
+    <title>{{ obj.title }}</title>
+  </head>
+
+  <body>
+    <div class="text-center">
+      <h1 class="mb-3">{{ obj.title }}</h1>
+      <small class="text-muted">{{ obj.updated }}</small>
+    </div>
+    <div class="doc-content">
+      {% block content %}
+      {% if content_path %}
+      {% include content_path %}
+      {% else %}
+      {{ obj.content|safe }}
+      {% endif %}
+      {% endblock %}
+    </div>
+  </body>
+
+  <script>{% if action == 'print' %}window.print();{% endif %}</script>
+</html>

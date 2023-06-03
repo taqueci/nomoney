@@ -1,0 +1,117 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% extends 'money/base.html' %}
+
+{% load i18n %}
+{% load static %}
+
+{% load page %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'doc/content.css' %}">
+<style>
+html {
+  scroll-padding-top: 60px;
+}
+</style>
+{% endblock %}
+
+{% block title %}{{ obj.title }} | {{ NAME }}{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{% url 'money:home' %}">{% trans 'Home' %}</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'doc:pages' %}">{% trans 'Documents' %}</a></li>
+  {% for x in obj|page_breadcrumb_items:objs %}
+  {% if forloop.last %}
+  <li class="breadcrumb-item active">{{ x.title }}</li>
+  {% else %}
+  <li class="breadcrumb-item"><a href="{% url 'doc:page' x.slug %}">{{ x.title }}</a></li>
+  {% endif %}
+  {% endfor %}
+</ol>
+{% endblock %}
+
+{% block heading %}{{ obj.title }} {% page_status_badge obj %}{% endblock %}
+
+{% block actions %}
+{% if user.is_superuser %}
+<a href="{% url 'admin:doc_page_add' %}?parent={{ obj.pk }}&language={{ obj.language }}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-plus fa-fw"></i> {% trans 'New' %}</a>
+<a href="{% url 'admin:doc_page_change' obj.pk %}" class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" title="{% trans 'Edit page' %}"><i class="fas fa-edit fa-fw"></i> {% trans 'Edit' %}</a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="doc-content">
+{% if content_path %}
+{% include content_path %}
+{% else %}
+{{ obj.content|safe }}
+{% endif %}
+</div>
+<div class="d-flex flex-wrap mt-5">
+  <div class="d-table d-md-block text-muted">
+    <div class="d-table-row d-md-inline-block">
+      <div class="d-table-cell d-md-inline pe-1">
+        {% trans 'Created on' %}
+      </div>
+      <div class="d-table-cell d-md-inline pe-3">
+        {{ obj.created }}
+      </div>
+    </div>
+    <div class="d-table-row d-md-inline-block">
+      <div class="d-table-cell d-md-inline pe-1">
+        {% trans 'Updated on' %}
+      </div>
+      <div class="d-table-cell d-md-inline pe-3">
+        {{ obj.updated }}
+      </div>
+    </div>
+    <div class="d-table-row d-md-inline-block">
+      <div class="d-table-cell d-md-inline pe-1">
+        {% trans 'Author' %}
+      </div>
+      <div class="d-table-cell d-md-inline pe-3">
+        {{ obj.author }}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<h5 class="border-bottom pb-2 mb-3"><i class="fas fa-book fa-fw"></i> {% trans 'Documents' %}</h5>
+<div id="doc-index"></div>
+
+<div class="my-5"></div>
+
+<h5 class="border-bottom pb-2 mb-3"><i class="fas fa-wrench fa-fw"></i> {% trans 'Operation' %}</h5>
+<ul class="list-unstyled">
+  <li class="py-1"><a href="?export=html&action=print" class="text-decoration-none">{% trans 'Print' %}</a></li>
+</ul>
+{% endblock %}
+
+{% block content_full %}
+{% endblock %}
+
+{% block js %}
+{% include 'doc/js_prismjs.html' %}
+{% include 'doc/js_jstree.html' %}
+<script>
+  $(() => {
+    $('#doc-index').jstree({
+      'core': {
+        'themes': {
+          'icons': false,
+        },
+        'multiple': false,
+        'data': JSON.parse('{{ obj|page_tree_data:objs|safe }}')
+      }
+    }).on('ready.jstree', (e, data) => {
+      $(e.currentTarget).jstree('open_all');
+    }).on('activate_node.jstree', (e, data) => {
+      window.location.href = data.node.a_attr.href;
+    });
+  })
+</script>
+{% endblock %}

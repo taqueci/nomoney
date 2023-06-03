@@ -1,0 +1,25 @@
+.doc-content h1 {
+  font-size: 1.75rem;
+}
+.doc-content h2 {
+  font-size: 1.5rem;
+}
+.doc-content h3 {
+  font-size: 1.375rem;
+}
+.doc-content h4 {
+  font-size: 1.25rem;
+}
+.doc-content h5 {
+  font-size: 1.125rem;
+}
+.doc-content h6 {
+  font-size: 1rem;
+}
+.doc-content img {
+  max-width: 100%;
+  height: auto;
+}
+.doc-toc {
+  margin-bottom: 1.5rem;
+}

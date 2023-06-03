@@ -1,0 +1,15 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'system/css/prism.css' %}">
+<style>
+pre[class*="language-"] {
+  border-radius: .25rem;
+}
+pre code[class*="language-"] {
+  white-space: pre-wrap;
+}
+</style>
+
+<script src="{% static 'system/js/prism.js' %}"></script>
