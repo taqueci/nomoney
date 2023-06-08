@@ -1,0 +1,19 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'system/css/jstree/default/style.min.css' %}">
+<style>
+.jstree-default .jstree-wholerow-clicked {
+  background: #e2e3e5;
+}
+.jstree-default .jstree-wholerow-hovered {
+  background: #cdccce;
+}
+</style>
+
+<script src="{% static 'system/js/jstree.min.js' %}"></script>
+<script>
+$.jstree.defaults.core.themes.variant = 'large';
+$.jstree.defaults.plugins = ['wholerow'];
+</script>

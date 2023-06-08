@@ -1,0 +1,37 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% extends "admin/change_form.html" %}
+
+{% load static %}
+
+{% block footer %}
+{{ block.super }}
+<script src="{% static 'system/js/jquery-3.6.0.min.js' %}"></script>
+<script>
+const filePickerCallback = (callback, value, meta) => {
+  const input = document.createElement('input');
+  input.setAttribute('type', 'file');
+
+  if (meta.filetype == 'image') input.setAttribute('accept', 'image/*');
+
+  input.onchange = () => {
+    const formData = new FormData()
+    formData.append('file', input.files[0]);
+
+    $.ajax({
+      url: "{% url 'api:attachments' %}",
+      type: 'POST',
+      headers: {'X-CSRFToken': '{{ csrf_token }}'},
+      data: formData,
+      processData: false,
+      contentType: false,
+      cache: false
+    }).done(data => {
+      callback(data.file);
+    });
+  };
+
+  input.click();
+};
+</script>
+{% endblock %}

@@ -1,0 +1,67 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% extends 'money/base.html' %}
+
+{% load i18n %}
+{% load static %}
+
+{% load page %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}{% trans 'Documents' %} | {{ NAME }}{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{% url 'money:home' %}">{% trans 'Home' %}</a></li>
+  <li class="breadcrumb-item">{% trans 'Documents' %}</li>
+</ol>
+{% endblock %}
+
+{% block heading %}{% trans 'Documents' %}{% endblock %}
+
+{% block actions %}
+{% if user.is_superuser %}
+<a href="{% url 'admin:doc_page_add' %}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-plus fa-fw"></i> {% trans 'New' %}</a>
+<a href="{% url 'admin:doc_page_changelist' %}" class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" title="{% trans 'Edit page' %}"><i class="fas fa-edit fa-fw"></i> {% trans 'Edit' %}</a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div id="doc-index"></div>
+{% endblock %}
+
+{% block sidebar %}
+<form method="get" action="{% url 'doc:pages' %}">
+
+<div class="mb-3">
+  <div class="input-group">
+    <input type="text" name="q" class="form-control">
+    <button class="btn btn-secondary" type="submit"><i class="fas fa-search fa-fw"></i></button>
+  </div>
+</div>
+
+</form>
+{% endblock %}
+
+{% block content_full %}
+{% endblock %}
+
+{% block js %}
+{% include 'doc/js_jstree.html' %}
+<script>
+$(() => {
+  $('#doc-index').jstree({
+    'core' : {
+      'multiple': false,
+      'data': JSON.parse('{{ None|page_tree_data:objs|safe }}')
+    }
+  }).on('ready.jstree', (e, data) => {
+    $(e.currentTarget).jstree('open_all');
+  }).on('activate_node.jstree', (e, data) => {
+    window.location.href = data.node.a_attr.href;
+  });
+})
+</script>
+{% endblock %}

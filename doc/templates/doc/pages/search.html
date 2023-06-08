@@ -1,0 +1,57 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% extends 'money/base.html' %}
+
+{% load i18n %}
+
+{% load page %}
+{% load url %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}{% trans 'Documents' %} | {{ NAME }}{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{% url 'money:home' %}">{% trans 'Home' %}</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'doc:pages' %}">{% trans 'Documents' %}</a></li>
+  <li class="breadcrumb-item">{% trans 'Search' %}</li>
+</ol>
+{% endblock %}
+
+{% block heading %}{% trans 'Documents' %}{% endblock %}
+
+{% block content %}
+{% for x in objs %}
+<div class="mb-4">
+  <h5><a href="{% url 'doc:page' x.slug %}?lang={{ x.language }}" class="text-decoration-none">{{ x.title }}</a></h5>
+  {{ x.headline|safe }}
+  <ul class="list-inline text-muted">
+    <li class="list-inline-item">{{ x.slug }}</li>
+    <li class="list-inline-item">{{ x.updated }}</li>
+    <li class="list-inline-item">{{ x.language|default:'-' }}</li>
+    <li class="list-inline-item">{{ x.rank|floatformat:3 }}</li>
+  </ul>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block sidebar %}
+<form method="get" action="{% url 'doc:pages' %}">
+
+<div class="mb-3">
+  <div class="input-group">
+    <input type="text" name="q" value="{% url_param_value 'q' %}" class="form-control">
+    <button class="btn btn-secondary" type="submit"><i class="fas fa-search fa-fw"></i></button>
+  </div>
+</div>
+
+</form>
+{% endblock %}
+
+{% block content_full %}
+{% endblock %}
+
+{% block js %}
+{% endblock %}

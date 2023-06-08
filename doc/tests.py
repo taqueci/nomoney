@@ -1,5 +1,3 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
-"""Define version."""
-
-VERSION = '1.22.0'
+# from django.test import TestCase

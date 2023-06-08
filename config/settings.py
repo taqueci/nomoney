@@ -19,6 +19,7 @@ from pathlib import Path
 
 import environ
 
+from . import tinymce
 from . import version
 
 env = environ.Env()
@@ -50,9 +51,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.postgres.search',
     'django_filters',
     'rest_framework',
+    'tinymce',
     'system',
+    'doc',
     'money',
     'api',
 ]
@@ -140,6 +144,8 @@ USE_TZ = True
 
 URL_PREFIX = env('N_URL_PREFIX', default='/n')
 
+DOC_URL = f'{URL_PREFIX}/doc/'
+
 ROUTE_PREFIX = URL_PREFIX[1:]
 
 # Static files (CSS, JavaScript, Images)
@@ -163,7 +169,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'system.User'
 
 LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'money', 'locale'),
+    os.path.join(BASE_DIR, 'locale'),
 )
 
 LOGIN_URL = 'system:login'
@@ -194,6 +200,18 @@ FY_START_DAY = 1
 VERSION = version.VERSION
 
 NAME = env('N_NAME', default='NoMoney')
+
+TINYMCE_DEFAULT_CONFIG = tinymce.TINYMCE_DEFAULT_CONFIG
+TINYMCE_DEFAULT_CONFIG.update({
+    'content_css': [
+        f'{STATIC_URL}system/css/bootstrap.min.css',
+        f'{STATIC_URL}system/font/fontawesome/css/all.min.css',
+        f'{STATIC_URL}doc/content.css',
+    ],
+    'image_list': f'{DOC_URL}__admin__/images',
+    'link_list': f'{DOC_URL}__admin__/links',
+    'file_picker_callback': '(c, v, m) => filePickerCallback(c, v, m)',
+})
 
 LOG_FILE = os.path.join(BASE_DIR, 'logs/django.log')
 

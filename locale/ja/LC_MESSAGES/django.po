@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-10 11:44+0000\n"
+"POT-Creation-Date: 2023-06-03 02:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,6 +38,45 @@ msgstr "サマリー"
 
 msgid "Note"
 msgstr "備考"
+
+msgid "active"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "Draft"
+msgstr "ドラフト"
+
+msgid "Published"
+msgstr "公開"
+
+msgid "Disabled"
+msgstr "無効"
+
+msgid "Backup"
+msgstr "バックアップ"
+
+msgid "Documents"
+msgstr "ドキュメント"
+
+msgid "Home"
+msgstr "ホーム"
+
+msgid "Edit page"
+msgstr "ページを編集する"
+
+msgid "Edit"
+msgstr "編集"
+
+msgid "Operation"
+msgstr "操作"
+
+msgid "Print"
+msgstr "印刷"
 
 msgid "Asset"
 msgstr "資産"
@@ -71,9 +110,6 @@ msgstr "管理"
 
 msgid "Logout"
 msgstr "ログアウト"
-
-msgid "Home"
-msgstr "ホーム"
 
 msgid "Report list"
 msgstr "レポートリスト"
@@ -183,9 +219,6 @@ msgstr "最近の記録"
 msgid "Edit journal"
 msgstr "記録の編集"
 
-msgid "Edit"
-msgstr "編集"
-
 msgid "Repayment"
 msgstr "返済"
 
@@ -212,9 +245,6 @@ msgstr "記録リスト"
 
 msgid "Keyword"
 msgstr "キーワード"
-
-msgid "Operation"
-msgstr "操作"
 
 msgid "Export as CSV"
 msgstr "CSVエクスポート"
