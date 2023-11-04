@@ -2,4 +2,4 @@
 
 """Define version."""
 
-VERSION = '1.22.1'
+VERSION = '1.22.2'
