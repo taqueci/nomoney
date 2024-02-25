@@ -20,7 +20,8 @@ def index(request):
     q = Journal.objects.available().filter(date__gte=start, date__lte=end)
 
     summary = q.aggregate(
-        income=Sum('income', default=0), expense=Sum('expense', default=0),
+        income_sum=Sum('income', default=0),
+        expense_sum=Sum('expense', default=0),
         balance=Sum(F('income')-F('expense'), default=0),
     )
 
