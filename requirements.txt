@@ -8,3 +8,4 @@ djangorestframework==3.14.0
 pillow==10.2.0
 psycopg2-binary==2.9.9
 python-dateutil==2.8.2
+uWSGI==2.0.24

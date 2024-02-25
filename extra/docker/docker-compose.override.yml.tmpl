@@ -4,6 +4,8 @@ services:
       - "8000:80"
 
   app:
+    volumes:
+      - .:/opt/nomoney
     depends_on:
       - db
     environment:
