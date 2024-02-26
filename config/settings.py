@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.postgres.search',
     'django_filters',
+    'fontawesomefree',
     'rest_framework',
     'tinymce',
     'system',
@@ -205,7 +206,7 @@ TINYMCE_DEFAULT_CONFIG = tinymce.TINYMCE_DEFAULT_CONFIG
 TINYMCE_DEFAULT_CONFIG.update({
     'content_css': [
         f'{STATIC_URL}system/css/bootstrap.min.css',
-        f'{STATIC_URL}system/font/fontawesome/css/all.min.css',
+        f'{STATIC_URL}fontawesomefree/css/all.min.css',
         f'{STATIC_URL}doc/content.css',
     ],
     'image_list': f'{DOC_URL}__admin__/images',
