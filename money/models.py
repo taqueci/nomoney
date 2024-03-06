@@ -28,6 +28,7 @@ class BaseQuerySet(models.QuerySet):
 class Account(models.Model):
     """Account model."""
 
+    # pylint: disable-next=too-many-ancestors
     class Entry(models.IntegerChoices):
         """Choices for an account etnry."""
 

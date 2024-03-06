@@ -24,7 +24,7 @@ if DEBUG:
 
     urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
 
-    import debug_toolbar
+    import debug_toolbar  # pylint: disable=import-error
 
     urlpatterns += [
         path(f'{ROUTE_PREFIX}/__debug__/', include(debug_toolbar.urls)),
