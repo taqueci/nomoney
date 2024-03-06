@@ -1,6 +1,5 @@
 Django==5.0.2
 beautifulsoup4==4.12.3
-django-debug-toolbar==4.3.0
 django-environ==0.11.2
 django-filter==23.5
 django-tinymce==3.7.1
