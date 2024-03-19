@@ -1,6 +1,6 @@
 FROM python:3.12-alpine
 
-ENV INSTALL_DIR /opt/nomoney
+ARG INSTALL_DIR=/opt/nomoney
 
 WORKDIR $INSTALL_DIR
 
@@ -12,7 +12,7 @@ RUN apk add --no-cache gettext postgresql-libs libjpeg && \
     pip install --no-cache-dir -r requirements.txt && \
     apk del --no-cache --purge .build-deps
 
-COPY . $INSTALL_DIR
+COPY . .
 
 RUN django-admin compilemessages
 
