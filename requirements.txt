@@ -5,7 +5,7 @@ django-filter==23.5
 django-tinymce==3.7.1
 djangorestframework==3.14.0
 fontawesomefree==6.5.1
-pillow==10.2.0
+pillow==10.3.0
 psycopg2-binary==2.9.8
 python-dateutil==2.8.2
 uWSGI==2.0.24
