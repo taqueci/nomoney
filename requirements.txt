@@ -8,4 +8,4 @@ fontawesomefree==6.5.1
 pillow==10.3.0
 psycopg2-binary==2.9.8
 python-dateutil==2.9.0
-uWSGI==2.0.25
+uWSGI==2.0.24
