@@ -6,7 +6,6 @@
 {% load i18n %}
 
 {% load access %}
-{% load url %}
 
 {% load journal %}
 
@@ -31,7 +30,7 @@
 {% endif %}
 
 {% if request.user|access_creatable %}
-<a href="{% url 'money:new_journal' %}?{% url_params base=object.id %}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-copy fa-fw"></i> {% trans 'Copy' %}</a>
+<a href="{% url 'money:new_journal' %}{% querystring base=object.id %}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-copy fa-fw"></i> {% trans 'Copy' %}</a>
 {% endif %}
 
 {% if request.user|access_deletable %}
@@ -58,12 +57,12 @@
 
   <dt class="col-4">{% trans 'Debit' %}</dt>
   <dd class="col-8">
-    <a href="{% url 'money:journals' %}?{% url_params debit=object.debit.id %}" class="text-dark text-decoration-none">{{ object.debit.name }}</a>
+    <a href="{% url 'money:journals' %}{% querystring debit=object.debit.id %}" class="text-dark text-decoration-none">{{ object.debit.name }}</a>
   </dd>
 
   <dt class="col-4">{% trans 'Credit' %}</dt>
   <dd class="col-8">
-    <a href="{% url 'money:journals' %}?{% url_params credit=object.credit.id %}" class="text-dark text-decoration-none">{{ object.credit.name }}</a>
+    <a href="{% url 'money:journals' %}{% querystring credit=object.credit.id %}" class="text-dark text-decoration-none">{{ object.credit.name }}</a>
   </dd>
 
   <dt class="col-4">{% trans 'Date' %}</dt>
@@ -86,7 +85,7 @@
   <dt class="col-4">{% trans 'Tags' %}</dt>
   <dd class="col-8">
     {% for x in object.tags.all %}
-    <a href="{% url 'money:journals' %}?{% url_params tag=x.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ x.name }}</a>
+    <a href="{% url 'money:journals' %}{% querystring tag=x.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ x.name }}</a>
     {% empty %}
     -
     {% endfor %}

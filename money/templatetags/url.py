@@ -13,16 +13,6 @@ def url_param_value(context, key):
 
 
 @register.simple_tag(takes_context=True)
-def url_params(context, **kwargs):
-    query = context['request'].GET.copy()
-
-    for key, val in kwargs.items():
-        query[key] = val
-
-    return query.urlencode()
-
-
-@register.simple_tag(takes_context=True)
 def url_params_period(context, date_obj):
     query = context['request'].GET.copy()
     unit = query.get('unit', 'year')

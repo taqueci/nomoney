@@ -73,7 +73,10 @@
             {% if user.is_superuser %}
             <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans 'Administration' %}</a>
             {% endif %}
-            <a class="dropdown-item" href="{% url 'system:logout' %}">{% trans 'Logout' %}</a>
+            <form method="post" action="{% url 'system:logout' %}" class="d-inline">
+              {% csrf_token %}
+              <button class="dropdown-item">{% trans 'Log out' %}</button>
+            </form>
           </div>
         </li>
       </ul>

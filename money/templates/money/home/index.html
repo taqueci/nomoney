@@ -7,7 +7,6 @@
 
 {% load access %}
 {% load journal %}
-{% load url %}
 {% load value %}
 
 {% block head %}
@@ -112,7 +111,7 @@
       <td class="text-end">{{ x.sum|intcomma }}</td>
       <td class="text-end">{{ x.sum|value_percent:summary.expense_sum|floatformat:1 }}</td>
       <td class="px-2">
-        <span data-bs-toggle="tooltip" title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}?{% url_params debit=x.debit__id %}"><i class="fas fa-list fa-fw"></i></a></span>
+        <span data-bs-toggle="tooltip" title="{% trans 'More information' %}"><a href="{% url 'money:journals' %}{% querystring debit=x.debit__id %}"><i class="fas fa-list fa-fw"></i></a></span>
       </td>
     </tr>
     {% endfor %}
@@ -146,14 +145,14 @@
     <div class="text-muted mb-2">{{ x.note|truncatechars:100 }}</div>
     <div class="mb-2">
       {% for x in x.tags.all %}
-      <small><a href="{% url 'money:journals' %}?{% url_params tag=x.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ x.name }}</a></small>
+      <small><a href="{% url 'money:journals' %}{% querystring tag=x.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ x.name }}</a></small>
       {% endfor %}
     </div>
     <div class="d-flex justify-content-between">
       <div>
-        <a href="{% url 'money:journals' %}?{% url_params debit=x.debit.id %}" class="text-dark text-decoration-none">{{ x.debit.name }}</a>
+        <a href="{% url 'money:journals' %}{% querystring debit=x.debit.id %}" class="text-dark text-decoration-none">{{ x.debit.name }}</a>
         /
-        <a href="{% url 'money:journals' %}?{% url_params credit=x.credit.id %}" class="text-dark text-decoration-none">{{ x.credit.name }}</a>
+        <a href="{% url 'money:journals' %}{% querystring credit=x.credit.id %}" class="text-dark text-decoration-none">{{ x.credit.name }}</a>
       </div>
       <div>
         {% if request.user|access_updatable %}

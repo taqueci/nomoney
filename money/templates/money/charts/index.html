@@ -27,10 +27,10 @@
 {% block actions %}
 <div class="d-inline d-lg-none">
   <div class="btn-group btn-group-sm">
-    <a href="{% url 'money:reports' %}?{% url_params unit='year' %}" class="btn btn-outline-secondary {% value_if_eq_query 'unit' 'year' 'active' %}">{% trans 'Annual' %}</a>
-    <a href="{% url 'money:reports' %}?{% url_params unit='month' %}" class="btn btn-outline-secondary {% value_if_eq_query 'unit' 'month' 'active' %}">{% trans 'Monthly' %}</a>
-    <a href="{% url 'money:reports' %}?{% url_params unit='week' %}" class="btn btn-outline-secondary {% value_if_eq_query 'unit' 'week' 'active' %}">{% trans 'Weekly' %}</a>
-    <a href="{% url 'money:reports' %}?{% url_params unit='day' %}" class="btn btn-outline-secondary  {% value_if_eq_query 'unit' 'day' 'active' %}">{% trans 'Daily' %}</a>
+    <a href="{% url 'money:reports' %}{% querystring unit='year' %}" class="btn btn-outline-secondary {% value_if_eq_query 'unit' 'year' 'active' %}">{% trans 'Annual' %}</a>
+    <a href="{% url 'money:reports' %}{% querystring unit='month' %}" class="btn btn-outline-secondary {% value_if_eq_query 'unit' 'month' 'active' %}">{% trans 'Monthly' %}</a>
+    <a href="{% url 'money:reports' %}{% querystring unit='week' %}" class="btn btn-outline-secondary {% value_if_eq_query 'unit' 'week' 'active' %}">{% trans 'Weekly' %}</a>
+    <a href="{% url 'money:reports' %}{% querystring unit='day' %}" class="btn btn-outline-secondary  {% value_if_eq_query 'unit' 'day' 'active' %}">{% trans 'Daily' %}</a>
   </div>
 </div>
 {% endblock %}

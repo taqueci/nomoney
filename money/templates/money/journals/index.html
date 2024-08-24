@@ -61,8 +61,8 @@
     <tr>
       <td class="text-end">{{ x.id }}</td>
       <td>{{ x.date|date:'Y-m-d' }}</td>
-      <td><a href="?{% url_params debit=x.debit.id %}" class="text-dark text-decoration-none">{{ x.debit.name }}</a></td>
-      <td><a href="?{% url_params credit=x.credit.id %}" class="text-dark text-decoration-none">{{ x.credit.name }}</a></td>
+      <td><a href="{% querystring debit=x.debit.id %}" class="text-dark text-decoration-none">{{ x.debit.name }}</a></td>
+      <td><a href="{% querystring credit=x.credit.id %}" class="text-dark text-decoration-none">{{ x.credit.name }}</a></td>
       <td class="text-end">{{ x.amount|intcomma }}</td>
       <td class="text-center"><span class="{{ x|journal_category_badge_class }}">{{ x|journal_category_text }}</span></td>
       <td>
@@ -71,7 +71,7 @@
         {% if forloop.first %}
         <span class="px-1"></span>
         {% endif %}
-        <small><a href="?{% url_params tag=y.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ y.name }}</a></small>
+        <small><a href="{% querystring tag=y.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ y.name }}</a></small>
         {% endfor %}
       </td>
       <td class="px-2">
@@ -136,14 +136,14 @@
     <div class="text-muted mb-2">{{ x.note|truncatechars:100 }}</div>
     <div class="mb-2">
       {% for y in x.tags.all %}
-      <small><a href="?{% url_params tag=y.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ y.name }}</a></small>
+      <small><a href="{% querystring tag=y.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ y.name }}</a></small>
       {% endfor %}
     </div>
     <div class="d-flex justify-content-between">
       <div>
-        <a href="?{% url_params debit=x.debit.id %}" class="text-dark text-decoration-none">{{ x.debit.name }}</a>
+        <a href="{% querystring debit=x.debit.id %}" class="text-dark text-decoration-none">{{ x.debit.name }}</a>
         /
-        <a href="?{% url_params credit=x.credit.id %}" class="text-dark text-decoration-none">{{ x.credit.name }}</a>
+        <a href="{% querystring credit=x.credit.id %}" class="text-dark text-decoration-none">{{ x.credit.name }}</a>
       </div>
       <div>
         {% if request.user|access_updatable %}
@@ -261,8 +261,8 @@
 <h5 class="border-bottom pb-2 mb-3 mt-5"><i class="fas fa-wrench fa-fw"></i> {% trans 'Operation' %}</h5>
 
 <ul class="list-unstyled">
-  <li class="py-1"><a href="{% url 'money:report' 0 %}?{% url_params %}" class="text-decoration-none">{% trans 'Report' %}</a></li>
-  <li class="py-1"><a href="{% url 'api:journals_export' %}?{% url_params %}" class="text-decoration-none">{% trans 'Export as CSV' %}</a></li>
+  <li class="py-1"><a href="{% url 'money:report' 0 %}{% querystring %}" class="text-decoration-none">{% trans 'Report' %}</a></li>
+  <li class="py-1"><a href="{% url 'api:journals_export' %}{% querystring %}" class="text-decoration-none">{% trans 'Export as CSV' %}</a></li>
 </ul>
 
 </div>

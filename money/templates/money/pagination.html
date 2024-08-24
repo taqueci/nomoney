@@ -1,12 +1,10 @@
 {# Copyright (C) Takeshi Nakamura. All rights reserved. #}
 
-{% load url %}
-
 <nav class="d-inline-block mb-4">
 <ul class="pagination">
   {% if page.has_previous %}
   <li class="page-item">
-    <a class="page-link" href="?{% url_params page=page.previous_page_number %}">
+    <a class="page-link" href="{% querystring page=page.previous_page_number %}">
       &lsaquo;
     </a>
   </li>
@@ -14,7 +12,7 @@
 
   {% if page.number > 3 %}
   <li class="page-item">
-    <a class="page-link" href="?{% url_params page=1 %}">1</a>
+    <a class="page-link" href="{% querystring page=1 %}">1</a>
   </li>
   {% endif %}
 
@@ -26,13 +24,13 @@
   {% for link_page in page.paginator.page_range %}
   {% if link_page == page.number %}
   <li class="page-item active">
-    <a class="page-link" href="?{% url_params page=link_page %}">
+    <a class="page-link" href="{% querystring page=link_page %}">
       {{ link_page }}
     </a>
   </li>
   {% elif link_page < page.number|add:3 and link_page > page.number|add:-3 %}
   <li class="page-item">
-    <a class="page-link" href="?{% url_params page=link_page %}">
+    <a class="page-link" href="{% querystring page=link_page %}">
       {{ link_page }}
     </a>
   </li>
@@ -45,7 +43,7 @@
 
   {% if page.number < page.paginator.num_pages|add:-2 %}
   <li class="page-item">
-    <a class="page-link" href="?{% url_params page=page.paginator.num_pages %}">
+    <a class="page-link" href="{% querystring page=page.paginator.num_pages %}">
       {{ page.paginator.num_pages}}
     </a>
   </li>
@@ -53,7 +51,7 @@
 
   {% if page.has_next %}
   <li class="page-item">
-    <a class="page-link" href="?{% url_params page=page.next_page_number %}">
+    <a class="page-link" href="{% querystring page=page.next_page_number %}">
       &rsaquo;
     </a>
   </li>

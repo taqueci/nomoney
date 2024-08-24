@@ -4,7 +4,6 @@
 {% load i18n %}
 
 {% load journal %}
-{% load url %}
 {% load value %}
 
 <form method="post">
@@ -46,7 +45,7 @@
   </button>
   <ul id="template" class="dropdown-menu dropdown-menu-end">
     {% for x in templates %}
-    <li><a class="dropdown-item" href="?{% url_params template=x.id %}">{{ x.name }}</a></li>
+    <li><a class="dropdown-item" href="{% querystring template=x.id %}">{{ x.name }}</a></li>
     {% endfor %}
   </ul>
 </div>
