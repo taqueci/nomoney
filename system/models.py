@@ -7,11 +7,12 @@ import time
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from user_g11n.models import UserLanguageSupportMixin, UserTimeZoneSupportMixin
 
 IMAGE_DIR_USER = 'users'
 
 
-class User(AbstractUser):
+class User(UserLanguageSupportMixin, UserTimeZoneSupportMixin, AbstractUser):
     """Custom user class."""
 
     def file_path(self, filename):
