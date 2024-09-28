@@ -19,8 +19,7 @@ from pathlib import Path
 
 import environ
 
-from . import tinymce
-from . import version
+from . import tinymce, version
 
 env = environ.Env()
 
