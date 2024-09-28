@@ -24,33 +24,19 @@ class User(UserLanguageSupportMixin, UserTimeZoneSupportMixin, AbstractUser):
 
     image = models.ImageField(null=True, blank=True, upload_to=file_path)
 
-    @property
-    def full_name(self):
+    def full_name(self, language=None):
         """Return full name."""
 
-        name = []
+        names = [x for x in (self.first_name, self.last_name) if x]
 
-        if self.first_name:
-            name.append(self.first_name)
+        if _is_last_name_first(language):
+            names.reverse()
 
-        if self.last_name:
-            name.append(self.last_name)
-
-        return ' '.join(name) if name else self.username
-
-    @property
-    def full_name_r(self):
-        """Return reversed full name."""
-
-        name = []
-
-        if self.last_name:
-            name.append(self.last_name)
-
-        if self.first_name:
-            name.append(self.first_name)
-
-        return ' '.join(name) if name else self.username
+        return ' '.join(names) if names else self.username
 
     def __str__(self):
-        return self.full_name
+        return self.full_name()
+
+
+def _is_last_name_first(lang):
+    return lang in ('hu', 'ja', 'ko', 'vi', 'zh-hans', 'zh-hant')
