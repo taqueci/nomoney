@@ -6,8 +6,8 @@
 {% load i18n %}
 
 {% load access %}
-
 {% load journal %}
+{% load user %}
 
 {% block head %}
 {% endblock %}
@@ -104,7 +104,7 @@
 
 <dl class="row mb-2">
   <dt class="col-4">{% trans 'Author' %}</dt>
-  <dd class="col-8">{{ object.author }}</dd>
+  <dd class="col-8"><span class="me-2">{% user_avatar object.author %}</span>{{ object.author }}</dd>
 
   <dt class="col-4">{% trans 'Created on' %}</dt>
   <dd class="col-8">{{ object.created }}</dd>
