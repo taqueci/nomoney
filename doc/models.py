@@ -52,6 +52,10 @@ class Page(models.Model):
 
     parent_slug = models.SlugField(null=True, blank=True)
 
+    previous_revision = models.ForeignKey(
+        'Page', null=True, blank=True, on_delete=models.PROTECT,
+    )
+
     author = models.ForeignKey(User, on_delete=models.PROTECT)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -71,19 +75,27 @@ class Page(models.Model):
         return Page.objects.filter(pk=self.pk).accessible(user).exists()
 
     def _pre_save(self):
+        obj = Page.objects.get(pk=self.pk)
+
+        match (obj.status, self.status):
+            case (self.Status.DRAFT, self.Status.PUBLISHED):
+                self._update_previous_revision_status()
+            case (self.Status.PUBLISHED, self.Status.PUBLISHED):
+                self.previous_revision = self._backup(self.Status.BACKUP)
+            case (self.Status.PUBLISHED, self.Status.DRAFT):
+                self.previous_revision = self._backup(self.Status.PUBLISHED)
+
+    def _update_previous_revision_status(self):
+        prev = self.previous_revision
+
+        if prev and prev.status == self.Status.PUBLISHED:
+            prev.status = self.Status.BACKUP
+            prev.save()
+
+    def _backup(self, status: Status):
         """Creates backup of page."""
         obj = Page.objects.get(pk=self.pk)
         updated = obj.updated
-
-        if obj.status != self.Status.PUBLISHED:
-            return
-
-        if self.status == self.Status.PUBLISHED:
-            status = self.Status.BACKUP
-        elif self.status == self.Status.DRAFT:
-            status = self.Status.PUBLISHED
-        else:
-            return
 
         # Clone instance.
         obj.pk = None
@@ -92,3 +104,5 @@ class Page(models.Model):
 
         # Restore field 'updated' by force.
         Page.objects.filter(pk=obj.pk).update(updated=updated)
+
+        return obj
