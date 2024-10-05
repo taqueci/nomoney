@@ -50,9 +50,7 @@ class Page(models.Model):
     status = models.IntegerField(choices=Status.choices, default=Status.DRAFT)
     note = models.TextField(blank=True)
 
-    parent = models.ForeignKey(
-        'Page', null=True, blank=True, on_delete=models.PROTECT
-    )
+    parent_slug = models.SlugField(null=True, blank=True)
 
     author = models.ForeignKey(User, on_delete=models.PROTECT)
     created = models.DateTimeField(auto_now_add=True)

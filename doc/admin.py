@@ -36,7 +36,7 @@ class PageAdmin(admin.ModelAdmin):
         'id', 'title', 'slug', 'language', 'status', 'order', 'updated',
     )
     list_filter = (PageActiveListFilter, 'status', 'slug', 'language')
-    autocomplete_fields = ('parent', 'author')
+    autocomplete_fields = ('author', )
     change_form_template = 'doc/admin/change_form.html'
 
     def get_changeform_initial_data(self, request):

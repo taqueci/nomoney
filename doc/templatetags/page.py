@@ -60,7 +60,7 @@ def page_tree_data(obj, queryset):
             'id': f'page-{p_slug}',
             'text': text,
             'icon': PAGE_ICON.get(p.status),
-            'parent': f'page-{p.parent.slug}' if p.parent else '#',
+            'parent': f'page-{p.parent_slug}' if p.parent_slug else '#',
             'state': {'selected': p_slug == slug},
             'a_attr': {'href': href},
         })
@@ -72,13 +72,13 @@ def page_tree_data(obj, queryset):
 def page_breadcrumb_items(obj, queryset):
     """Breadcrumb items."""
     items = [obj]
-    index = {x.pk: x for x in queryset}
+    index = {x.slug: x for x in queryset}
 
     p = obj
 
-    while p.parent:
-        items.append(index[p.parent.pk])
-        p = index[p.parent.pk]
+    while p.parent_slug:
+        items.append(index[p.parent_slug])
+        p = index[p.parent_slug]
 
     return reversed(items)
 
