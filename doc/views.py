@@ -133,7 +133,7 @@ def _page_objects(user, lang, all_pages=False):
         arg['status'] = Page.Status.PUBLISHED
 
     return Page.objects.accessible(user).filter(**arg).order_by(
-        'parent', 'order', 'slug', '-language', '-status', '-updated',
+        'parent_slug', 'order', 'slug', '-language', '-status', '-updated',
     )
 
 
