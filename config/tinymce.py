@@ -82,7 +82,8 @@ TINYMCE_DEFAULT_CONFIG = {
         'title': 'Colors', 'items': [{
             'title': 'Primary', 'inline': 'span', 'classes': 'text-primary',
         }, {
-            'title': 'Secondary', 'inline': 'span', 'classes': 'text-secondary',
+            'title': 'Secondary',
+            'inline': 'span', 'classes': 'text-secondary',
         }, {
             'title': 'Success', 'inline': 'span', 'classes': 'text-success',
         }, {

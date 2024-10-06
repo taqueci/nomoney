@@ -6,9 +6,9 @@ WORKDIR $INSTALL_DIR
 
 COPY requirements.txt .
 
-RUN apk add --no-cache gettext postgresql-libs libjpeg && \
-    apk add --no-cache --virtual .build-deps gcc \
-        linux-headers musl-dev postgresql-dev jpeg-dev zlib-dev && \
+RUN apk add --no-cache gettext postgresql-libs && \
+    apk add --no-cache --virtual .build-deps \
+        gcc linux-headers musl-dev && \
     pip install --no-cache-dir -r requirements.txt && \
     apk del --no-cache --purge .build-deps
 

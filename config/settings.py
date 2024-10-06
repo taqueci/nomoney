@@ -19,8 +19,7 @@ from pathlib import Path
 
 import environ
 
-from . import tinymce
-from . import version
+from . import tinymce, version
 
 env = environ.Env()
 
@@ -55,6 +54,7 @@ INSTALLED_APPS = [
     'django_filters',
     'fontawesomefree',
     'rest_framework',
+    'user_g11n',
     'tinymce',
     'system',
     'doc',
@@ -71,6 +71,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'user_g11n.middleware.UserLanguageMiddleware',
+    'user_g11n.middleware.UserTimeZoneMiddleware',
     'system.middleware.auth.AuthMiddleware',
 ]
 

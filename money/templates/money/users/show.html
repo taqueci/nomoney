@@ -1,0 +1,102 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% extends 'money/base.html' %}
+
+{% load i18n %}
+
+{% load path %}
+{% load user %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}{% trans 'User' %} | {{ NAME }}{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{% url 'money:home' %}">{% trans 'Home' %}</a></li>
+  <li class="breadcrumb-item">{% trans 'Users' %}</li>
+  <li class="breadcrumb-item active">{{ object.username }}</li>
+</ol>
+{% endblock %}
+
+{% block heading %}
+<span class="me-2">{% user_avatar object 38 %}</span>
+{{ object|user_full_name:LANGUAGE_CODE }}
+{% endblock %}
+
+{% block actions %}
+{% if request.user == object or request.user.is_superuser %}
+<a href="{% url 'money:edit_user' object.username %}?next={{ request.get_full_path|urlencode }}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-edit fa-fw"></i> {% trans 'Edit' %}</a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block content_full %}
+<div class="row">
+  <div class="col-lg-6">
+
+<div class="row">
+  <h3 class="mb-3">{% trans 'Personal info' %}</h3>
+</div>
+
+<dl class="row mb-2">
+  <dt class="col-4">{% trans 'User name' %}</dt>
+  <dd class="col-8">{{ object.username }}</dd>
+
+  <dt class="col-4">{% trans 'First name' %}</dt>
+  <dd class="col-8">{{ object.first_name|default:'-' }}</dd>
+
+  <dt class="col-4">{% trans 'Last name' %}</dt>
+  <dd class="col-8">{{ object.last_name|default:'-' }}</dd>
+
+  <dt class="col-4">{% trans 'E-mail' %}</dt>
+  <dd class="col-8">{{ object.email|default:'-'|urlize }}</dd>
+</dl>
+
+<dl class="row mb-2">
+  <dt class="col-4">{% trans 'Joined on' %}</dt>
+  <dd class="col-8">{{ object.date_joined }}</dd>
+
+  <dt class="col-4">{% trans 'Updated on' %}</dt>
+  <dd class="col-8">{{ object.last_login|default:'-' }}</dd>
+</dl>
+
+  </div><!-- .col-lg-6 -->
+  <div class="col-lg-6">
+
+<div class="row">
+  <h3 class="mb-3">{% trans 'Settings' %}</h3>
+</div>
+
+<dl class="row mb-2">
+  <dt class="col-4">{% trans 'Image' %}</dt>
+  <dd class="col-8">
+    {% if object.image %}
+    <a href="{{ object.image.url }}">{{ object.image.name|path_basename }}</a>
+    {% else %}
+    -
+    {% endif %}
+  </dd>
+
+  <dt class="col-4">{% trans 'Time zone' %}</dt>
+  <dd class="col-8">{{ object.timezone }}</dd>
+
+  <dt class="col-4">{% trans 'Language' %}</dt>
+  <dd class="col-8">
+    {% get_language_info for object.language as lang %}
+    {{ lang.name_translated }} ({{ lang.code }})
+  </dd>
+</dl>
+
+  </div><!-- .col-lg-6 -->
+</div><!-- .row -->
+{% endblock %}
+
+{% block js %}
+{% endblock %}
