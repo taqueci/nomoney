@@ -1,0 +1,129 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% extends 'money/base.html' %}
+
+{% load i18n %}
+
+{% load path %}
+{% load user %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}{% trans 'User' %} | {{ NAME }}{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{% url 'money:home' %}">{% trans 'Home' %}</a></li>
+  <li class="breadcrumb-item">{% trans 'Users' %}</li>
+  <li class="breadcrumb-item"><a href="{% url 'money:user' object.username %}">{{ object.username }}</a></li>
+  <li class="breadcrumb-item active">{% trans 'Edit' %}</li>
+</ol>
+{% endblock %}
+
+{% block heading %}
+<span class="me-2">{% user_avatar object 38 %}</span>
+{{ object|user_full_name:LANGUAGE_CODE }}
+{% endblock %}
+
+{% block actions %}
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block content_full %}
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+<div class="row">
+  <div class="col-lg-6">
+
+<div class="row">
+  <h3 class="mb-3">{% trans 'Personal info' %}</h3>
+</div>
+
+<dl class="row mb-2">
+  <dt class="col-4">{% trans 'User name' %}</dt>
+  <dd class="col-8">{{ object.username }}</dd>
+
+  <dt class="col-4">{% trans 'First name' %}</dt>
+  <dd class="col-8">{{ object.first_name|default:'-' }}</dd>
+
+  <dt class="col-4">{% trans 'Last name' %}</dt>
+  <dd class="col-8">{{ object.last_name|default:'-' }}</dd>
+
+  <dt class="col-4">{% trans 'E-mail' %}</dt>
+  <dd class="col-8">{{ object.email|default:'-'|urlize }}</dd>
+</dl>
+
+<dl class="row mb-2">
+  <dt class="col-4">{% trans 'Joined on' %}</dt>
+  <dd class="col-8">{{ object.date_joined }}</dd>
+
+  <dt class="col-4">{% trans 'Updated on' %}</dt>
+  <dd class="col-8">{{ object.last_login|default:'-' }}</dd>
+</dl>
+
+  </div><!-- .col-lg-6 -->
+  <div class="col-lg-6">
+
+<div class="row">
+  <h3 class="mb-3">{% trans 'Settings' %}</h3>
+</div>
+
+<dl class="row mb-2">
+  <dt class="col-4">{% trans 'Image' %}</dt>
+  <dd class="col-8">
+    {% if object.image %}
+    <div class="form-text">
+      <a href="{{ object.image.url }}" class="me-2">{{ object.image.name|path_basename }}</a>
+      <input class="form-check-input" type="checkbox" id="imageClearCheckbox" name="image_clear">
+      <label class="form-check-label" for="imageClearCheckbox">{% trans 'Clear' %}</label>
+    </div>
+    {% endif %}
+    <input class="form-control" type="file" name="image">
+  </dd>
+
+  <dt class="col-4">{% trans 'Time zone' %}</dt>
+  <dd class="col-8">
+    <select name="timezone" class="form-select">
+      {% for tz in timezones %}
+      <option value="{{ tz }}"{% if tz == object.timezone %} selected{% endif %}>{{ tz }}</option>
+      {% endfor %}
+    </select>
+  </dd>
+
+  <dt class="col-4">{% trans 'Language' %}</dt>
+  <dd class="col-8">
+    <select name="language" class="form-select">
+    {% get_available_languages as langs %}
+    {% for x in langs %}
+    <option value="{{ x.0 }}"{% if x.0 == object.language %} selected{% endif %}>{{ x.1 }} ({{ x.0 }})</option>
+    {% endfor %}
+    </select>
+  </dd>
+</dl>
+
+  </div><!-- .col-lg-6 -->
+</div><!-- .row -->
+
+<div class="row mt-4">
+  <div class="col">
+    <button type="submit" class="btn btn-primary me-2"><i class="fas fa-check fa-fw"></i> {% trans 'Submit' %}</button>
+    {% if request.GET.next %}
+    <a href="{{ request.GET.next }}" class="btn btn-secondary"><i class="fas fa-ban fa-fw"></i> {% trans 'Cancel' %}</a>
+    {% else %}
+    <a href="{% url 'money:user' object.username %}" class="btn btn-secondary"><i class="fas fa-ban fa-fw"></i> {% trans 'Cancel' %}</a>
+    {% endif %}
+  </div>
+</div>
+
+</form>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

@@ -11,7 +11,7 @@ def user_full_name(user, lang):
     if user.is_anonymous:
         return ''
 
-    return user.full_name if lang != 'ja' else user.full_name_r
+    return user.full_name(lang)
 
 
 @register.simple_tag

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-03 02:14+0000\n"
+"POT-Creation-Date: 2024-10-01 23:18+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,11 +66,26 @@ msgstr "ドキュメント"
 msgid "Home"
 msgstr "ホーム"
 
+msgid "New"
+msgstr "新規"
+
 msgid "Edit page"
 msgstr "ページを編集する"
 
 msgid "Edit"
 msgstr "編集"
+
+msgid "Search"
+msgstr "検索"
+
+msgid "Created on"
+msgstr "作成日"
+
+msgid "Updated on"
+msgstr "更新日"
+
+msgid "Author"
+msgstr "作成者"
 
 msgid "Operation"
 msgstr "操作"
@@ -102,14 +117,17 @@ msgstr "記録"
 msgid "Reports"
 msgstr "レポート"
 
+msgid "My account"
+msgstr "マイアカウント"
+
 msgid "Password"
 msgstr "パスワード"
 
 msgid "Administration"
 msgstr "管理"
 
-msgid "Logout"
-msgstr "ログアウト"
+msgid "Log out"
+msgstr ""
 
 msgid "Report list"
 msgstr "レポートリスト"
@@ -207,12 +225,6 @@ msgstr "送信"
 msgid "Dashboard"
 msgstr "ダッシュボード"
 
-msgid "New"
-msgstr "新規"
-
-msgid "Search"
-msgstr "検索"
-
 msgid "Recent journals"
 msgstr "最近の記録"
 
@@ -261,17 +273,47 @@ msgstr "コピー"
 msgid "Delete"
 msgstr "削除"
 
-msgid "Author"
-msgstr "作成者"
-
-msgid "Created on"
-msgstr "作成日"
-
-msgid "Updated on"
-msgstr "更新日"
-
 msgid "Are you sure you want to delete?"
 msgstr "本当に削除しますか?"
+
+msgid "User"
+msgstr "ユーザー"
+
+msgid "Users"
+msgstr "ユーザー"
+
+msgid "Personal info"
+msgstr "個人情報"
+
+msgid "User name"
+msgstr "ユーザー名"
+
+msgid "E-mail"
+msgstr "Eメール"
+
+msgid "Joined on"
+msgstr "登録日"
+
+msgid "Settings"
+msgstr "設定"
+
+msgid "Image"
+msgstr "画像"
+
+msgid "Clear"
+msgstr ""
+
+msgid "Time zone"
+msgstr "タイムゾーン"
+
+msgid "Language"
+msgstr "言語"
+
+msgid "First name"
+msgstr "名"
+
+msgid "Last name"
+msgstr "姓"
 
 msgid "All"
 msgstr "すべて"
@@ -294,8 +336,11 @@ msgstr "記録の削除に成功しました"
 msgid "Failed to delete journal"
 msgstr "記録の削除に失敗しました"
 
-msgid "Personal info"
-msgstr "個人情報"
+msgid "The item has been successfully updated"
+msgstr "アイテムの更新に成功しました"
+
+msgid "Failed to update the item"
+msgstr "アイテムの更新に失敗しました"
 
 msgid "Permissions"
 msgstr "パーミッション"
