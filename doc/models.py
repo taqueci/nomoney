@@ -84,6 +84,8 @@ class Page(models.Model):
                 self.previous_revision = self._backup(self.Status.BACKUP)
             case (self.Status.PUBLISHED, self.Status.DRAFT):
                 self.previous_revision = self._backup(self.Status.PUBLISHED)
+            case (self.Status.BACKUP, self.Status.DISABLED):
+                self._unlink_revisions()
 
     def _update_previous_revision_status(self):
         if prev := self.previous_revision:
@@ -103,3 +105,8 @@ class Page(models.Model):
         Page.objects.filter(pk=obj.pk).update(updated=updated)
 
         return obj
+
+    def _unlink_revisions(self):
+        Page.objects.filter(previous_revision=self).update(
+            previous_revision=self.previous_revision,
+        )
