@@ -94,6 +94,11 @@ class Page(models.Model):
     def _backup(self, status: Status):
         """Creates backup of page."""
         obj = Page.objects.get(pk=self.pk)
+
+        # Do not create backup if no content is changed.
+        if obj.content == self.content:
+            return self.previous_revision
+
         updated = obj.updated
 
         # Clone instance.
