@@ -86,11 +86,8 @@ class Page(models.Model):
                 self.previous_revision = self._backup(self.Status.PUBLISHED)
 
     def _update_previous_revision_status(self):
-        prev = self.previous_revision
-
-        if prev and prev.status == self.Status.PUBLISHED:
-            prev.status = self.Status.BACKUP
-            prev.save()
+        if prev := self.previous_revision:
+            Page.objects.filter(pk=prev.pk).update(status=self.Status.BACKUP)
 
     def _backup(self, status: Status):
         """Creates backup of page."""
