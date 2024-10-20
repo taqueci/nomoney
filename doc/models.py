@@ -84,17 +84,21 @@ class Page(models.Model):
                 self.previous_revision = self._backup(self.Status.BACKUP)
             case (self.Status.PUBLISHED, self.Status.DRAFT):
                 self.previous_revision = self._backup(self.Status.PUBLISHED)
+            case (self.Status.BACKUP, self.Status.DISABLED):
+                self._unlink_revisions()
 
     def _update_previous_revision_status(self):
-        prev = self.previous_revision
-
-        if prev and prev.status == self.Status.PUBLISHED:
-            prev.status = self.Status.BACKUP
-            prev.save()
+        if prev := self.previous_revision:
+            Page.objects.filter(pk=prev.pk).update(status=self.Status.BACKUP)
 
     def _backup(self, status: Status):
         """Creates backup of page."""
         obj = Page.objects.get(pk=self.pk)
+
+        # Do not create backup if no content is changed.
+        if obj.content == self.content:
+            return self.previous_revision
+
         updated = obj.updated
 
         # Clone instance.
@@ -106,3 +110,8 @@ class Page(models.Model):
         Page.objects.filter(pk=obj.pk).update(updated=updated)
 
         return obj
+
+    def _unlink_revisions(self):
+        Page.objects.filter(previous_revision=self).update(
+            previous_revision=self.previous_revision,
+        )
