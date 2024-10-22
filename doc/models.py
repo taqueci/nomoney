@@ -11,6 +11,14 @@ from tinymce import models as tinymce_models
 User = get_user_model()
 
 
+def _slug_choices():
+    """Choices for parent_slug field."""
+    choices = [('None', '-')]
+    choices.extend([(x, x) for x in Page.objects.slugs()])
+
+    return choices
+
+
 class PageQuerySet(models.QuerySet):
     """Query set for Page model."""
     def accessible(self, user):
@@ -25,6 +33,10 @@ class PageQuerySet(models.QuerySet):
         return self if user.is_superuser else self.filter(
             status=Page.Status.PUBLISHED,
         )
+
+    def slugs(self):
+        """Returns a slug list."""
+        return self.values_list('slug', flat=True).order_by('slug').distinct()
 
 
 class Page(models.Model):
@@ -50,7 +62,9 @@ class Page(models.Model):
     status = models.IntegerField(choices=Status.choices, default=Status.DRAFT)
     note = models.TextField(blank=True)
 
-    parent_slug = models.SlugField(null=True, blank=True)
+    parent_slug = models.SlugField(
+        choices=_slug_choices, null=True, default=None,
+    )
 
     previous_revision = models.ForeignKey(
         'Page', null=True, blank=True, on_delete=models.PROTECT,
