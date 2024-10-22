@@ -44,6 +44,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='page',
             name='updated',
-            field=models.DateTimeField(auto_now_add=True),
+            field=models.DateTimeField(auto_now=True),
         ),
     ]
