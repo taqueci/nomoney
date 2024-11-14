@@ -2,6 +2,7 @@
 
 """Administrator site settings for document application."""
 
+from django import forms
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
@@ -36,13 +37,9 @@ class PageAdmin(admin.ModelAdmin):
         'id', 'title', 'slug', 'language', 'status', 'order', 'updated',
     )
     list_filter = (PageActiveListFilter, 'status', 'slug', 'language')
-    autocomplete_fields = ('author', )
+    readonly_fields = ['author', 'created', 'updated']
     change_form_template = 'doc/admin/change_form.html'
 
-    def get_changeform_initial_data(self, request):
-        initial = super().get_changeform_initial_data(request)
-
-        if not initial.get('author'):
-            initial['author'] = request.user
-
-        return initial
+    def save_model(self, request, obj, form, change):
+        obj.author = request.user
+        super().save_model(request, obj, form, change)
