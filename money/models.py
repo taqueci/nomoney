@@ -176,6 +176,8 @@ class Template(models.Model):
     summary = models.CharField(max_length=255, null=True, blank=True)
     note = models.TextField(null=True, blank=True)
 
+    tags = models.ManyToManyField(Tag, blank=True)
+
     rank = models.IntegerField(default=0)
     enabled = models.BooleanField(default=True)
 

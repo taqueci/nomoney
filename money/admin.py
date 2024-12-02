@@ -47,3 +47,4 @@ class TemplateAdmin(admin.ModelAdmin):
     """The representation of template model."""
 
     list_display = ('name', 'description', 'rank', 'enabled')
+    filter_horizontal = ('tags', )
