@@ -4,10 +4,9 @@
 
 import urllib
 
+from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
-from config.settings import LOGIN_TARGETS, LOGIN_URL, LOGOUT_URL
 
 
 class AuthMiddleware:  # pylint: disable=too-few-public-methods
@@ -19,12 +18,12 @@ class AuthMiddleware:  # pylint: disable=too-few-public-methods
             return self.get_response(request)
 
         path = request.path
-        login = reverse(LOGIN_URL)
+        login = reverse(settings.LOGIN_URL)
 
-        if path == login or not path.startswith(LOGIN_TARGETS):
+        if path == login or not path.startswith(settings.LOGIN_TARGETS):
             return self.get_response(request)
 
-        if path == reverse(LOGOUT_URL):
+        if path == reverse(settings.LOGOUT_URL):
             url = login
         else:
             next_url = urllib.parse.quote(request.get_full_path())
