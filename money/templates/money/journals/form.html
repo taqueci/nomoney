@@ -98,7 +98,12 @@
 <div class="mb-3 row">
   <label class="col-sm-3 col-form-label">{% trans 'Amount' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
-    <input type="number" name="amount" value="{{ object.amount }}" class="form-control" required>
+    <div class="input-group">
+      <input type="number" name="amount" value="{{ object.amount }}" class="form-control" required>
+      <button type="button" class="btn btn-light border" data-bs-toggle="modal" data-bs-target="#calculator">
+        <i class="fas fa-calculator fa-fw"></i>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -172,6 +177,7 @@
 {% include 'money/js_moment.html' %}
 {% include 'money/js_datetimepicker.html' %}
 {% include 'money/js_select2.html' %}
+{% include 'money/calculator.html' with input='input[name="amount"]' %}
 <script>
 $(function() {
   $('.datetimepicker').datetimepicker({format: 'YYYY-MM-DD'});
