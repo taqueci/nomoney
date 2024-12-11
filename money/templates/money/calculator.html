@@ -106,8 +106,6 @@ class Calculator {
       if ('+-*/'.includes(lastChar)) this.pop();
     } else if (c === '.') {
       if (!/(^|[+\-*/])[0-9]+$/.test(this.expression)) return;
-    } else {
-      if (lastChar === '0') return;
     }
 
     this.expression += c;
@@ -159,11 +157,12 @@ $(() => {
       const r = calculator.result();
       $('{{ input }}').val((r != null) ? parseInt(r) : 0);
     } else if (value === '=') {
+      const e = calculator.expressionHtml()
       const r = calculator.result();
 
       if (r != null) {
+        $('#calc-input').html(e + ' =');
         $('#calc-result').html(r.toLocaleString());
-        $('#calc-input').html(calculator.expressionHtml() + ' =');
       }
     } else if (value === 'ac') {
       calculator.clear();
