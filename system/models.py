@@ -5,15 +5,20 @@
 import hashlib
 import time
 
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from user_g11n.models import UserLanguageSupportMixin, UserTimeZoneSupportMixin
 
 IMAGE_DIR_USER = 'users'
+TIME_ZONE = settings.TIME_ZONE
 
 
 class User(UserLanguageSupportMixin, UserTimeZoneSupportMixin, AbstractUser):
     """Custom user class."""
+
+    # Override default time zone
+    UserTimeZoneSupportMixin._meta.get_field('timezone').default = TIME_ZONE
 
     def file_path(self, filename):
         """File path for user image."""

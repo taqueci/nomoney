@@ -2,13 +2,12 @@
 
 """Administrator site settings for money application."""
 
+from django.conf import settings
 from django.contrib import admin
-
-from config.settings import SITE_URL
 
 from .models import Account, Attachment, Journal, Tag, Template
 
-admin.site.site_url = SITE_URL
+admin.site.site_url = settings.SITE_URL
 
 
 @admin.register(Account)
@@ -47,3 +46,4 @@ class TemplateAdmin(admin.ModelAdmin):
     """The representation of template model."""
 
     list_display = ('name', 'description', 'rank', 'enabled')
+    filter_horizontal = ('tags', )

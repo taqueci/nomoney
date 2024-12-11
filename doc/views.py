@@ -5,6 +5,7 @@
 from functools import reduce
 
 from bs4 import BeautifulSoup
+from django.conf import settings
 from django.contrib.postgres.search import (
     SearchHeadline, SearchQuery, SearchRank, SearchVector,
 )
@@ -15,7 +16,6 @@ from django.shortcuts import render
 from django.template import loader
 from django.utils.translation import get_language
 
-from config.settings import MEDIA_URL
 from money.models import Attachment
 
 from .models import Page
@@ -60,11 +60,11 @@ def render_page(request, template_name, context=None):
     timestamp = int(latest_attachment.created.timestamp())
 
     for x in soup.find(class_=HTML_CONTENT_CLASS).find_all('a'):
-        if x.get('href', '').startswith(MEDIA_URL):
+        if x.get('href', '').startswith(settings.MEDIA_URL):
             x['href'] += f'?v={timestamp}'
 
     for x in soup.find(class_=HTML_CONTENT_CLASS).find_all('img'):
-        if x['src'].startswith(MEDIA_URL):
+        if x['src'].startswith(settings.MEDIA_URL):
             x['src'] += f'?v={timestamp}'
 
     return HttpResponse(str(soup))

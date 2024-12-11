@@ -1,0 +1,196 @@
+{% load i18n %}
+
+<div class="modal modal-sm" id="calculator" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+
+<div class="container">
+  <div class="row mb-1">
+    <div class="col">
+      <span id="calc-input" class="text-break"></span><span>&nbsp;</span>
+    </div>
+  </div><!-- .row -->
+  <div class="row my-2">
+    <div class="col text-end">
+      <span id="calc-result" class="fs-4 text-break">0</span>
+    </div>
+  </div><!-- .row -->
+  <div id="calc-buttons">
+    <div class="row my-1 gx-1">
+      <div class="col-3">
+        <button type="button" class="btn btn-secondary btn-sm w-100" data-value="ac">AC</button>
+      </div>
+      <div class="col-3">
+        <button type="button" class="btn btn-secondary btn-sm w-100" data-value="bs"><i class="fas fa-delete-left"></i></button>
+      </div>
+      <div class="col-6">
+        <button type="button" class="btn btn-primary btn-sm w-100" data-value="enter" data-bs-dismiss="modal"><i class="fas fa-check fa-fw"></i> {% trans 'Enter' %}</button>
+      </div>
+    </div><!-- .row -->
+    <div class="row my-1 gx-1">
+      <div class="col-3">
+        <button type="button" class="btn btn-light btn-sm w-100" data-value="7">7</button>
+      </div>
+      <div class="col-3">
+        <button type="button" class="btn btn-light btn-sm w-100" data-value="8">8</button>
+      </div>
+      <div class="col-3">
+        <button type="button" class="btn btn-light btn-sm w-100" data-value="9">9</button>
+      </div>
+      <div class="col-3">
+        <button type="button" class="btn btn-info btn-sm w-100" data-value="/">&divide;</button>
+      </div>
+    </div><!-- .row -->
+    <div class="row my-1 gx-1">
+      <div class="col-3">
+        <button type="button" class="btn btn-light btn-sm w-100" data-value="4">4</button>
+      </div>
+      <div class="col-3">
+        <button type="button" class="btn btn-light btn-sm w-100" data-value="5">5</button>
+      </div>
+      <div class="col-3">
+        <button type="button" class="btn btn-light btn-sm w-100" data-value="6">6</button>
+      </div>
+      <div class="col-3">
+        <button type="button" class="btn btn-info btn-sm w-100" data-value="*">&times;</button>
+      </div>
+    </div><!-- .row -->
+    <div class="row my-1 gx-1">
+      <div class="col-3">
+        <button type="button" class="btn btn-light btn-sm w-100" data-value="1">1</button>
+      </div>
+      <div class="col-3">
+        <button type="button" class="btn btn-light btn-sm w-100" data-value="2">2</button>
+      </div>
+      <div class="col-3">
+        <button type="button" class="btn btn-light btn-sm w-100" data-value="3">3</button>
+      </div>
+      <div class="col-3">
+        <button type="button" class="btn btn-info btn-sm w-100" data-value="-">&minus;</button>
+      </div>
+    </div><!-- .row -->
+    <div class="row my-1 gx-1">
+      <div class="col-3">
+        <button type="button" class="btn btn-light btn-sm w-100" data-value="0">0</button>
+      </div>
+      <div class="col-3">
+        <button type="button" class="btn btn-light btn-sm w-100" data-value=".">.</button>
+      </div>
+      <div class="col-3">
+        <button type="button" class="btn btn-secondary btn-sm w-100" data-value="=">=</button>
+      </div>
+      <div class="col-3">
+        <button type="button" class="btn btn-info btn-sm w-100" data-value="+">+</button>
+      </div>
+    </div><!-- .row -->
+  </div><!-- #id-key -->
+</div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+class Calculator {
+  constructor() {
+    this.expression = '';
+  }
+
+  push(c) {
+    const lastChar = this.expression.slice(-1);
+
+    if ('+-*/'.includes(c)) {
+      if ((lastChar === '') || (lastChar === '.')) return;
+      if ('+-*/'.includes(lastChar)) this.pop();
+    } else if (c === '.') {
+      if (!/(^|[+\-*/])[0-9]+$/.test(this.expression)) return;
+    } else {
+      if (lastChar === '0') return;
+    }
+
+    this.expression += c;
+  }
+
+  pop() {
+    this.expression = this.expression.slice(0, this.expression.length - 1);
+  }
+
+  clear() {
+    this.expression = '';
+  }
+
+  expressionHtml() {
+    return this.expression.replaceAll(
+      '+', ' &plus; '
+    ).replaceAll(
+      '-', ' &minus; '
+    ).replaceAll(
+      '*', ' &times; '
+    ).replaceAll(
+      '/', ' &divide; '
+    );
+  }
+
+  result() {
+    let r;
+
+    try {
+      // Warning: eval() is used.
+      r = eval(this.expression);
+    } catch {
+      return null;
+    }
+
+    if (!isFinite(r)) return null;
+
+    this.expression = String(r);
+
+    return r;
+  }
+}
+
+$(() => {
+  const calculator = new Calculator();
+
+  const inputCalculator = value => {
+    if (value === 'enter') {
+      const r = calculator.result();
+      $('{{ input }}').val((r != null) ? parseInt(r) : 0);
+    } else if (value === '=') {
+      const r = calculator.result();
+
+      if (r != null) {
+        $('#calc-result').html(r.toLocaleString());
+        $('#calc-input').html(calculator.expressionHtml() + ' =');
+      }
+    } else if (value === 'ac') {
+      calculator.clear();
+      $('#calc-result').html('0');
+      $('#calc-input').html('');
+    } else if (value === 'bs') {
+      calculator.pop();
+      $('#calc-input').html(calculator.expressionHtml());
+    } else {
+      calculator.push(value);
+      $('#calc-input').html(calculator.expressionHtml());
+    }
+  };
+
+  $('#calc-buttons button').on('click', e => {
+    const value = $(e.currentTarget).data('value');
+    inputCalculator(value);
+  });
+
+  $('#calculator').on('keydown', e => {
+    const code = '0123456789.+-*/='.includes(e.key) ? e.key :
+          (e.code === 'Enter') ? '=' :
+          (e.code === 'Escape') ? 'ac' :
+          (e.code === 'Backspace') ? 'bs' :
+          null;
+
+    if (code != null) inputCalculator(code);
+  });
+});
+</script>

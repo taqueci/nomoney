@@ -5,11 +5,10 @@
 import hashlib
 import os
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-from config import settings
 
 from .views.shared import date
 
@@ -175,6 +174,8 @@ class Template(models.Model):
     amount = models.IntegerField(null=True, blank=True)
     summary = models.CharField(max_length=255, null=True, blank=True)
     note = models.TextField(null=True, blank=True)
+
+    tags = models.ManyToManyField(Tag, blank=True)
 
     rank = models.IntegerField(default=0)
     enabled = models.BooleanField(default=True)
