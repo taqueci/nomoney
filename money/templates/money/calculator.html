@@ -95,32 +95,98 @@
 <script>
 class Calculator {
   constructor() {
-    this.expression = '';
+    this.inputs = [];
   }
 
+  state() {
+    const len = this.inputs.length;
+
+    return (len > 0) ? this.inputs[len - 1].state : 'EMPTY';
+  }
+
+  _isState(stateList) {
+    return stateList.includes(this.state());
+  }
+
+  _pushInput(value, state) {
+    this.inputs.push({value: value, state: state});
+  }
+
+  /*
+    | State\Event  | 0       | [1-9]   | .       | +      | -      | * /    |
+    |--------------+---------+---------+---------+--------+--------+--------|
+    | EMPTY        | -/ZERO  | -/INT   | -       | -      | -/NEGA | -/OP_O |
+    | ZERO (0)     | -       | -       | -/POINT | -/OP_P | -/OP_M | -/OP_O |
+    | INT          | -/INT   | -/INT   | -/POINT | -/OP_P | -/OP_M | -/OP_O |
+    | FLOAT        | -/FLOAT | -/FLOAT | -       | -/OP_P | -/OP_M | -/OP_O |
+    | NEGA (-)     | -/ZERO  | -/INT   | -       | -      | -      | -      |
+    | POINT (.)    | -/FLOAT | -/FLOAT | -       | -      | -      | -      |
+    | OP_P (+)     | -/ZERO  | -/INT   | -       | -      | P/OP_M | P/OP_O |
+    | OP_M (-)     | -/ZERO  | -/INT   | -       | -      | -      | P/OP_O |
+    | OP_O (* /)   | -/ZERO  | -/INT   | -       | P/OP_P | -/NEGA | P/OP_O |
+    | DONE         | C/ZERO  | C/INT   | -       | -/OP_P | -/OP_M | -/OP_O |
+  */
   push(c) {
-    const lastChar = this.expression.slice(-1);
-
-    if ('+-*/'.includes(c)) {
-      if ((lastChar === '') || (lastChar === '.')) return;
-      if ('+-*/'.includes(lastChar)) this.pop();
-    } else if (c === '.') {
-      if (!/(^|[+\-*/])[0-9]+$/.test(this.expression)) return;
+    if (c == '0') {
+      if (this._isState(['EMPTY', 'NEGA', 'OP_P', 'OP_M', 'OP_O'])) {
+        this._pushInput(c, 'ZERO');
+      } else if (this._isState(['INT'])) {
+        this._pushInput(c, 'INT');
+      } else if (this._isState(['FLOAT', 'POINT'])) {
+        this._pushInput(c, 'FLOAT');
+      } else if (this._isState(['DONE'])) {
+        this.clear();
+        this._pushInput(c, 'ZERO');
+      }
+    } else if ('0123456789'.includes(c)) {
+      if (this._isState(['EMPTY', 'INT', 'NEGA', 'OP_P', 'OP_M', 'OP_O'])) {
+        this._pushInput(c, 'INT');
+      } else if (this._isState(['FLOAT', 'POINT'])) {
+        this._pushInput(c, 'FLOAT');
+      } else if (this._isState(['DONE'])) {
+        this.clear();
+        this._pushInput(c, 'INT');
+      }
+    } else if (c == '.') {
+      if (this._isState(['ZERO', 'INT'])) {
+        this._pushInput(c, 'POINT');
+      }
+    } else if (c == '+') {
+      if (this._isState(['ZERO', 'INT', 'FLOAT', 'DONE'])) {
+        this._pushInput(c, 'OP_P');
+      } else if (this._isState(['OP_O'])) {
+        this.pop();
+        this._pushInput(c, 'OP_P');
+      }
+    } else if (c == '-') {
+      if (this._isState(['EMPTY', 'OP_O', 'DONE'])) {
+        this._pushInput(c, 'NEGA');
+      } else if (this._isState(['ZERO', 'INT', 'FLOAT'])) {
+        this._pushInput(c, 'OP_M');
+      } else if (this._isState(['OP_P'])) {
+        this.pop();
+        this._pushInput(c, 'OP_M');
+      }
+    } else if ('*/'.includes(c)) {
+      if (this._isState(['EMPTY', 'ZERO', 'INT', 'FLOAT', 'DONE'])) {
+        this._pushInput(c, 'OP_O');
+      } else if (this._isState(['OP_P', 'OP_M', 'OP_O'])) {
+        this.pop();
+        this._pushInput(c, 'OP_O');
+      }
     }
-
-    this.expression += c;
   }
 
   pop() {
-    this.expression = this.expression.slice(0, this.expression.length - 1);
+    return this.inputs.pop();
   }
 
   clear() {
-    this.expression = '';
+    this.inputs = [];
   }
 
   expressionHtml() {
-    return this.expression.replaceAll(
+    return this.inputs.map(x => x.value).join('').replaceAll(
       '+', ' &plus; '
     ).replaceAll(
       '-', ' &minus; '
@@ -136,14 +202,16 @@ class Calculator {
 
     try {
       // Warning: eval() is used.
-      r = eval(this.expression);
+      r = eval(this.inputs.map(x => x.value).join(''));
     } catch {
       return null;
     }
 
     if (!isFinite(r)) return null;
 
-    this.expression = String(r);
+    this.clear();
+    r.toString().split('').forEach(x => this.push(x));
+    this._pushInput('', 'DONE');
 
     return r;
   }
