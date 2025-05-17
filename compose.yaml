@@ -1,10 +1,10 @@
 services:
   web:
     build:
-      context: ./extra/docker/apache
+      context: ./web
     volumes:
-      - ./_data/media:/opt/app/media
-      - ./_data/staticfiles:/opt/app/staticfiles
+      - ./_data/app/media:/opt/app/media:ro
+      - ./_data/app/staticfiles:/opt/app/staticfiles:ro
     depends_on:
       - app
     environment:
@@ -21,15 +21,15 @@ services:
       POSTGRES_USER: nmoney
       POSTGRES_PASSWORD: nmoney
     volumes:
-      - ./_data/postgresql-init:/docker-entrypoint-initdb.d
-      - ./_data/postgresql:/var/lib/postgresql/data
+      - ./_data/db/init:/docker-entrypoint-initdb.d
+      - ./_data/db/data:/var/lib/postgresql/data
 
   app:
-    build: .
+    build: ./app
     volumes:
-      - ./_data/media:/opt/nomoney/media
-      - ./_data/staticfiles:/opt/nomoney/staticfiles
-      - ./_data/logs:/opt/nomoney/logs
+      - ./_data/app/media:/opt/nomoney/media
+      - ./_data/app/staticfiles:/opt/nomoney/staticfiles
+      - ./_data/app/logs:/opt/nomoney/logs
     environment:
       N_ALLOWED_HOSTS: app
       N_CSRF_TRUSTED_ORIGINS:
