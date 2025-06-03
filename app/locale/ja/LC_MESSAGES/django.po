@@ -380,3 +380,114 @@ msgstr "確認中"
 msgid ""
 "Please wait a moment while your account verification is being processed."
 msgstr "アカウント確認処理が完了するまで、少しお待ち下さい。"
+
+msgid "Combined"
+msgstr "統合された"
+
+msgid "Deleted"
+msgstr "削除された"
+
+msgid "Red"
+msgstr "赤"
+
+msgid "White"
+msgstr "白"
+
+msgid "Rose"
+msgstr "ロゼ"
+
+msgid "Mixed"
+msgstr "ミックス"
+
+msgid "Wine"
+msgstr "ワイン"
+
+msgid "Beer"
+msgstr "ビール"
+
+msgid "Cider"
+msgstr "サイダー"
+
+msgid "Fortified wine"
+msgstr "酒精強化ワイン"
+
+msgid "Spirit"
+msgstr "スピリット"
+
+msgid "Still"
+msgstr "スティル"
+
+msgid "Absinthe"
+msgstr "アブサン"
+
+msgid "Aquavit"
+msgstr "アクアビット"
+
+msgid "Bitters"
+msgstr "ビターズ"
+
+msgid "Brandy"
+msgstr "ブランデー"
+
+msgid "Cachaca"
+msgstr "カシャッサ"
+
+msgid "Genever"
+msgstr "ジュネヴァ"
+
+msgid "Gin"
+msgstr "ジン"
+
+msgid "Liqueur"
+msgstr "リカー"
+
+msgid "Madeira"
+msgstr "マデイラ"
+
+msgid "Marsala"
+msgstr "マルサラ"
+
+msgid "Mezcal"
+msgstr "メスカル"
+
+msgid "Montilla-Moriles"
+msgstr "モンティーリャ・モリーレス"
+
+msgid "Moscatel de Setubal"
+msgstr "モスカテル・デ・セトゥーバル"
+
+msgid "Port"
+msgstr "ポート"
+
+msgid "Rum"
+msgstr "ラム"
+
+msgid "Rutherglen"
+msgstr "ラザグレン"
+
+msgid "Sake"
+msgstr "日本酒"
+
+msgid "Sherry"
+msgstr "シェリー"
+
+msgid "Shochu"
+msgstr "焼酎"
+
+msgid "Sparkling"
+msgstr "スパークリング"
+
+msgid "Tequila"
+msgstr "テキーラ"
+
+msgid "Vermouth"
+msgstr "ベルモット"
+
+msgid "Vin Doux Naturel"
+msgstr "ヴァン・ドゥー・ナチュレル"
+
+msgid "Vodka"
+msgstr "ウォッカ"
+
+msgid "Whiskies"
+msgstr "ウイスキー"

@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.postgres.search',
     'social_django',
+    'django_countries',
     'django_filters',
     'fontawesomefree',
     'rest_framework',
@@ -63,6 +64,7 @@ INSTALLED_APPS = [
     'doc',
     'money',
     'api',
+    'wine',
     'drf_spectacular',
     'drf_spectacular_sidecar',
 ]
