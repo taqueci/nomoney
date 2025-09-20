@@ -60,7 +60,11 @@
     {% for x in page %}
     <tr>
       <td class="text-end">{{ x.id }}</td>
-      <td>{{ x.date|date:'Y-m-d' }}</td>
+      <td>
+        {% with d=x.date|date:'Y-m-d' %}
+        <a href="{% querystring start=d end=d %}" class="text-dark text-decoration-none">{{ d }}</a>
+        {% endwith %}
+      </td>
       <td><a href="{% querystring debit=x.debit.id %}" class="text-dark text-decoration-none">{{ x.debit.name }}</a></td>
       <td><a href="{% querystring credit=x.credit.id %}" class="text-dark text-decoration-none">{{ x.credit.name }}</a></td>
       <td class="text-end">{{ x.amount|intcomma }}</td>
@@ -121,7 +125,11 @@
   <div class="list-group-item">
     <div class="d-flex justify-content-between mb-2">
       <div>
-        <h5>{{ x.date|date:'Y-m-d' }} <small class="text-muted">#{{ x.id }}</small></h5>
+        <h5>
+          {% with d=x.date|date:'Y-m-d' %}
+          <a href="{% querystring start=d end=d %}" class="text-dark text-decoration-none">{{ d }}</a>
+          {% endwith %}
+          <small class="text-muted">#{{ x.id }}</small></h5>
         <div>{{ x.summary }}</div>
       </div>
       <div class="text-end">
