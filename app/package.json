@@ -1,0 +1,28 @@
+{
+  "name": "nomoney",
+  "version": "2.5.0",
+  "description": "A simple household account book",
+  "homepage": "https://github.com/taqueci/nomoney",
+  "bugs": {
+    "url": "https://github.com/taqueci/nomoney/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taqueci/nomoney.git"
+  },
+  "license": "ISC",
+  "author": "Takeshi Nakamura",
+  "type": "commonjs",
+  "dependencies": {
+    "@ttskch/select2-bootstrap4-theme": "1.3.2",
+    "bootstrap": "5.3.3",
+    "chart.js": "3.4.1",
+    "chartjs-adapter-moment": "0.1.1",
+    "jquery": "3.6.0",
+    "jstree": "3.3.9",
+    "moment": "2.30.1",
+    "prismjs": "1.29.0",
+    "select2": "4.0.2",
+    "tempusdominus-bootstrap-4": "5.39.0"
+  }
+}
