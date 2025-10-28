@@ -24,5 +24,8 @@
     "prismjs": "1.29.0",
     "select2": "4.0.2",
     "tempusdominus-bootstrap-4": "5.39.0"
+  },
+  "scripts": {
+    "install:static": "npm install && node vendor/copyFiles.js staticfiles.json "
   }
 }
