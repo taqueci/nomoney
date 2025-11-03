@@ -1,3 +1,13 @@
+FROM node:22.21.0-slim AS builder
+
+WORKDIR /opt/builder
+
+COPY package.json package-lock.json staticfiles.json .
+COPY vendor vendor
+
+RUN npm run install:static
+
+
 FROM python:3.12-alpine
 
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -26,6 +36,8 @@ USER nomoney
 WORKDIR $INSTALL_DIR
 
 COPY --chown=nomoney . .
+COPY --chown=nomoney --from=builder \
+    /opt/builder/system/static/vendor ./system/static/vendor
 
 RUN django-admin compilemessages
 
