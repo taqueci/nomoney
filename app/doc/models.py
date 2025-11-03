@@ -5,6 +5,7 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.utils import ProgrammingError
 from django.utils.translation import gettext_lazy as _
 from tinymce import models as tinymce_models
 
@@ -14,7 +15,12 @@ User = get_user_model()
 def _slug_choices():
     """Choices for parent_slug field."""
     choices = [('None', '-')]
-    choices.extend([(x, x) for x in Page.objects.slugs()])
+
+    try:
+        choices.extend([(x, x) for x in Page.objects.slugs()])
+    except ProgrammingError as e:
+        # This exception occurs on the first migration.
+        pass
 
     return choices
 
