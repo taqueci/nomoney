@@ -1,12 +1,24 @@
 services:
   web:
     ports:
-      - "8000:80"
+      - "80:80"
+    depends_on:
+      - app
+    volumes:
+      - /var/opt/nomoney/app/staticfiles:/opt/app/staticfiles:ro
+      - /var/opt/nomoney/app/media:/opt/app/media:ro
+
+  db:
+    volumes:
+      - /var/opt/nomoney/db/init:/docker-entrypoint-initdb.d
+      - /var/opt/nomoney/db/data:/var/lib/postgresql/18/docker
 
   app:
     volumes:
-      - .:/opt/nomoney
+      - /var/opt/nomoney/app/staticfiles:/var/opt/nomoney/staticfiles
+      - /var/opt/nomoney/app/media:/var/opt/nomoney/media
     depends_on:
       - db
     environment:
-      N_CSRF_TRUSTED_ORIGINS: http://localhost:8000
+      N_CSRF_TRUSTED_ORIGINS: http://localhost
+      N_DATABASE_HOST: db

@@ -3,6 +3,9 @@ FROM python:3.12-alpine
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
+ENV N_STATIC_ROOT=/var/opt/nomoney/staticfiles
+ENV N_MEDIA_ROOT=/var/opt/nomoney/media
+
 ARG INSTALL_DIR=/opt/nomoney
 
 WORKDIR $INSTALL_DIR

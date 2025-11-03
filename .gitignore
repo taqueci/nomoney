@@ -4,9 +4,10 @@
 *.orig
 *.tmp
 
-/docker-compose.override.yml
+/compose.override.yaml
+/.env
 
-/_data/
+venv/
 
 # Created by https://www.gitignore.io/api/django
 # Edit at https://www.gitignore.io/?templates=django
