@@ -2,7 +2,7 @@
 
 {% load static %}
 
-<link rel="stylesheet" href="{% static 'system/css/jstree/default/style.min.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/jstree/themes/default/style.min.css' %}">
 <style>
 .jstree-default .jstree-wholerow-clicked {
   background: #e2e3e5;
@@ -12,7 +12,7 @@
 }
 </style>
 
-<script src="{% static 'system/js/jstree.min.js' %}"></script>
+<script src="{% static 'vendor/jstree/jstree.min.js' %}"></script>
 <script>
 $.jstree.defaults.core.themes.variant = 'large';
 $.jstree.defaults.plugins = ['wholerow'];
