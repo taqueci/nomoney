@@ -14,6 +14,8 @@ services:
       - /var/opt/nomoney/db/data:/var/lib/postgresql/18/docker
 
   app:
+    group_add:
+      - "65534"
     volumes:
       - /var/opt/nomoney/app/staticfiles:/var/opt/nomoney/staticfiles
       - /var/opt/nomoney/app/media:/var/opt/nomoney/media
