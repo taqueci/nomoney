@@ -41,6 +41,7 @@ class PageQuerySet(models.QuerySet):
 
 class Page(models.Model):
     """"Document page model."""
+    # pylint: disable-next=too-many-ancestors
     class Status(models.IntegerChoices):
         """Status choices."""
         DRAFT = 0, _('Draft')
