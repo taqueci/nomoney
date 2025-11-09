@@ -36,8 +36,8 @@
     "to": "system/static/vendor/jstree/jstree.min.js"
   },
   {
-    "from": "node_modules/moment/dist/moment.js",
-    "to": "system/static/vendor/chart.js/js/moment.js"
+    "from": "node_modules/moment/min/moment.min.js",
+    "to": "system/static/vendor/moment/min/moment.min.js"
   },
   {
     "from": "node_modules/prismjs/themes/prism.min.css",
