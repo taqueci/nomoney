@@ -16,8 +16,8 @@
     "to": "system/static/vendor/bootstrap/js/bootstrap.bundle.min.js.map"
   },
   {
-    "from": "node_modules/chart.js/dist/chart.min.js",
-    "to": "system/static/vendor/chart.js/chart.min.js"
+    "from": "node_modules/chart.js/dist/chart.umd.min.js",
+    "to": "system/static/vendor/chart.js/chart.umd.min.js"
   },
   {
     "from": "node_modules/chartjs-adapter-moment/dist/chartjs-adapter-moment.js",

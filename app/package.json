@@ -14,16 +14,16 @@
   "author": "Takeshi Nakamura",
   "type": "commonjs",
   "dependencies": {
-    "@ttskch/select2-bootstrap4-theme": "1.3.2",
-    "bootstrap": "5.3.3",
-    "chart.js": "3.4.1",
-    "chartjs-adapter-moment": "0.1.1",
-    "jquery": "3.6.0",
-    "jstree": "3.3.9",
+    "@ttskch/select2-bootstrap4-theme": "1.5.2",
+    "bootstrap": "5.3.8",
+    "chart.js": "4.5.1",
+    "chartjs-adapter-moment": "1.0.1",
+    "jquery": "3.7.1",
+    "jstree": "3.3.17",
     "moment": "2.30.1",
-    "prismjs": "1.29.0",
+    "prismjs": "1.30.0",
     "select2": "4.0.2",
-    "tempusdominus-bootstrap-4": "5.39.0"
+    "tempusdominus-bootstrap-4": "5.39.2"
   },
   "scripts": {
     "install:static": "npm install && node vendor/copyFiles.js staticfiles.json "
