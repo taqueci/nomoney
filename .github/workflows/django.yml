@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - fix-github-actions-settings
   pull_request:
     branches:
       - main
