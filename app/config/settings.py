@@ -31,7 +31,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'f28)f6n)+po@miei(tn**ki05n@@5z-caf8y!hrz#&-n8p09i@'
+SECRET_KEY = env('N_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('N_DEBUG', default=False)
@@ -215,53 +215,6 @@ TINYMCE_DEFAULT_CONFIG.update({
     'link_list': f'{DOC_URL}__admin__/links',
     'file_picker_callback': '(c, v, m) => filePickerCallback(c, v, m)',
 })
-
-LOG_FILE = os.path.join(BASE_DIR, 'logs/django.log')
-
-LOGGING = {
-    'version': 1,
-    'formatters': {
-        'default': {
-            'format': '\t'.join([
-                '[%(levelname)s]',
-                '%(asctime)s',
-                'module:%(module)s',
-                'process:%(process)d',
-                'thread:%(thread)d',
-                'message:%(message)s',
-            ])
-        },
-    },
-    'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': LOG_FILE,
-            'formatter': 'default',
-        },
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'default',
-        },
-    },
-    'loggers': {
-        'money': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-        'django': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-        'django.db.backends': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-    },
-}
 
 try:
     # pylint: disable=wildcard-import,unused-wildcard-import

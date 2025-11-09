@@ -11,30 +11,36 @@ The way of booking is based on double-entry bookkeeping system.
 
 ## Requirements
 
-* Python 3.7+
-* Django 3.0
-* PostgreSQL 9.5+
+* Python 3.12+
+* Django 5.2
+* PostgreSQL 18+
 
 ## Installation
 
-### Database
+### Docker Compose
 
-Prepare database for NoMoney.
-
-### NoMoney
 
 1. Clone or copy files of NoMoney.
-2. Change directory to NoMoney directory and
-execute `pip3 install -r requirements.txt` to install necessary libraries.
-3. Modify `config/settings.py` according to your environment.
-4. Execute `python3 manage.py migrate` to migrate.
-5. Execute `django-admin compilemessages` to compile .po file.
+2. Run `docker compose build` to build Docker image.
+3. Create directories for static files and media by:
+```bash
+groupadd -r nomoney
+mkdir -p /var/opt/
+install -g nomoney -m 775 -d /var/opt/nomoney/app/{staticfiles,media}
+```
+4. Copy configuration files and update if needed.
+```bash
+cp extra/docker/env.tmpl .env
+cp extra/docker/compose.override.yaml.tmpl compose.override.yaml
+```
+5. Run `docker compose up -d`.
+6. Copy static files by:
+```bash
+docker compose exec app python3 manage.py collectstatic
+```
 
-### Web server
-
-Configure web server.
-
-See [Deploying Django](https://docs.djangoproject.com/en/3.0/howto/deployment/).
+Let's access to:
+http://example.com/n/money/
 
 ## Usage
 

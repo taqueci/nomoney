@@ -11,31 +11,35 @@ NoMoneyはDjangoで作られたシンプルな家計簿です。(妻のために
 
 ## 要件
 
-* Python 3.7+
-* Django 3.0
-* PostgreSQL 9.5+
+* Python 3.12+
+* Django 5.2
+* PostgreSQL 18+
 
 ## インストール
 
-### データベース
-
-NoMoney用のデータベースを用意します。
-
-### NoMoney
+### Docker Compose
 
 1. NoMoneyをクローンまたはコピーします。
-2. NoMoneyのディレクトリに移動し、`pip3 install -r requirements.txt`
-を実行して、必要なライブラリをインストールします。
-3. あたなの環境に合わせて、`config/settings.py` を修正します。
-4. `python3 manage.py migrate` を実行して、マイグレーションします。
-5. `django-admin compilemessages` を実行して、.po ファイルをコンパイルします。
+2. `docker compose build` を実行して、Dockerイメージをビルドします。
+3. 静的ファイルとメディアを保存するディレクトリを作成します。
+```bash
+groupadd -r nomoney
+mkdir -p /var/opt/
+install -g nomoney -m 775 -d /var/opt/nomoney/app/{staticfiles,media}
+```
+4. 以下のコマンドを実行し、設定ファイルをコピーし、必要に応じて修正します。
+```bash
+cp extra/docker/env.tmpl .env
+cp extra/docker/compose.override.yaml.tmpl compose.override.yaml
+```
+5. `docker compose up -d` を実行して、NoMoneyを起動します。
+6. 静的ファイルをコピーします。
+```bash
+docker compose exec app python3 manage.py collectstatic
+```
 
-### Webサーバ
-
-Webサーバを設定してください。
-
-[Django をデプロイする](https://docs.djangoproject.com/ja/3.0/howto/deployment/)
-を参考にしましょう。
+以下にアクセスしましょう。
+http://example.com/n/money/
 
 ## 使い方
 

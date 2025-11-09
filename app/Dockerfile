@@ -1,18 +1,43 @@
+FROM node:22.21.0-slim AS builder
+
+WORKDIR /opt/builder
+
+COPY package.json package-lock.json staticfiles.json .
+COPY vendor vendor
+
+RUN npm run install:static
+
+
 FROM python:3.12-alpine
 
-ARG INSTALL_DIR=/opt/nomoney
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-WORKDIR $INSTALL_DIR
+ENV N_STATIC_ROOT=/var/opt/nomoney/staticfiles
+ENV N_MEDIA_ROOT=/var/opt/nomoney/media
 
-COPY requirements.txt .
+WORKDIR /var/tmp/build
+
+COPY requirements.txt requirements-prod.txt .
 
 RUN apk add --no-cache gettext postgresql-libs && \
     apk add --no-cache --virtual .build-deps \
         gcc linux-headers musl-dev && \
-    pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir -r requirements-prod.txt && \
     apk del --no-cache --purge .build-deps
 
-COPY . .
+ARG INSTALL_DIR=/opt/nomoney
+
+RUN adduser -S nomoney && \
+    install -d -o nomoney $INSTALL_DIR $N_STATIC_ROOT $N_MEDIA_ROOT
+
+USER nomoney
+
+WORKDIR $INSTALL_DIR
+
+COPY --chown=nomoney . .
+COPY --chown=nomoney --from=builder \
+    /opt/builder/system/static/vendor ./system/static/vendor
 
 RUN django-admin compilemessages
 

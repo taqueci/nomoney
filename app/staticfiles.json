@@ -1,0 +1,70 @@
+[
+  {
+    "from": "node_modules/bootstrap/dist/css/bootstrap.min.css",
+    "to": "system/static/vendor/bootstrap/css/bootstrap.min.css"
+  },
+  {
+    "from": "node_modules/bootstrap/dist/css/bootstrap.min.css.map",
+    "to": "system/static/vendor/bootstrap/css/bootstrap.min.css.map"
+  },
+  {
+    "from": "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+    "to": "system/static/vendor/bootstrap/js/bootstrap.bundle.min.js"
+  },
+  {
+    "from": "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map",
+    "to": "system/static/vendor/bootstrap/js/bootstrap.bundle.min.js.map"
+  },
+  {
+    "from": "node_modules/chart.js/dist/chart.min.js",
+    "to": "system/static/vendor/chart.js/chart.min.js"
+  },
+  {
+    "from": "node_modules/chartjs-adapter-moment/dist/chartjs-adapter-moment.js",
+    "to": "system/static/vendor/chart.js/chartjs-adapter-moment.js"
+  },
+  {
+    "from": "node_modules/jquery/dist/jquery.min.js",
+    "to": "system/static/vendor/jquery/jquery.min.js"
+  },
+  {
+    "from": "node_modules/jstree/dist/themes/default",
+    "to": "system/static/vendor/jstree/themes/default/"
+  },
+  {
+    "from": "node_modules/jstree/dist/jstree.min.js",
+    "to": "system/static/vendor/jstree/jstree.min.js"
+  },
+  {
+    "from": "node_modules/moment/dist/moment.js",
+    "to": "system/static/vendor/chart.js/js/moment.js"
+  },
+  {
+    "from": "node_modules/prismjs/themes/prism.min.css",
+    "to": "system/static/vendor/prismjs/themes/prism.min.css"
+  },
+  {
+    "from": "node_modules/prismjs/prism.js",
+    "to": "system/static/vendor/prismjs/prism.js"
+  },
+  {
+    "from": "node_modules/@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css",
+    "to": "system/static/vendor/select2/css/select2-bootstrap4.min.css"
+  },
+  {
+    "from": "node_modules/select2/dist/css/select2.min.css",
+    "to": "system/static/vendor/select2/css/select2.min.css"
+  },
+  {
+    "from": "node_modules/select2/dist/js/select2.min.js",
+    "to": "system/static/vendor/select2/js/select2.min.js"
+  },
+  {
+    "from": "node_modules/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css",
+    "to": "system/static/vendor/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css"
+  },
+  {
+    "from": "node_modules/tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4.min.js",
+    "to": "system/static/vendor/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"
+  }
+]
