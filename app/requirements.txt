@@ -1,11 +1,11 @@
-Django==5.2.6
-beautifulsoup4==4.13.5
+Django==5.2.8
+beautifulsoup4==4.14.2
 django-environ==0.12.0
-django-filter==25.1
+django-filter==25.2
 django-tinymce==3.7.1
 django-user-g11n==0.4.4
 djangorestframework==3.16.1
 fontawesomefree==6.6.0
-pillow==11.3.0
-psycopg[binary]==3.2.10
+pillow==12.0.0
+psycopg[binary]==3.2.12
 python-dateutil==2.9.0.post0
