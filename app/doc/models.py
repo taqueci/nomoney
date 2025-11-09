@@ -18,7 +18,7 @@ def _slug_choices():
 
     try:
         choices.extend([(x, x) for x in Page.objects.slugs()])
-    except ProgrammingError as e:
+    except ProgrammingError:
         # This exception occurs on the first migration.
         pass
 
