@@ -11,6 +11,9 @@ on:
       - main
       - develop
 
+env:
+  N_SECRET_KEY: "We will rock you"
+      
 jobs:
   build:
     runs-on: ubuntu-latest
