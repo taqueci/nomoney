@@ -14,7 +14,7 @@ User = get_user_model()
 
 def _slug_choices():
     """Choices for parent_slug field."""
-    choices = [('None', '-')]
+    choices = [(None, '-')]
 
     try:
         choices.extend([(x, x) for x in Page.objects.slugs()])
@@ -70,7 +70,7 @@ class Page(models.Model):
     note = models.TextField(blank=True)
 
     parent_slug = models.SlugField(
-        choices=_slug_choices, null=True, default=None,
+        choices=_slug_choices, null=True, blank=True, default=None,
     )
 
     previous_revision = models.ForeignKey(
