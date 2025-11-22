@@ -2,6 +2,8 @@
 
 """Models for document application."""
 
+import hashlib
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -55,6 +57,8 @@ class Page(models.Model):
         DISABLED = -100, _('Disabled')
         BACKUP = -200, _('Backup')
 
+    digest = models.BigIntegerField(unique=True, null=True, default=True)
+
     title = models.CharField(max_length=255)
     content = tinymce_models.HTMLField(blank=True)
 
@@ -74,7 +78,7 @@ class Page(models.Model):
     )
 
     previous_revision = models.ForeignKey(
-        'Page', null=True, blank=True, on_delete=models.PROTECT,
+        'Page', models.PROTECT, to_field='digest', null=True, blank=True,
     )
 
     author = models.ForeignKey(User, on_delete=models.PROTECT)
@@ -89,11 +93,24 @@ class Page(models.Model):
     def save(self, *args, **kwargs):
         if self.pk:
             self._pre_save()
+
+        if self.status == self.Status.DRAFT:
+            self.digest = None
+        else:
+            self.digest = self.get_digest()
+
         super().save(*args, **kwargs)
 
     def is_accessible(self, user):
         """Wheather an object is accessible or not."""
         return Page.objects.filter(pk=self.pk).accessible(user).exists()
+
+    def get_digest(self):
+        """Returns 64-bit digest."""
+        data = '\v'.join([self.slug, self.language, self.content])
+        md5 = hashlib.md5(data.encode('utf-8'))
+
+        return int.from_bytes(md5.digest()[:8], signed=True)
 
     def _pre_save(self):
         obj = Page.objects.get(pk=self.pk)
@@ -103,8 +120,10 @@ class Page(models.Model):
                 self._update_previous_revision_status()
             case (self.Status.PUBLISHED, self.Status.PUBLISHED):
                 if obj.content != self.content:
+                    Page.objects.filter(pk=self.pk).update(digest=None)
                     self.previous_revision = self._clone(self.Status.BACKUP)
             case (self.Status.PUBLISHED, self.Status.DRAFT):
+                Page.objects.filter(pk=self.pk).update(digest=None)
                 self.previous_revision = self._clone(self.Status.PUBLISHED)
             case (self.Status.BACKUP, self.Status.DISABLED):
                 self._unlink_revisions()
