@@ -1,0 +1,21 @@
+services:
+  jenkins:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    group_add:
+      - 981  # Docker
+    volumes:
+      - jenkins_home:/var/jenkins_home
+
+      # DooD (Docker outside of Docker)
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      JAVA_OPTS: |
+        -Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Tokyo
+        -Djenkins.install.runSetupWizard=false
+      JENKINS_OPTS: "--prefix=/jenkins"
+
+volumes:
+  jenkins_home:
