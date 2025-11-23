@@ -33,11 +33,17 @@ class PageAdmin(admin.ModelAdmin):
     """The representation of page model."""
     search_fields = ('title', 'slug', 'note')
     list_display = (
-        'id', 'title', 'slug', 'language', 'status', 'order', 'updated',
+        'id', '_digest', 'title', 'slug', 'language', 'status', 'order',
+        'updated',
     )
     list_filter = (PageActiveListFilter, 'status', 'slug', 'language')
-    readonly_fields = ['author', 'created', 'updated']
+    readonly_fields = ['_digest', 'author', 'created', 'updated']
+    exclude = ['digest']
     change_form_template = 'doc/admin/change_form.html'
+
+    @admin.display(description=_('Digest'))
+    def _digest(self, obj):
+        return obj.digest.to_bytes(8, signed=True).hex() if obj.digest else '-'
 
     def save_model(self, request, obj, form, change):
         obj.author = request.user

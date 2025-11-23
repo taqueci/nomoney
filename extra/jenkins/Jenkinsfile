@@ -1,0 +1,105 @@
+pipeline {
+  agent any
+
+  parameters {
+    string(
+      name: 'repository',
+      defaultValue: 'https://github.com/taqueci/nomoney.git'
+    )
+    credentials(name: 'repository_credentials')
+    string(name: 'branch', defaultValue: 'main')
+    string(name: 'name', defaultValue: 'nomoney/app')
+    string(name: 'version', description: 'Default: config.version.VERSION')
+    booleanParam(name: 'deploy')
+    choice(name: 'registry_scheme', choices: ['http', 'https'])
+    string(name: 'registry_host', defaultValue: 'localhost:5000')
+    credentials(name: 'registry_credentials')
+  }
+
+  options {
+    timestamps()
+  }
+
+  stages {
+    stage('Setup') {
+      steps {
+        script {
+          def gitCheckout = checkout scmGit(
+            branches: [[name: "${params.branch}"]],
+            userRemoteConfigs: [[
+              credentialsId: "${params.repository_credentials}",
+              url: "${params.repository}"
+            ]]
+          )
+
+          dir('app') {
+            env.VERSION = params.version ?: sh(returnStdout: true, script: '''
+              python3 -c "from config.version import VERSION; print(VERSION)"
+            ''').trim()
+          }
+
+          env.COMMIT_SHA = gitCheckout.GIT_COMMIT
+
+          def digest = env.COMMIT_SHA.substring(0, 8)
+          currentBuild.description = "${env.VERSION} ${digest}"
+        }
+      }
+    }
+
+    stage('Build') {
+      steps {
+        script {
+          def arg1 = "--build-arg VERSION=${env.VERSION}"
+          def arg2 = "--build-arg COMMIT_SHA=${env.COMMIT_SHA}"
+
+          image = docker.build(
+            "${params.name}:${env.VERSION}", "${arg1} ${arg2} app"
+          )
+        }
+      }
+    }
+
+    stage('Check') {
+      steps {
+        dir('app') {
+          script {
+            image.inside('-u root') {
+              sh '''
+                pip3 install -r requirements-dev.txt
+                pylint --exit-zero --output-format=parseable --reports=no \
+                  api config doc money system  > pylint.log
+              '''
+            }
+          }
+        }
+      }
+
+      post {
+        always {
+          dir('app') {
+            recordIssues tool: pyLint(pattern: 'pylint.log')
+            archiveArtifacts artifacts: 'pylint.log'
+
+            sh 'rm pylint.log'
+          }
+        }
+      }
+    }
+
+    stage('Deploy') {
+      when {
+        expression { params.deploy }
+      }
+
+      steps {
+        script {
+          def url = "${params.registry_scheme}://${params.registry_host}"
+
+          docker.withRegistry(url, params.registry_credentials) {
+            image.push()
+          }
+        }
+      }
+    }
+  }
+}

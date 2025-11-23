@@ -1,0 +1,8 @@
+configuration-as-code:latest
+docker-workflow:latest
+git:latest
+pipeline-stage-view:latest
+rebuild:latest
+timestamper:latest
+warnings-ng:latest
+workflow-aggregator:latest

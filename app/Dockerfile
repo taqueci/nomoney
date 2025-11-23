@@ -44,3 +44,15 @@ RUN django-admin compilemessages
 EXPOSE 49152
 
 CMD ["sh", "run.sh"]
+
+ARG VERSION=0.0.0
+ARG COMMIT_SHA=-
+LABEL \
+    org.opencontainers.image.vendor="Takeshi Nakamura" \
+    org.opencontainers.image.title="NoMoney" \
+    org.opencontainers.image.description="Simple household account book" \
+    org.opencontainers.image.version="${VERSION}" \
+    org.opencontainers.image.url="https://github.com/taqueci/nomoney" \
+    org.opencontainers.image.source="https://github.com/taqueci/nomoney.git" \
+    org.opencontainers.image.revision="${COMMIT_SHA}" \
+    org.opencontainers.image.licenses="MIT"

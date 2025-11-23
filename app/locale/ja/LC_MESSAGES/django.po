@@ -48,6 +48,9 @@ msgstr ""
 msgid "No"
 msgstr ""
 
+msgid "Digest"
+msgstr "ダイジェスト"
+
 msgid "Draft"
 msgstr "ドラフト"
 
