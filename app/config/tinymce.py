@@ -8,15 +8,17 @@ TINYMCE_DEFAULT_CONFIG = {
     'content_style': '.mce-content-body { margin: 8px; }',
     'verify_html': False,
     'menubar': False,
-    'plugins': 'advlist anchor code code codesample fullscreen help hr image'
-    ' link lists media paste preview searchreplace table toc visualblocks'
-    ' wordcount',
+    'plugins': [
+        'advlist', 'anchor', 'code', 'codesample', 'fullscreen', 'help',
+        'image', 'link', 'lists', 'media', 'preview', 'searchreplace', 'table',
+        'visualblocks', 'wordcount',
+    ],
     'toolbar': 'fullscreen preview visualblocks'
     '| undo redo | searchreplace'
-    '| styleselect| bold italic underline strikethrough'
+    '| styles | bold italic underline strikethrough'
     '| alignleft aligncenter alignright'
     '| outdent indent | hr | numlist bullist | table tablerowheader'
-    '| forecolor backcolor removeformat | image link anchor codesample toc'
+    '| forecolor backcolor removeformat | image link anchor codesample'
     '| code | help',
     'toolbar_mode': 'wrap',
     'relative_urls': False,
@@ -120,7 +122,5 @@ TINYMCE_DEFAULT_CONFIG = {
         {'text': 'SQL', 'value': 'sql'},
         {'text': 'Diff', 'value': 'diff'},
     ],
-    'toc_header': 'h5',
-    'toc_class': 'doc-toc bg-light rounded-2 p-3',
     'style_formats_merge': True,
 }
