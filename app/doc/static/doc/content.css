@@ -36,6 +36,9 @@
   max-width: 100%;
   height: auto;
 }
+.doc-content table.table thead {
+  border-bottom: calc(var(--bs-border-width) * 2) solid currentcolor;
+}
 .doc-toc {
   margin-bottom: 1.5rem;
 }

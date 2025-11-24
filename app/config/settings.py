@@ -207,7 +207,7 @@ NAME = env('N_NAME', default='NoMoney')
 TINYMCE_DEFAULT_CONFIG = tinymce.TINYMCE_DEFAULT_CONFIG
 TINYMCE_DEFAULT_CONFIG.update({
     'content_css': [
-        f'{STATIC_URL}system/css/bootstrap.min.css',
+        f'{STATIC_URL}vendor/bootstrap/css/bootstrap.min.css',
         f'{STATIC_URL}fontawesomefree/css/all.min.css',
         f'{STATIC_URL}doc/content.css',
     ],

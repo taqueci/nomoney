@@ -57,7 +57,7 @@ class Page(models.Model):
         DISABLED = -100, _('Disabled')
         BACKUP = -200, _('Backup')
 
-    digest = models.BigIntegerField(unique=True, null=True, default=True)
+    digest = models.BigIntegerField(unique=True, null=True)
 
     title = models.CharField(max_length=255)
     content = tinymce_models.HTMLField(blank=True)

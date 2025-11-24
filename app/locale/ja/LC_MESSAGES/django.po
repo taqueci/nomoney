@@ -51,6 +51,9 @@ msgstr ""
 msgid "Digest"
 msgstr "ダイジェスト"
 
+msgid "The content is the same as #%(pk)s"
+msgstr "内容が#%(pk)sと同じです"
+
 msgid "Draft"
 msgstr "ドラフト"
 
