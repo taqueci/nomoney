@@ -5,7 +5,7 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from . import models
+from . import forms, models
 
 
 class PageActiveListFilter(admin.SimpleListFilter):
@@ -40,6 +40,7 @@ class PageAdmin(admin.ModelAdmin):
     readonly_fields = ['_digest', 'author', 'created', 'updated']
     exclude = ['digest']
     change_form_template = 'doc/admin/change_form.html'
+    form = forms.PageAdminForm
 
     @admin.display(description=_('Digest'))
     def _digest(self, obj):
