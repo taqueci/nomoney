@@ -7,7 +7,7 @@ This application is implemented by Django.
 
 The way of booking is based on double-entry bookkeeping system.
 
-![Screenshot](money/static/money/img/screenshots/report-lg-en.png)
+![Screenshot](docs/img/screenshots/report-lg-en.png)
 
 ## Requirements
 
