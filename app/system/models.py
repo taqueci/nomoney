@@ -3,6 +3,7 @@
 """Models for system."""
 
 import hashlib
+import os
 import time
 
 from django.contrib.auth.models import AbstractUser
@@ -36,6 +37,42 @@ class User(UserLanguageSupportMixin, UserTimeZoneSupportMixin, AbstractUser):
 
     def __str__(self):
         return self.full_name()
+
+
+class Attachment(models.Model):
+    """Attachment model."""
+
+    FILE_PATH_PREFIX = 'attachments'
+
+    def upload_to(self, filename: str) -> str:
+        """ File path for attachment."""
+
+        md5 = self.md5
+
+        return os.path.join(self.FILE_PATH_PREFIX, md5[:2], md5, filename)
+
+    file = models.FileField(upload_to=upload_to)
+    md5 = models.CharField(max_length=36, editable=False)
+
+    author = models.ForeignKey(User, on_delete=models.PROTECT)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.file.name
+
+    def save(self, *args, **kwargs):
+        md5 = hashlib.md5()
+
+        for chunk in self.file.chunks():
+            md5.update(chunk)
+
+        self.md5 = md5.hexdigest()
+
+        super().save(*args, **kwargs)
+
+    @property
+    def base_name(self) -> str:
+        return os.path.basename(self.file.name)
 
 
 def _is_last_name_first(lang):

@@ -55,7 +55,7 @@ async function main() {
     filesToCopy = JSON.parse(data);
 
     if (!Array.isArray(filesToCopy)) {
-      throw new Error("JSON content must be an array of file objects.");
+      throw new Error('JSON content must be an array of file objects.');
     }
 
     console.log(`Successfully loaded copy list from ${jsonFilePath}`);
@@ -70,10 +70,12 @@ async function main() {
         console.log(`${filesToCopy.length} files have been copied.`);
         process.exit(0);
       } else {
+        console.error('*** ERROR ***: Failed to copy files');
         process.exit(1);
       }
     })
     .catch(error => {
+      console.error('*** ERROR ***: Unexpected error occurs');
       process.exit(1);
     });
 }

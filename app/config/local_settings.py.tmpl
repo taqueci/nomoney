@@ -2,9 +2,7 @@
 
 """Local settings."""
 
-import os
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'f28)f6n)+po@miei(tn**ki05n@@5z-caf8y!hrz#&-n8p09i@'
 
@@ -13,14 +11,12 @@ ALLOWED_HOSTS = ['localhost']
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        # 'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': 'nmoney',
-        # 'USER': 'nmoney',
-        # 'PASSWORD': 'nmoney',
-        # 'HOST': 'n-postgresql',
-        # 'PORT': 5432,
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        'NAME': 'nmoney',
+        'USER': 'nmoney',
+        'PASSWORD': 'nmoney',
     }
 }
 
@@ -32,15 +28,15 @@ URL_PREFIX = '/n'
 
 STATIC_URL = f'{URL_PREFIX}/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = f'{URL_PREFIX}/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
 NAME = 'NoMoney'
 
-LOG_FILE = os.path.join(BASE_DIR, 'logs/django.log')
+LOG_FILE = BASE_DIR / 'logs/django.log'
 
 LOGGING = {
     'version': 1,

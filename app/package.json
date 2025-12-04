@@ -1,6 +1,6 @@
 {
   "name": "nomoney",
-  "version": "2.5.0",
+  "version": "3.0.0",
   "description": "A simple household account book",
   "homepage": "https://github.com/taqueci/nomoney",
   "bugs": {
@@ -26,6 +26,6 @@
     "tempusdominus-bootstrap-4": "5.39.2"
   },
   "scripts": {
-    "install:static": "npm install && node vendor/copyFiles.js staticfiles.json "
+    "install:static": "npm install && node vendor/copyFiles.js staticfiles.json"
   }
 }

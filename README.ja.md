@@ -7,7 +7,7 @@ NoMoneyはDjangoで作られたシンプルな家計簿です。(妻のために
 複式簿記の考え方が取り入れられています。
 (素人なので、何かが間違っているかもしれません。)
 
-![Screenshot](money/static/money/img/screenshots/report-lg-en.png)
+![Screenshot](docs/img/screenshots/report-lg-en.png)
 
 ## 要件
 
