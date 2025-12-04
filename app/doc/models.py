@@ -48,7 +48,7 @@ class PageQuerySet(models.QuerySet):
 
 
 class Page(models.Model):
-    """"Document page model."""
+    """Document page model."""
     # pylint: disable-next=too-many-ancestors
     class Status(models.IntegerChoices):
         """Status choices."""
@@ -102,7 +102,7 @@ class Page(models.Model):
         super().save(*args, **kwargs)
 
     def is_accessible(self, user):
-        """Wheather an object is accessible or not."""
+        """Whether an object is accessible or not."""
         return Page.objects.filter(pk=self.pk).accessible(user).exists()
 
     def get_digest(self):
