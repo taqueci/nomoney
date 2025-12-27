@@ -4,12 +4,38 @@ import csv
 
 from django.http import HttpResponse
 from django.utils.translation import gettext as _
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 from money.models import Journal
 from money.views.shared.journal import Filter
 
+from ..serializers import (
+    JournalDetailSerializer, JournalListSerializer, JournalSerializer,
+)
+from .shared.permission import HasPermission
+
 INDEX_DEFAULT_SORT = '-date'
+
+
+# pylint: disable-next=too-many-ancestors
+class JournalViewSet(viewsets.ModelViewSet):
+    filterset_class = Filter
+    permission_classes = [IsAuthenticated & HasPermission]
+
+    queryset = Journal.objects.all().select_related().prefetch_related(
+        'tags', 'attachments',
+    )
+
+    def get_serializer_class(self):
+        match self.action:
+            case 'list':
+                return JournalListSerializer
+            case 'retrieve':
+                return JournalDetailSerializer
+
+        return JournalSerializer
 
 
 class Export(APIView):

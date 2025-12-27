@@ -2,10 +2,10 @@
 
 from functools import reduce
 
-import django_filters
 from django.db.models import Q
 from django_filters import (
     AllValuesMultipleFilter, DateFilter, NumberFilter, OrderingFilter,
+    rest_framework as filters,
 )
 
 from money.models import Account, Journal
@@ -29,7 +29,7 @@ def category(obj):
     return UNDEFINED
 
 
-class KeywordFilter(django_filters.CharFilter):
+class KeywordFilter(filters.CharFilter):
     def filter(self, qs, value):
         for x in value.split():
             qs = qs.filter(Q(summary__icontains=x) | Q(note__icontains=x))
@@ -53,7 +53,7 @@ class EntryFilter(AnyValuesMultipleFilter):
         return qs.filter(reduce(lambda x, y: x | y, params))
 
 
-class Filter(django_filters.FilterSet):
+class Filter(filters.FilterSet):
     debit = AllValuesMultipleFilter(field_name='debit_id')
     credit = AllValuesMultipleFilter(field_name='credit_id')
 
@@ -78,4 +78,4 @@ class Filter(django_filters.FilterSet):
 
     class Meta:
         model = Journal
-        exclude = ('created', 'updated')
+        fields = []
