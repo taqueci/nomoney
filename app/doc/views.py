@@ -15,14 +15,35 @@ from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template import loader
 from django.utils.translation import get_language
+from drf_spectacular.utils import extend_schema
+from drf_spectacular.views import SpectacularSwaggerView
 
 from money.models import Attachment
 
 from .models import Page
 
+SLUG_API = 'api'
+
 IMAGE_TYPES = ('.jpeg', '.jpg', '.png')
 
 HTML_CONTENT_CLASS = 'doc-content'
+
+
+class SwaggerView(SpectacularSwaggerView):
+    @extend_schema(exclude=True)
+    def get(self, request, *args, **kwargs):
+        resp = super().get(request, *args, **kwargs)
+
+        lang = request.GET.get('lang', get_language())
+        objs = _page_objects(request.user, lang)
+        obj = objs.filter(slug=SLUG_API).first()
+
+        if not obj:
+            raise Http404
+
+        resp.data.update({'obj': obj, 'objs': _reduced_pages(objs)})
+
+        return resp
 
 
 def admin_images(request):

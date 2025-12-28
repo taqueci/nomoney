@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     'doc',
     'money',
     'api',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
 ]
 
 MIDDLEWARE = [
@@ -146,6 +148,7 @@ USE_TZ = True
 
 URL_PREFIX = env('N_URL_PREFIX', default='/n')
 
+API_URL = f'{URL_PREFIX}/api/'
 DOC_URL = f'{URL_PREFIX}/doc/'
 
 ROUTE_PREFIX = URL_PREFIX[1:]
@@ -189,6 +192,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'PAGE_SIZE': 100,
 }
 
@@ -205,6 +209,16 @@ FY_START_DAY = 1
 VERSION = version.VERSION
 
 NAME = env('N_NAME', default='NoMoney')
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'NoMoney',
+    'VERSION': VERSION,
+    'SCHEMA_PATH_PREFIX': API_URL,
+    'SERVE_PERMISSIONS': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'SWAGGER_UI_DIST': 'SIDECAR',
+}
 
 TINYMCE_DEFAULT_CONFIG = tinymce.TINYMCE_DEFAULT_CONFIG
 TINYMCE_DEFAULT_CONFIG.update({

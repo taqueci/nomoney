@@ -96,6 +96,7 @@ html {
 
 {% block js %}
 {% include 'doc/js_prismjs.html' %}
+{% block js_tree %}
 {% include 'doc/js_jstree.html' %}
 <script>
   $(() => {
@@ -114,4 +115,5 @@ html {
     });
   })
 </script>
-{% endblock %}
+{% endblock js_tree %}
+{% endblock js %}
