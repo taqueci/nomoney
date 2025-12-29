@@ -6,6 +6,7 @@ django-tinymce==5.0.0
 django-user-g11n==0.4.4
 djangorestframework==3.16.1
 djangorestframework-csv==3.0.2
+djangorestframework-simplejwt==5.5.1
 drf-spectacular==0.29.0
 drf-spectacular-sidecar==2025.12.1
 fontawesomefree==6.6.0
