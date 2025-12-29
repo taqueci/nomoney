@@ -57,6 +57,12 @@ class AccountSummarySerializer(AccountSerializer):
         fields = ['name', 'entry']
 
 
+class AccountListSerializer(AccountSerializer):
+    class Meta:
+        model = Account
+        exclude = ['description']
+
+
 class JournalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Journal

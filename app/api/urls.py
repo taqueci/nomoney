@@ -6,11 +6,12 @@ from django.conf.urls import include
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from .views import attachments, journals
+from .views import accounts, attachments, journals
 
 app_name = 'api'
 
 router = DefaultRouter()
+router.register('accounts', accounts.AccountViewSet)
 router.register('journals', journals.JournalViewSet)
 
 urlpatterns = [
