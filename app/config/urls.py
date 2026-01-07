@@ -7,14 +7,17 @@ from django.urls import include, path
 
 from .settings import DEBUG, ROUTE_PREFIX
 
+sub_url_patterns = [
+    path('admin/', admin.site.urls),
+    path('i18n/', include('django.conf.urls.i18n')),
+    path('system/', include('system.urls', namespace='system')),
+    path('doc/', include('doc.urls', namespace='doc')),
+    path('money/', include('money.urls', namespace='money')),
+    path('api/', include('api.urls', namespace='api')),
+]
+
 urlpatterns = [
-    path(f'{ROUTE_PREFIX}/admin/', admin.site.urls),
-    path(f'{ROUTE_PREFIX}/i18n/', include('django.conf.urls.i18n')),
-    path(f'{ROUTE_PREFIX}/system/',
-         include('system.urls', namespace='system')),
-    path(f'{ROUTE_PREFIX}/doc/', include('doc.urls', namespace='doc')),
-    path(f'{ROUTE_PREFIX}/money/', include('money.urls', namespace='money')),
-    path(f'{ROUTE_PREFIX}/api/', include('api.urls', namespace='api')),
+    path(f'{ROUTE_PREFIX}/', include(sub_url_patterns)),
 ]
 
 if DEBUG:
@@ -26,6 +29,6 @@ if DEBUG:
 
     import debug_toolbar  # pylint: disable=import-error
 
-    urlpatterns += [
-        path(f'{ROUTE_PREFIX}/__debug__/', include(debug_toolbar.urls)),
+    sub_url_patterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
     ]
