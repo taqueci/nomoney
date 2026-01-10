@@ -2,7 +2,7 @@
 
 
 def creatable(user):
-    return user.is_staff
+    return user.has_perm('money.add_journal')
 
 
 def readable(user):
@@ -10,8 +10,8 @@ def readable(user):
 
 
 def updatable(user):
-    return user.is_staff
+    return user.has_perm('money.change_journal')
 
 
 def deletable(user):
-    return user.is_staff
+    return user.has_perm('money.delete_journal')

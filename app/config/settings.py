@@ -53,12 +53,15 @@ INSTALLED_APPS = [
     'django_filters',
     'fontawesomefree',
     'rest_framework',
+    'rest_framework_simplejwt',
     'user_g11n',
     'tinymce',
     'system',
     'doc',
     'money',
     'api',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
 ]
 
 MIDDLEWARE = [
@@ -146,6 +149,7 @@ USE_TZ = True
 
 URL_PREFIX = env('N_URL_PREFIX', default='/n')
 
+API_URL = f'{URL_PREFIX}/api/'
 DOC_URL = f'{URL_PREFIX}/doc/'
 
 ROUTE_PREFIX = URL_PREFIX[1:]
@@ -181,10 +185,17 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'api.pagination.PageNumberPagination',
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'PAGE_SIZE': 100,
 }
 
 # Number of digits for filter initcomma
@@ -200,6 +211,16 @@ FY_START_DAY = 1
 VERSION = version.VERSION
 
 NAME = env('N_NAME', default='NoMoney')
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'NoMoney',
+    'VERSION': VERSION,
+    'SCHEMA_PATH_PREFIX': API_URL,
+    'SERVE_PERMISSIONS': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'SWAGGER_UI_DIST': 'SIDECAR',
+}
 
 TINYMCE_DEFAULT_CONFIG = tinymce.TINYMCE_DEFAULT_CONFIG
 TINYMCE_DEFAULT_CONFIG.update({

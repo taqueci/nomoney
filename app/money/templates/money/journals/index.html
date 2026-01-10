@@ -270,7 +270,7 @@
 
 <ul class="list-unstyled">
   <li class="py-1"><a href="{% url 'money:report' 0 %}{% querystring %}" class="text-decoration-none">{% trans 'Report' %}</a></li>
-  <li class="py-1"><a href="{% url 'api:journals_export' %}{% querystring %}" class="text-decoration-none">{% trans 'Export as CSV' %}</a></li>
+  <li class="py-1"><a href="{% url 'api:journal-list' %}{% querystring format='csv' %}" class="text-decoration-none" download="journals.csv">{% trans 'Export as CSV' %}</a></li>
 </ul>
 
 </div>

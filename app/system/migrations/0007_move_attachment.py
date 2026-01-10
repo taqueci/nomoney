@@ -45,6 +45,7 @@ def forwards_func(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('money', '0008_attachment'),
         ('system', '0006_user_timezone'),
     ]
 

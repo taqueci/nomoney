@@ -5,7 +5,7 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..serializers import AttachmentSerializer
+from ..serializers import AttachmentUploadSerializer
 
 
 class List(APIView):
@@ -13,7 +13,7 @@ class List(APIView):
 
     # pylint: disable-next=redefined-builtin,unused-argument
     def post(self, request, format=None):
-        serializer = AttachmentSerializer(data=request.data)
+        serializer = AttachmentUploadSerializer(data=request.data)
 
         if serializer.is_valid(raise_exception=True):
             serializer.save(author=request.user)
