@@ -8,6 +8,7 @@ from django.db.models import Count
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
+from django.utils.http import url_has_allowed_host_and_scheme
 
 from ..forms import JournalForm
 from ..models import Journal, Tag, Template
@@ -55,7 +56,10 @@ def new(request):
         else:
             messages.error(request, _('Failed to create journal'))
 
-        return redirect(request.GET.get('next', 'money:journals'))
+        next_url = request.GET.get('next', 'money:journals')
+        if not url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
+            next_url = 'money:journals'
+        return redirect(next_url)
 
     v_template = request.GET.get('template')
     v_base = request.GET.get('base')
