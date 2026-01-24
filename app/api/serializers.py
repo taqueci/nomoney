@@ -3,6 +3,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from doc.models import Page
 from money.models import Account, Attachment, Journal, Tag
 
 User = get_user_model()
@@ -92,3 +93,26 @@ class JournalListSerializer(JournalSerializer):
             'id', 'debit', 'credit', 'date', 'amount', 'summary',
             'fy', 'enabled', 'author', 'created', 'updated',
         ]
+
+
+class PageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = '__all__'
+        read_only_fields = ['author', 'digest']
+
+    def create(self, validated_data):
+        validated_data['author'] = self.context['request'].user
+        return super().create(validated_data)
+
+
+class PageDetailSerializer(PageSerializer):
+    author = UserSerializer()
+
+
+class PageListSerializer(PageSerializer):
+    author = UserSerializer()
+
+    class Meta:
+        model = Page
+        exclude = ['content']
