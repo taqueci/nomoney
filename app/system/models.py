@@ -4,6 +4,7 @@
 
 import hashlib
 import os
+import struct
 import time
 
 from django.contrib.auth.models import AbstractUser
@@ -11,6 +12,35 @@ from django.db import models
 from user_g11n.models import UserLanguageSupportMixin, UserTimeZoneSupportMixin
 
 IMAGE_DIR_USER = 'users'
+
+
+class Digest64Field(models.BigIntegerField):
+    def from_db_value(self, value, expression, connection):
+        return self._to_unsigned(value)
+
+    def to_python(self, value):
+        if isinstance(value, str):
+            return int(value)
+
+        return value
+
+    def get_prep_value(self, value):
+        if value is None:
+            return None
+
+        return self._to_signed(int(value))
+
+    def _to_unsigned(self, signed_value):
+        if signed_value is None:
+            return None
+
+        return struct.unpack('Q', struct.pack('q', signed_value))[0]
+
+    def _to_signed(self, unsigned_value):
+        if unsigned_value is None:
+            return None
+
+        return struct.unpack('q', struct.pack('Q', unsigned_value))[0]
 
 
 class User(UserLanguageSupportMixin, UserTimeZoneSupportMixin, AbstractUser):

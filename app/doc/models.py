@@ -11,6 +11,8 @@ from django.db.utils import ProgrammingError
 from django.utils.translation import gettext_lazy as _
 from tinymce import models as tinymce_models
 
+from system.models import Digest64Field
+
 User = get_user_model()
 
 
@@ -57,7 +59,7 @@ class Page(models.Model):
         DISABLED = -100, _('Disabled')
         BACKUP = -200, _('Backup')
 
-    digest = models.BigIntegerField(unique=True, null=True)
+    digest = Digest64Field(unique=True, null=True)
 
     title = models.CharField(max_length=255)
     content = tinymce_models.HTMLField(blank=True)
@@ -110,7 +112,7 @@ class Page(models.Model):
         data = '\v'.join([self.slug, self.language, self.content])
         md5 = hashlib.md5(data.encode('utf-8'))
 
-        return int.from_bytes(md5.digest()[:8], signed=True)
+        return int.from_bytes(md5.digest()[:8])
 
     def _pre_save(self):
         obj = Page.objects.get(pk=self.pk)
