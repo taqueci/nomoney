@@ -15,6 +15,10 @@ from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template import loader
 from django.utils.translation import get_language
+from django_filters import (
+    AllValuesMultipleFilter, DateFilter, NumberFilter, OrderingFilter,
+    rest_framework as filters,
+)
 from drf_spectacular.utils import extend_schema
 from drf_spectacular.views import SpectacularSwaggerView
 
@@ -27,6 +31,37 @@ SLUG_API = 'api'
 IMAGE_TYPES = ('.jpeg', '.jpg', '.png')
 
 HTML_CONTENT_CLASS = 'doc-content'
+
+
+class PageFilter(filters.FilterSet):
+    language = AllValuesMultipleFilter()
+    slug = AllValuesMultipleFilter()
+    status = AllValuesMultipleFilter()
+    author = AllValuesMultipleFilter()
+
+    o = OrderingFilter(
+        fields=(
+            ('title', 'title'),
+            ('language', 'language'),
+            ('slug', 'slug'),
+            ('order', 'order'),
+            ('status', 'status'),
+            ('author', 'author'),
+            ('created', 'created'),
+            ('updated', 'updated'),
+        ),
+    )
+
+    class Meta:
+        model = Page
+        fields = {
+            'title': ['icontains'],
+            'content': ['icontains'],
+            'note': ['icontains'],
+            'parent_slug': ['exact'],
+            'created': ['exact', 'gt', 'gte', 'lt', 'lte'],
+            'updated': ['exact', 'gt', 'gte', 'lt', 'lte'],
+        }
 
 
 class SwaggerView(SpectacularSwaggerView):

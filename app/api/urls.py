@@ -10,13 +10,14 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView, TokenRefreshView,
 )
 
-from .views import accounts, attachments, journals
+from .views import accounts, attachments, journals, pages
 
 app_name = 'api'
 
 router = DefaultRouter()
 router.register('accounts', accounts.AccountViewSet)
 router.register('journals', journals.JournalViewSet)
+router.register('pages', pages.PageViewSet)
 
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token'),

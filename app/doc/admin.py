@@ -44,7 +44,7 @@ class PageAdmin(admin.ModelAdmin):
 
     @admin.display(description=_('Digest'))
     def _digest(self, obj):
-        return obj.digest.to_bytes(8, signed=True).hex() if obj.digest else '-'
+        return '-' if obj.digest is None else hex(obj.digest)
 
     def save_model(self, request, obj, form, change):
         obj.author = request.user

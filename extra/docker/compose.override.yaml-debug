@@ -1,0 +1,28 @@
+services:
+  web:
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    volumes:
+      - ./data/var/opt/nomoney/app/staticfiles:/opt/app/staticfiles:ro
+      - ./data/var/opt/nomoney/app/media:/opt/app/media:ro
+
+  db:
+    volumes:
+      - ./data/var/opt/nomoney/db/init:/docker-entrypoint-initdb.d
+      - ./data/var/opt/nomoney/db/data:/var/lib/postgresql/18/docker
+
+  app:
+    group_add:
+      - "65534"
+    volumes:
+      - ./data/var/opt/nomoney/app/staticfiles:/var/opt/nomoney/staticfiles
+      - ./data/var/opt/nomoney/app/media:/var/opt/nomoney/media
+    depends_on:
+      - db
+    environment:
+      N_CSRF_TRUSTED_ORIGINS: http://localhost
+      N_DEBUG: 1
+    # Run in development mode
+    command: python3 manage.py runserver 0.0.0.0:49152
