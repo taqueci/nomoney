@@ -16,13 +16,13 @@ app_name = 'api'
 
 router = DefaultRouter()
 router.register('accounts', accounts.AccountViewSet)
+router.register('attachments', attachments.AttachmentViewSet)
 router.register('journals', journals.JournalViewSet)
 router.register('pages', pages.PageViewSet)
 
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('attachments', attachments.List.as_view(), name='attachments'),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('', include(router.urls)),
 ]

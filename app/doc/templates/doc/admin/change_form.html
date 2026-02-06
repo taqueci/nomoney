@@ -19,7 +19,7 @@ const filePickerCallback = (callback, value, meta) => {
     formData.append('file', input.files[0]);
 
     $.ajax({
-      url: "{% url 'api:attachments' %}",
+      url: "{% url 'api:attachment-list' %}",
       type: 'POST',
       headers: {'X-CSRFToken': '{{ csrf_token }}'},
       data: formData,
