@@ -15,6 +15,7 @@ IMAGE_DIR_USER = 'users'
 
 
 class Digest64Field(models.BigIntegerField):
+    # pylint: disable=unused-argument
     def from_db_value(self, value, expression, connection):
         return self._to_unsigned(value)
 

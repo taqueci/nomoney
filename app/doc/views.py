@@ -16,7 +16,7 @@ from django.shortcuts import render
 from django.template import loader
 from django.utils.translation import get_language
 from django_filters import (
-    AllValuesMultipleFilter, DateFilter, NumberFilter, OrderingFilter,
+    AllValuesMultipleFilter, OrderingFilter,
     rest_framework as filters,
 )
 from drf_spectacular.utils import extend_schema
