@@ -38,3 +38,22 @@ class AdminUserAdmin(UserAdmin):
         'username', 'email', 'first_name', 'last_name', 'is_superuser',
         'last_login',
     )
+
+
+@admin.register(models.Attachment)
+class AttachmentAdmin(admin.ModelAdmin):
+    """The representation of attachment model."""
+
+    list_display = ['id', 'base_name', '_digest', 'author', 'created']
+    search_fields = ['file']
+
+    exclude = ['digest']
+    readonly_fields = ['_digest', 'author', 'created']
+
+    @admin.display(description=_('Digest'))
+    def _digest(self, obj):
+        return '-' if obj.digest is None else format(obj.digest, '016x')
+
+    def save_model(self, request, obj, form, change):
+        obj.author = request.user
+        super().save_model(request, obj, form, change)
