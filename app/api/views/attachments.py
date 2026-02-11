@@ -1,21 +1,48 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
-from rest_framework import status
+from django_filters import OrderingFilter, rest_framework as filters
+from rest_framework import viewsets
 from rest_framework.parsers import MultiPartParser
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
-from ..serializers import AttachmentUploadSerializer
+from money.views.shared.filters import AnyValuesMultipleFilter
+from system.models import Attachment
+
+from ..serializers import AttachmentSerializer, AttachmentUploadSerializer
+from .shared.permission import HasPermission
 
 
-class List(APIView):
-    parser_classes = (MultiPartParser, )
+class Filter(filters.FilterSet):
+    author = AnyValuesMultipleFilter(field_name='author__username')
 
-    # pylint: disable-next=redefined-builtin,unused-argument
-    def post(self, request, format=None):
-        serializer = AttachmentUploadSerializer(data=request.data)
+    o = OrderingFilter(
+        fields=(
+            ('id', 'id'),
+            ('created', 'created'),
+        )
+    )
 
-        if serializer.is_valid(raise_exception=True):
-            serializer.save(author=request.user)
+    class Meta:
+        model = Attachment
+        fields = {
+            'digest': ['exact'],
+            'created': ['gte', 'lte'],
+        }
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+# pylint: disable-next=too-many-ancestors
+class AttachmentViewSet(viewsets.ModelViewSet):
+    filterset_class = Filter
+    parser_classes = [MultiPartParser]
+    permission_classes = [IsAuthenticated & HasPermission]
+    queryset = Attachment.objects.all().select_related()
+
+    def get_serializer_class(self):
+        match self.request.method:
+            case 'POST':
+                return AttachmentUploadSerializer
+
+        return AttachmentSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)

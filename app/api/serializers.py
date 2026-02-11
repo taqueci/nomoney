@@ -9,16 +9,16 @@ from money.models import Account, Attachment, Journal, Tag
 User = get_user_model()
 
 
-class AttachmentUploadSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Attachment
-        fields = ('id', 'file', 'base_name', 'md5')
-
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'full_name']
+
+
+class AttachmentUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Attachment
+        fields = ['id', 'file', 'base_name', 'digest']
 
 
 class AttachmentSerializer(serializers.ModelSerializer):

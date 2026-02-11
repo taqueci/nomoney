@@ -5,7 +5,7 @@
 from django.conf import settings
 from django.contrib import admin
 
-from .models import Account, Attachment, Journal, Tag, Template
+from .models import Account, Journal, Tag, Template
 
 admin.site.site_url = settings.SITE_URL
 
@@ -15,13 +15,6 @@ class AccountAdmin(admin.ModelAdmin):
     """The representation of account model."""
 
     list_display = ('name', 'description', 'entry', 'rank', 'enabled',)
-
-
-@admin.register(Attachment)
-class AttachmentAdmin(admin.ModelAdmin):
-    """The representation of attachment model."""
-
-    list_display = ('id', 'file', 'author', 'created')
 
 
 @admin.register(Journal)

@@ -45,4 +45,4 @@ jobs:
 
     - name: Run PyLint
       run: |
-        pylint config system money api doc
+        pylint --output-format=github config system money api doc

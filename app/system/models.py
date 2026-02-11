@@ -15,6 +15,7 @@ IMAGE_DIR_USER = 'users'
 
 
 class Digest64Field(models.BigIntegerField):
+    # pylint: disable=unused-argument
     def from_db_value(self, value, expression, connection):
         return self._to_unsigned(value)
 
@@ -77,12 +78,12 @@ class Attachment(models.Model):
     def upload_to(self, filename: str) -> str:
         """ File path for attachment."""
 
-        md5 = self.md5
+        d = format(self.digest, '016x')
 
-        return os.path.join(self.FILE_PATH_PREFIX, md5[:2], md5, filename)
+        return os.path.join(self.FILE_PATH_PREFIX, d[:2], d, filename)
 
     file = models.FileField(upload_to=upload_to)
-    md5 = models.CharField(max_length=36, editable=False)
+    digest = Digest64Field(default=0)
 
     author = models.ForeignKey(User, on_delete=models.PROTECT)
     created = models.DateTimeField(auto_now_add=True)
@@ -91,14 +92,18 @@ class Attachment(models.Model):
         return self.file.name
 
     def save(self, *args, **kwargs):
+        if not self.digest:
+            self.digest = self.get_digest()
+
+        super().save(*args, **kwargs)
+
+    def get_digest(self):
         md5 = hashlib.md5()
 
         for chunk in self.file.chunks():
             md5.update(chunk)
 
-        self.md5 = md5.hexdigest()
-
-        super().save(*args, **kwargs)
+        return int.from_bytes(md5.digest()[:8])
 
     @property
     def base_name(self) -> str:

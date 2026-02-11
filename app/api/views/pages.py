@@ -3,8 +3,6 @@
 from django.utils.translation import gettext as _
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.settings import api_settings
-from rest_framework_csv import renderers
 
 from doc.models import Page
 from doc.views import PageFilter
