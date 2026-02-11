@@ -60,6 +60,10 @@ pipeline {
     }
 
     stage('Check') {
+      environment {
+        N_SECRET_KEY = "${UUID.randomUUID().toString()}"
+      }
+
       steps {
         dir('app') {
           script {
