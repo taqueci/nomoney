@@ -3,6 +3,7 @@
 import datetime
 
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.http import Http404
@@ -21,6 +22,8 @@ POPULAR_ACCOUNT_NUM = 12
 
 FIELDS_NORMALIZED = ('summary', 'note')
 
+User = get_user_model()
+
 
 def index(request):
     n = request.GET.get('page')
@@ -32,6 +35,8 @@ def index(request):
     q = q.select_related().prefetch_related('tags')
 
     tags = Tag.objects.all()
+    users = User.objects.all()
+
     entry_sets = account.entry_sets()
     grouped_accounts = account.grouped_objects()
 
@@ -39,7 +44,8 @@ def index(request):
 
     return render(request, 'money/journals/index.html', {
         'page': paginator.get_page(n), 'total': paginator.count,
-        'entry_sets': entry_sets, 'accounts': grouped_accounts, 'tags': tags,
+        'entry_sets': entry_sets,
+        'accounts': grouped_accounts, 'tags': tags, 'users': users,
     })
 
 
@@ -61,6 +67,8 @@ def new(request):
     v_base = request.GET.get('base')
 
     tags = Tag.objects.all()
+    users = User.objects.all()
+
     grouped_accounts = account.grouped_objects()
 
     popular_accounts = Journal.objects.values(
@@ -82,7 +90,7 @@ def new(request):
     return render(request, 'money/journals/new.html', {
         'object': default, 'templates': templates,
         'popular_accounts': popular_accounts,
-        'accounts': grouped_accounts,  'tags': tags,
+        'accounts': grouped_accounts, 'tags': tags, 'users': users,
     })
 
 
@@ -111,6 +119,8 @@ def edit(request, pk):
         return redirect(request.GET.get('next', 'money:journals'))
 
     tags = Tag.objects.all()
+    users = User.objects.all()
+
     grouped_accounts = account.grouped_objects()
 
     popular_accounts = Journal.objects.values(
@@ -122,7 +132,7 @@ def edit(request, pk):
     return render(request, 'money/journals/edit.html', {
         'object': obj,
         'popular_accounts': popular_accounts,
-        'accounts': grouped_accounts, 'tags': tags,
+        'accounts': grouped_accounts, 'tags': tags, 'users': users,
     })
 
 

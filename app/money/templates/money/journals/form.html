@@ -115,6 +115,19 @@
 </div>
 
 <div class="mb-3 row">
+  <label class="col-sm-3 col-form-label">{% trans 'Payer' %} <span class="symbol-required"></span></label>
+  <div class="col-sm-9">
+    <select name="payer" class="form-select">
+      {% with target_user=object.payer|default:request.user %}
+      {% for x in users %}
+      <option value="{{ x.id }}" {% value_if_eq x target_user 'selected' %}>{{ x }}</option>
+      {% endfor %}
+      {% endwith %}
+    </select>
+  </div>
+</div>
+
+<div class="mb-3 row">
   <label class="col-sm-3 col-form-label">{% trans 'Note' %}</label>
   <div class="col-sm-9">
     <textarea name="note" class="form-control" rows="3">{{ object.note|default:'' }}</textarea>
