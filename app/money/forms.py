@@ -16,8 +16,8 @@ class JournalForm(forms.ModelForm):
     class Meta:
         model = Journal
         fields = (
-            'debit', 'credit', 'date', 'amount', 'summary', 'note', 'tags',
-            'attachments',
+            'debit', 'credit', 'date', 'amount', 'summary', 'note', 'payer',
+            'tags', 'attachments',
         )
 
 
