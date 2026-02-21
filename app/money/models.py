@@ -75,6 +75,10 @@ class Journal(models.Model):
     summary = models.CharField(max_length=255)
     note = models.TextField(null=True, blank=True)
 
+    payer = models.ForeignKey(
+        UserModel, on_delete=models.PROTECT, related_name='journal_payer',
+    )
+
     tags = models.ManyToManyField(Tag, blank=True)
     attachments = models.ManyToManyField(Attachment, blank=True)
 

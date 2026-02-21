@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-09 22:03+0900\n"
+"POT-Creation-Date: 2026-02-15 21:38+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,17 +18,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-msgid "Date"
-msgstr "日付"
-
-msgid "Entry"
-msgstr "エントリー"
+msgid "Credit"
+msgstr "貸方"
 
 msgid "Debit"
 msgstr "借方"
 
-msgid "Credit"
-msgstr "貸方"
+msgid "Date"
+msgstr "日付"
 
 msgid "Amount"
 msgstr "金額"
@@ -36,8 +33,17 @@ msgstr "金額"
 msgid "Summary"
 msgstr "サマリー"
 
-msgid "Note"
-msgstr "備考"
+msgid "Enabled"
+msgstr "有効"
+
+msgid "Author"
+msgstr "作成者"
+
+msgid "Created on"
+msgstr "作成日"
+
+msgid "Updated on"
+msgstr "更新日"
 
 msgid "active"
 msgstr ""
@@ -51,6 +57,7 @@ msgstr ""
 msgid "Digest"
 msgstr "ダイジェスト"
 
+#, python-format
 msgid "The content is the same as #%(pk)s"
 msgstr "内容が#%(pk)sと同じです"
 
@@ -66,20 +73,11 @@ msgstr "無効"
 msgid "Backup"
 msgstr "バックアップ"
 
-msgid "Home"
-msgstr "ホーム"
-
 msgid "Documents"
 msgstr "ドキュメント"
 
-msgid "Total"
-msgstr "合計"
-
-msgid "Author"
-msgstr "作成者"
-
-msgid "Updated on"
-msgstr "更新日"
+msgid "Home"
+msgstr "ホーム"
 
 msgid "New"
 msgstr "新規"
@@ -92,9 +90,6 @@ msgstr "編集"
 
 msgid "Search"
 msgstr "検索"
-
-msgid "Created on"
-msgstr "作成日"
 
 msgid "Operation"
 msgstr "操作"
@@ -155,6 +150,9 @@ msgstr "ウィークリー"
 
 msgid "Daily"
 msgstr "デイリー"
+
+msgid "Total"
+msgstr "合計"
 
 msgid "Period"
 msgstr "期間"
@@ -252,6 +250,12 @@ msgstr "よく使う科目"
 msgid "Template"
 msgstr "テンプレート"
 
+msgid "Payer"
+msgstr "支払者"
+
+msgid "Note"
+msgstr "備考"
+
 msgid "Tags"
 msgstr "タグ"
 
@@ -266,6 +270,9 @@ msgstr "記録リスト"
 
 msgid "Keyword"
 msgstr "キーワード"
+
+msgid "Entry"
+msgstr "エントリー"
 
 msgid "Export as CSV"
 msgstr "CSVエクスポート"
