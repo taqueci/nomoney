@@ -75,8 +75,9 @@ class Journal(models.Model):
     summary = models.CharField(max_length=255)
     note = models.TextField(null=True, blank=True)
 
-    payer = models.ForeignKey(
-        UserModel, on_delete=models.PROTECT, related_name='journal_payer',
+    responsible = models.ForeignKey(
+        UserModel, on_delete=models.PROTECT,
+        related_name='journal_responsible',
     )
 
     tags = models.ManyToManyField(Tag, blank=True)

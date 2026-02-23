@@ -25,7 +25,7 @@ class JournalAdmin(admin.ModelAdmin):
         'date', 'debit', 'credit', 'amount', 'summary', 'enabled',
     )
 
-    autocomplete_fields = ['author', 'payer']
+    autocomplete_fields = ['author', 'responsible']
     filter_horizontal = ('tags', 'attachments')
 
 

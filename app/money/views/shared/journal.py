@@ -63,7 +63,7 @@ class Filter(filters.FilterSet):
     min = NumberFilter(field_name='amount', lookup_expr='gte')
     max = NumberFilter(field_name='amount', lookup_expr='lte')
 
-    payer = AnyValuesMultipleFilter()
+    responsible = AnyValuesMultipleFilter()
     tag = AllValuesMultipleFilter(field_name='tags')
 
     keyword = KeywordFilter()
@@ -74,7 +74,7 @@ class Filter(filters.FilterSet):
             ('id', 'id'), ('date', 'date'),
             ('debit', 'debit'), ('credit', 'credit'),
             ('amount', 'amount'), ('summary', 'summary'),
-            ('payer', 'payer'),
+            ('responsible', 'responsible'),
         )
     )
 
