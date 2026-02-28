@@ -30,7 +30,6 @@ class Filter(filters.FilterSet):
         }
 
 
-# pylint: disable-next=too-many-ancestors
 class AttachmentViewSet(viewsets.ModelViewSet):
     filterset_class = Filter
     parser_classes = [MultiPartParser]

@@ -36,7 +36,6 @@ class CsvRenderer(renderers.CSVRenderer):
     }
 
 
-# pylint: disable-next=too-many-ancestors
 class JournalViewSet(viewsets.ModelViewSet):
     filterset_class = Filter
     permission_classes = [IsAuthenticated & HasPermission]

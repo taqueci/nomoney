@@ -13,7 +13,6 @@ from ..serializers import (
 from .shared.permission import HasPermission
 
 
-# pylint: disable-next=too-many-ancestors
 class PageViewSet(viewsets.ModelViewSet):
     filterset_class = PageFilter
     permission_classes = [IsAuthenticated & HasPermission]
