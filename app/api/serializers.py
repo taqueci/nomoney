@@ -78,7 +78,7 @@ class JournalSerializer(serializers.ModelSerializer):
 class JournalDetailSerializer(JournalSerializer):
     debit = AccountDetailSerializer()
     credit = AccountDetailSerializer()
-    payer = UserSerializer()
+    responsible = UserSerializer()
     author = UserSerializer()
     attachments = AttachmentSerializer(many=True)
     tags = TagSerializer(many=True)
@@ -91,8 +91,9 @@ class JournalListSerializer(JournalSerializer):
     class Meta:
         model = Journal
         fields = [
-            'id', 'debit', 'credit', 'date', 'amount', 'summary', 'payer',
-            'fy', 'enabled', 'author', 'created', 'updated',
+            'id', 'debit', 'credit', 'date', 'amount', 'summary',
+            'responsible', 'fy', 'enabled',
+            'author', 'created', 'updated',
         ]
 
 

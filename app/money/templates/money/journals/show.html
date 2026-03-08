@@ -79,8 +79,8 @@
   <div class="col-lg-6">
 
 <dl class="row mb-2">
-  <dt class="col-4">{% trans 'Payer' %}</dt>
-  <dd class="col-8"><span class="me-2">{% user_avatar object.payer %}</span>{{ object.payer }}</dd>
+  <dt class="col-4">{% trans 'Responsible person' %}</dt>
+  <dd class="col-8"><span class="me-2">{% user_avatar object.responsible %}</span>{{ object.responsible }}</dd>
 
   <dt class="col-4">{% trans 'Note' %}</dt>
   <dd class="col-8">{{ object.note|urlize|default:'-'|linebreaksbr }}</dd>

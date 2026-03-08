@@ -250,8 +250,8 @@ msgstr "よく使う科目"
 msgid "Template"
 msgstr "テンプレート"
 
-msgid "Payer"
-msgstr "支払者"
+msgid "Responsible person"
+msgstr "担当者"
 
 msgid "Note"
 msgstr "備考"

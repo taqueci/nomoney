@@ -12,7 +12,6 @@ from ..serializers import (
 from .shared.permission import HasPermission
 
 
-# pylint: disable-next=too-many-ancestors
 class AccountViewSet(viewsets.ModelViewSet):
     filterset_class = Filter
     permission_classes = [IsAuthenticated & HasPermission]
