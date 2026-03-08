@@ -115,7 +115,7 @@
 </div>
 
 <div class="mb-3 row">
-  <label class="col-sm-3 col-form-label">{% trans 'Responsible persion' %} <span class="symbol-required"></span></label>
+  <label class="col-sm-3 col-form-label">{% trans 'Responsible person' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
     <select name="responsible" class="form-select">
       {% with target_user=object.responsible|default:request.user %}
