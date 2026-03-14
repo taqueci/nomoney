@@ -250,7 +250,7 @@
 </div>
 
 <div class="mb-3">
-  <label class="form-label">{% trans 'Responsible persion' %}</label>
+  <label class="form-label">{% trans 'Responsible person' %}</label>
   <select name="responsible" class="form-control select2" multiple="multiple" size="1">
     {% for x in users %}
     <option value="{{ x.id }}" {% value_if_eq_query 'responsible' x.id 'selected' %}>{{ x }}</option>
