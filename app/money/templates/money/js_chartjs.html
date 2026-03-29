@@ -1,6 +1,6 @@
 {# Copyright (C) Takeshi Nakamura. All rights reserved. #}
 
-{% load static %}
+{% load asset %}
 
-<script src="{% static 'vendor/chart.js/chart.umd.min.js' %}"></script>
-<script src="{% static 'vendor/chart.js/chartjs-adapter-moment.js' %}"></script>
+{% asset_load_js 'vendor/chart.js/chart.umd.min.js' %}
+{% asset_load_js 'vendor/chart.js/chartjs-adapter-moment.js' %}
