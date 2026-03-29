@@ -48,13 +48,13 @@ async function main() {
     process.exit(1);
   }
 
-  let filesToCopy = [];
+  let assets = [];
 
   try {
     const data = await fs.readFile(jsonFilePath, { encoding: 'utf8' });
-    filesToCopy = JSON.parse(data);
+    assets = JSON.parse(data);
 
-    if (!Array.isArray(filesToCopy)) {
+    if (!Array.isArray(assets)) {
       throw new Error('JSON content must be an array of file objects.');
     }
 
@@ -63,6 +63,8 @@ async function main() {
     console.error(`Failed to read/parse '${jsonFilePath}': ${error.message}`);
     process.exit(1);
   }
+
+  const filesToCopy = assets.flatMap(asset => asset.files);
 
   copyFiles(filesToCopy)
     .then(allSucceeded => {

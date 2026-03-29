@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 # pylint: disable=line-too-long
 
+import json
 from pathlib import Path
 
 import environ
@@ -234,6 +235,11 @@ TINYMCE_DEFAULT_CONFIG.update({
     'link_list': f'{DOC_URL}__admin__/links',
     'file_picker_callback': '(c, v, m) => filePickerCallback(c, v, m)',
 })
+
+ASSETS_CDN = True
+
+with open(BASE_DIR / 'assets.json') as f:
+    ASSETS_LIST = {x['path']: x for x in json.load(f)}
 
 try:
     # pylint: disable=wildcard-import,unused-wildcard-import

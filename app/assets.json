@@ -1,0 +1,210 @@
+[
+  {
+    "path": "vendor/bootstrap/css/bootstrap.min.css",
+    "cdn": {
+      "href": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+      "integrity": "sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB",
+      "crossorigin": "anonymous"
+    },
+    "files": [
+      {
+        "from": "node_modules/bootstrap/dist/css/bootstrap.min.css",
+        "to": "system/static/vendor/bootstrap/css/bootstrap.min.css"
+      },
+      {
+        "from": "node_modules/bootstrap/dist/css/bootstrap.min.css.map",
+        "to": "system/static/vendor/bootstrap/css/bootstrap.min.css.map"
+      }
+    ]
+  },
+  {
+    "path": "vendor/bootstrap/js/bootstrap.bundle.min.js",
+    "cdn": {
+      "src": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js",
+      "integrity": "sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI",
+      "crossorigin": "anonymous"
+    },
+    "files": [
+      {
+        "from": "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+        "to": "system/static/vendor/bootstrap/js/bootstrap.bundle.min.js"
+      },
+      {
+        "from": "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map",
+        "to": "system/static/vendor/bootstrap/js/bootstrap.bundle.min.js.map"
+      }
+    ]
+  },
+  {
+    "path": "vendor/chart.js/chart.umd.min.js",
+    "cdn": {
+      "src": "https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js",
+      "integrity": "sha256-SERKgtTty1vsDxll+qzd4Y2cF9swY9BCq62i9wXJ9Uo=",
+      "crossorigin": "anonymous"
+    },
+    "files": [
+      {
+        "from": "node_modules/chart.js/dist/chart.umd.min.js",
+        "to": "money/static/vendor/chart.js/chart.umd.min.js"
+      }
+    ]
+  },
+  {
+    "path": "vendor/chart.js/chartjs-adapter-moment.js",
+    "cdn": {
+      "src": "https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js",
+      "integrity": "sha256-TKbdvBbEOMfezGDxb77pY503J3r2CTkPd5TrJymt21U=",
+      "crossorigin": "anonymous"
+    },
+    "files": [
+      {
+        "from": "node_modules/chartjs-adapter-moment/dist/chartjs-adapter-moment.js",
+        "to": "money/static/vendor/chart.js/chartjs-adapter-moment.js"
+      }
+    ]
+  },
+  {
+    "path": "vendor/jquery/jquery.min.js",
+    "cdn": {
+
+      "src": "https://code.jquery.com/jquery-3.7.1.min.js",
+      "integrity": "sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=",
+      "crossorigin": "anonymous"
+    },
+    "files": [
+      {
+        "from": "node_modules/jquery/dist/jquery.min.js",
+        "to": "system/static/vendor/jquery/jquery.min.js"
+      }
+    ]
+  },
+  {
+    "path": "vendor/jstree/themes/default",
+    "files": [
+      {
+        "from": "node_modules/jstree/dist/themes/default",
+        "to": "system/static/vendor/jstree/themes/default/"
+      }
+    ]
+  },
+  {
+    "path": "vendor/jstree/jstree.min.js",
+    "files": [
+      {
+        "from": "node_modules/jstree/dist/jstree.min.js",
+        "to": "system/static/vendor/jstree/jstree.min.js"
+      }
+    ]
+  },
+  {
+    "path": "vendor/moment/moment.min.js",
+    "cdn": {
+      "src": "https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"
+    },
+    "files": [
+      {
+        "from": "node_modules/moment/min/moment.min.js",
+        "to": "system/static/vendor/moment/moment.min.js"
+      }
+    ]
+  },
+  {
+    "path": "vendor/prismjs/themes/prism.min.css",
+    "cdn": {
+      "href": "https://cdn.jsdelivr.net/npm/prismjs@1.30.0/themes/prism.min.css",
+      "integrity": "sha256-ko4j5rn874LF8dHwW29/xabhh8YBleWfvxb8nQce4Fc=",
+      "crossorigin": "anonymous"
+    },
+    "files": [
+      {
+        "from": "node_modules/prismjs/themes/prism.min.css",
+        "to": "money/static/vendor/prismjs/themes/prism.min.css"
+      }
+    ]
+  },
+  {
+    "path": "vendor/prismjs/themes/prism.js",
+    "cdn": {
+      "href": "https://cdn.jsdelivr.net/npm/prismjs@1.30.0/themes/prism.min.css",
+      "integrity": "sha256-ko4j5rn874LF8dHwW29/xabhh8YBleWfvxb8nQce4Fc=",
+      "crossorigin": "anonymous"
+    },
+    "files": [
+      {
+        "from": "node_modules/prismjs/prism.js",
+        "to": "money/static/vendor/prismjs/prism.js"
+      }
+    ]
+  },
+  {
+    "path": "vendor/select2/css/select2-bootstrap4.min.css",
+    "cdn": {
+      "href": "https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css",
+      "integrity": "sha256-h7vy42BP4MtLE0udIyBuOEoB8nJI2iLaiOJEgO5Ykp0=",
+      "crossorigin": "anonymous"
+    },
+    "files": [
+      {
+        "from": "node_modules/@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css",
+        "to": "money/static/vendor/select2/css/select2-bootstrap4.min.css"
+      }
+    ]
+  },
+  {
+    "path": "vendor/select2/css/select2.min.css",
+    "cdn": {
+      "href": "https://cdn.jsdelivr.net/npm/select2@4.0.2/dist/css/select2.min.css",
+      "integrity": "sha256-fCvsF0xsnCxll1wsahPQTSOuvghR/s3EUivgvueC+iE=",
+      "crossorigin": "anonymous"
+    },
+    "files": [
+      {
+        "from": "node_modules/select2/dist/css/select2.min.css",
+        "to": "money/static/vendor/select2/css/select2.min.css"
+      }
+    ]
+  },
+  {
+    "path": "vendor/select2/js/select2.min.js",
+    "cdn": {
+      "src": "https://cdn.jsdelivr.net/npm/select2@4.0.2/dist/js/select2.min.js",
+      "integrity": "sha256-04G2Dnj+apKwEmFACpe+2vz/yh4YM6+FDQ2qhLyQX/s=",
+      "crossorigin": "anonymous"
+    },
+    "files": [
+      {
+        "from": "node_modules/select2/dist/js/select2.min.js",
+        "to": "money/static/vendor/select2/js/select2.min.js"
+      }
+    ]
+  },
+  {
+    "path": "vendor/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css",
+    "cdn": {
+      "rel": "stylesheet",
+      "href": "https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.39.2/build/css/tempusdominus-bootstrap-4.min.css",
+      "integrity": "sha256-VL9T9QfjO/EGCzuu5CtTWWzIksAkGDTs+fO51ALqMjg=",
+      "crossorigin": "anonymous"
+    },
+    "files": [
+      {
+        "from": "node_modules/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css",
+        "to": "money/static/vendor/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css"
+      }
+    ]
+  },
+  {
+    "path": "vendor/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js",
+    "cdn": {
+      "src": "https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.39.2/build/js/tempusdominus-bootstrap-4.min.js",
+      "integrity": "sha256-uE3vOLooa0gPBylbimXggux1GAC8XT80pB/QIvNXoxo=",
+      "crossorigin": "anonymous"
+    },
+    "files": [
+      {
+        "from": "node_modules/tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4.min.js",
+        "to": "system/static/vendor/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"
+      }
+    ]
+  }
+]
