@@ -42,6 +42,7 @@ CSRF_TRUSTED_ORIGINS = env.list('N_CSRF_TRUSTED_ORIGINS', default=[])
 
 # Application definition
 
+# pylint: disable-next=invalid-name
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -65,6 +66,7 @@ INSTALLED_APPS = [
     'drf_spectacular_sidecar',
 ]
 
+# pylint: disable-next=invalid-name
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -238,7 +240,7 @@ TINYMCE_DEFAULT_CONFIG.update({
 
 ASSETS_CDN = True
 
-with open(BASE_DIR / 'assets.json') as f:
+with open(BASE_DIR / 'assets.json', encoding='utf-8') as f:
     ASSETS_LIST = {x['path']: x for x in json.load(f)}
 
 try:
