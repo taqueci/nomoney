@@ -2,7 +2,7 @@ FROM node:22.21.0-slim AS builder
 
 WORKDIR /opt/builder
 
-COPY package.json package-lock.json staticfiles.json .
+COPY package.json package-lock.json assets.json .
 COPY vendor vendor
 
 RUN npm run install:static

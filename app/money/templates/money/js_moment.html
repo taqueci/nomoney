@@ -1,5 +1,5 @@
 {# Copyright (C) Takeshi Nakamura. All rights reserved. #}
 
-{% load static %}
+{% load asset %}
 
-<script src="{% static 'vendor/moment/min/moment.min.js' %}"></script>
+{% asset_load_js 'vendor/moment/moment.min.js' %}

@@ -3,6 +3,7 @@
 {% load static %}
 {% load i18n %}
 
+{% load asset %}
 {% load bootstrap4 %}
 {% load user %}
 
@@ -14,10 +15,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+    {% asset_load_css 'vendor/bootstrap/css/bootstrap.min.css' %}
     <link rel="stylesheet" href="{% static 'fontawesomefree/css/all.min.css' %}">
 
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    {% asset_load_js 'vendor/jquery/jquery.min.js' %}
 
     <style type="text/css">
       nav .breadcrumb a { text-decoration: none; }
@@ -129,7 +130,7 @@
   </div>
 </footer>
 
-<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+{% asset_load_js 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}
 
 {% block js %}{% endblock %}
 

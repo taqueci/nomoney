@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 # pylint: disable=line-too-long
 
+import json
 from pathlib import Path
 
 import environ
@@ -41,6 +42,7 @@ CSRF_TRUSTED_ORIGINS = env.list('N_CSRF_TRUSTED_ORIGINS', default=[])
 
 # Application definition
 
+# pylint: disable-next=invalid-name
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -64,6 +66,7 @@ INSTALLED_APPS = [
     'drf_spectacular_sidecar',
 ]
 
+# pylint: disable-next=invalid-name
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -166,7 +169,7 @@ MEDIA_URL = env('N_MEDIA_URL', default=f'{URL_PREFIX}/media/')
 MEDIA_ROOT = env('N_MEDIA_ROOT',  default=BASE_DIR/'media')
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+# https://docs.djangoproject.com/en/6.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -234,6 +237,11 @@ TINYMCE_DEFAULT_CONFIG.update({
     'link_list': f'{DOC_URL}__admin__/links',
     'file_picker_callback': '(c, v, m) => filePickerCallback(c, v, m)',
 })
+
+ASSETS_CDN = True
+
+with open(BASE_DIR / 'assets.json', encoding='utf-8') as f:
+    ASSETS_LIST = {x['path']: x for x in json.load(f)}
 
 try:
     # pylint: disable=wildcard-import,unused-wildcard-import
