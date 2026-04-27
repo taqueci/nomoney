@@ -209,7 +209,7 @@ REST_FRAMEWORK = {
 NUMBER_GROUPING = 3
 
 AUTHENTICATION_BACKENDS = (
-    'social_core.backends.google.GoogleOAuth2',
+    'system.backends.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 

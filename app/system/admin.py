@@ -22,7 +22,7 @@ class AdminUserAdmin(UserAdmin):
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups'),
         }),
         (_('Setting'), {
-            'fields': ('timezone', 'language', 'image'),
+            'fields': ('timezone', 'language', 'image', 'image_url'),
         }),
     )
     add_fieldsets = (
