@@ -23,6 +23,16 @@ class BaseQuerySet(models.QuerySet):
         return self.filter(enabled=True)
 
 
+class JournalQuerySet(BaseQuerySet):
+    """Query set for Journal."""
+
+    def accessible_by(self, user):
+        if user.has_perm('money.view_journal'):
+            return self
+
+        return self.none()
+
+
 class Account(models.Model):
     """Account model."""
 
@@ -99,7 +109,7 @@ class Journal(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    objects = BaseQuerySet.as_manager()
+    objects = JournalQuerySet.as_manager()
 
     def __str__(self):
         return f'#{self.pk}'
