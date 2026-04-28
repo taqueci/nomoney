@@ -19,7 +19,10 @@ class AdminUserAdmin(UserAdmin):
             'fields': ('first_name', 'last_name', 'email')
         }),
         (_('Permissions'), {
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups'),
+            'fields': (
+                'is_active', 'is_verified', 'is_staff', 'is_superuser',
+                'groups',
+            ),
         }),
         (_('Setting'), {
             'fields': ('timezone', 'language', 'image', 'image_url'),
@@ -30,13 +33,14 @@ class AdminUserAdmin(UserAdmin):
             'classes': ('wide',),
             'fields': (
                 'username', 'password1', 'password2',
-                'first_name', 'last_name', 'email'
+                'first_name', 'last_name', 'email',
+                'is_active', 'is_verified', 'groups',
             ),
         }),
     )
     list_display = (
-        'username', 'email', 'first_name', 'last_name', 'is_superuser',
-        'last_login',
+        'username', 'email', 'first_name', 'last_name',
+        'is_active', 'is_verified', 'last_login',
     )
 
 

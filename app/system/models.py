@@ -9,6 +9,7 @@ import time
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from user_g11n.models import UserLanguageSupportMixin, UserTimeZoneSupportMixin
 
 IMAGE_DIR_USER = 'users'
@@ -53,6 +54,15 @@ class User(UserLanguageSupportMixin, UserTimeZoneSupportMixin, AbstractUser):
         md5 = hashlib.md5(f'{self.username}z'.encode()).hexdigest()
 
         return f'{IMAGE_DIR_USER}/{md5}/{int(time.time())}-{filename}'
+
+    is_verified = models.BooleanField(
+        _('verified'),
+        default=False,
+        help_text=_(
+            'Designates whether this user is verified and authorized for '
+            'using the system.'
+        ),
+    )
 
     image = models.ImageField(null=True, blank=True, upload_to=file_path)
     image_url = models.URLField(blank=True)
