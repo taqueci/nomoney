@@ -6,6 +6,7 @@ import urllib
 
 from django.conf import settings
 from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse
 
 
@@ -15,7 +16,10 @@ class AuthMiddleware:  # pylint: disable=too-few-public-methods
 
     def __call__(self, request):
         if request.user.is_authenticated:
-            return self.get_response(request)
+            if request.user.is_verified:
+                return self.get_response(request)
+
+            return render(request, 'system/wip.html')
 
         path = request.path
         login = reverse(settings.LOGIN_URL)

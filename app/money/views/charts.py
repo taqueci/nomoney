@@ -32,15 +32,14 @@ def index(request):
     unit = _unit(request.GET.get('unit'))
     field = 'date__iso_year' if unit == 'week' else 'date__year'
 
-    q = Journal.objects.available()
-
-    q = q.values(field).annotate(
-        date=Trunc('date', unit),
-        income=Sum('income', default=0), expense=Sum('expense', default=0),
-        balance=F('income')-F('expense'),
-    ).order_by(INDEX_DEFAULT_SORT)
-
-    q = Filter(request.GET, queryset=q).qs
+    q = Filter(request.GET, queryset=(
+        Journal.objects.available().accessible_by(request.user)
+        .values(field).annotate(
+            date=Trunc('date', unit),
+            income=Sum('income', default=0), expense=Sum('expense', default=0),
+            balance=F('income')-F('expense'),
+        ).order_by(INDEX_DEFAULT_SORT)
+    )).qs
 
     paginator = Paginator(q, INDEX_PER_PAGE)
 
@@ -53,7 +52,9 @@ def show(request, pk):  # pylint: disable=unused-argument
     start = request.GET.get('start') or '1970-01-01'
     end = request.GET.get('end') or '2100-12-31'
 
-    q = Filter(request.GET, queryset=Journal.objects.available()).qs
+    q = Filter(request.GET, queryset=(
+        Journal.objects.available().accessible_by(request.user)
+    )).qs
 
     summary = q.aggregate(
         incomes=Sum('income', default=0), expenses=Sum('expense', default=0),

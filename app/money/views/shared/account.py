@@ -1,5 +1,7 @@
 # Copyright (C) Takeshi Nakamura. All rights reserved.
 
+from itertools import groupby
+
 from django_filters import OrderingFilter, rest_framework as filters
 
 from money.models import Account, Journal
@@ -8,11 +10,15 @@ from .filters import AnyValuesMultipleFilter, KeywordFilter
 
 
 def grouped_objects():
+    accounts = Account.objects.all().order_by('entry', '-rank', 'name')
+    grouped = groupby(accounts, key=lambda x: x.entry)
+    entry_names = dict(Account.Entry.choices)
+
     return [{
-        'entry': x[0],
-        'name': x[1],
-        'data': Account.objects.filter(entry=x[0]).order_by('-rank')
-    } for x in Account.Entry.choices]
+        'entry': entry,
+        'name': entry_names.get(entry),
+        'data': list(group)
+    } for entry, group in grouped]
 
 
 def entry_sets():

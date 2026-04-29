@@ -9,6 +9,7 @@ import time
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from user_g11n.models import UserLanguageSupportMixin, UserTimeZoneSupportMixin
 
 IMAGE_DIR_USER = 'users'
@@ -54,7 +55,17 @@ class User(UserLanguageSupportMixin, UserTimeZoneSupportMixin, AbstractUser):
 
         return f'{IMAGE_DIR_USER}/{md5}/{int(time.time())}-{filename}'
 
+    is_verified = models.BooleanField(
+        _('verified'),
+        default=False,
+        help_text=_(
+            'Designates whether this user is verified and authorized for '
+            'using the system.'
+        ),
+    )
+
     image = models.ImageField(null=True, blank=True, upload_to=file_path)
+    image_url = models.URLField(blank=True)
 
     def full_name(self, language=None):
         """Return full name."""
@@ -65,6 +76,16 @@ class User(UserLanguageSupportMixin, UserTimeZoneSupportMixin, AbstractUser):
             names.reverse()
 
         return ' '.join(names) if names else self.username
+
+    @property
+    def picture_url(self):
+        if image := self.image:
+            return image.url
+
+        if url := self.image_url:
+            return url
+
+        return None
 
     def __str__(self):
         return self.full_name()

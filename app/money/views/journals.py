@@ -28,11 +28,10 @@ User = get_user_model()
 def index(request):
     n = request.GET.get('page')
 
-    q = Journal.objects.available().order_by(*INDEX_DEFAULT_SORT)
-    q = Filter(request.GET, queryset=q).qs
-
-    # For performance improvement
-    q = q.select_related().prefetch_related('tags')
+    q = Filter(request.GET, queryset=(
+        Journal.objects.available().accessible_by(request.user)
+        .order_by(*INDEX_DEFAULT_SORT)
+    )).qs.select_related().prefetch_related('tags')
 
     tags = Tag.objects.all()
     users = User.objects.all()

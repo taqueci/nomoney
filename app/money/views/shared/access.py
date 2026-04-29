@@ -6,7 +6,7 @@ def creatable(user):
 
 
 def readable(user):
-    return not user.is_anonymous
+    return user.has_perm('money.view_journal')
 
 
 def updatable(user):

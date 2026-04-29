@@ -14,6 +14,7 @@ sub_url_patterns = [
     path('doc/', include('doc.urls', namespace='doc')),
     path('money/', include('money.urls', namespace='money')),
     path('api/', include('api.urls', namespace='api')),
+    path('auth/', include('social_django.urls', namespace='social')),
 ]
 
 urlpatterns = [

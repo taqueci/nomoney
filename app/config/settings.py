@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django.contrib.postgres.search',
+    'social_django',
     'django_filters',
     'fontawesomefree',
     'rest_framework',
@@ -94,6 +95,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
                 'config.context_processors.site_values',
             ],
         },
@@ -206,8 +209,12 @@ REST_FRAMEWORK = {
 NUMBER_GROUPING = 3
 
 AUTHENTICATION_BACKENDS = (
+    'system.backends.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('N_GOOGLE_OAUTH2_KEY', default='')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('N_GOOGLE_OAUTH2_SECRET', default='')
 
 FY_START_MONTH = 4
 FY_START_DAY = 1
@@ -250,6 +257,8 @@ except ImportError:
     pass
 
 SITE_URL = f'{URL_PREFIX}/money/'
+AUTH_URL = f'{URL_PREFIX}/auth/'
+
 LOGIN_TARGETS = (f'{URL_PREFIX}/money/', )
 
 if DEBUG:
