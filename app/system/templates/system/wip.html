@@ -1,0 +1,38 @@
+{# Copyright (C) Takeshi Nakamura. All rights reserved. #}
+
+{% load i18n %}
+{% load asset %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% asset_load_css 'vendor/bootstrap/css/bootstrap.min.css' %}
+    <style>
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: #f5f5f5;
+}
+
+main {
+  max-width: 330px;
+}
+    </style>
+
+    <title>{% trans 'Under verification' %}</title>
+  </head>
+
+  <body class="d-flex">
+    <main class="w-100 m-auto">
+      <div class="alert alert-warning" role="alert">
+        <span>{% trans 'Please wait a moment while your account verification is being processed.' %}</span>
+      </div>
+    </main>
+  </body>
+</html>
