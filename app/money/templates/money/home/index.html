@@ -120,6 +120,10 @@
 
 </div><!-- #outgoing-table -->
 
+<div class="my-4 text-center">
+  <a href="{% url 'money:report' 0 %}?start={{ start|date:'Y-m-d' }}&end={{ end|date:'Y-m-d' }}" class="text-decoration-none">{% trans 'View chart' %}</a>
+</div>
+
   </div>
   <div class="col-lg-6">
 
@@ -163,6 +167,9 @@
     </div>
   </div>
   {% endfor %}
+  <div class="list-group-item text-center">
+    <a href="{% url 'money:journals' %}" class="text-decoration-none">{% trans 'View all journals' %}</a>
+  </div>
 </div>
 
   </div><!-- .col -->
