@@ -51,9 +51,9 @@ class User(UserLanguageSupportMixin, UserTimeZoneSupportMixin, AbstractUser):
     def file_path(self, filename):
         """File path for user image."""
 
-        md5 = hashlib.md5(f'{self.username}z'.encode()).hexdigest()
+        digest = hashlib.sha256(f'{self.username}z'.encode()).hexdigest()
 
-        return f'{IMAGE_DIR_USER}/{md5}/{int(time.time())}-{filename}'
+        return f'{IMAGE_DIR_USER}/{digest}/{int(time.time())}-{filename}'
 
     is_verified = models.BooleanField(
         _('verified'),
