@@ -187,6 +187,13 @@ LOGIN_REDIRECT_URL = 'money:home'
 LOGOUT_URL = 'system:logout'
 LOGOUT_REDIRECT_URL = 'system:login'
 
+ADMINS = env.list('N_ADMINS', default=[])
+
+EMAIL_HOST = env('N_EMAIL_HOST', default='')
+EMAIL_PORT = env('N_EMAIL_PORT', default=25)
+EMAIL_HOST_USER = env('N_EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = env('N_EMAIL_HOST_PASSWORD', default='')
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
@@ -222,6 +229,9 @@ FY_START_DAY = 1
 VERSION = version.VERSION
 
 NAME = env('N_NAME', default='NoMoney')
+
+EMAIL_SUBJECT_PREFIX = f'[{NAME}] '
+SERVER_EMAIL = env('N_SERVER_EMAIL', default='nomoney@localhost')
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'NoMoney',

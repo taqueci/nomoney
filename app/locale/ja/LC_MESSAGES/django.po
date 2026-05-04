@@ -232,11 +232,17 @@ msgstr "送信"
 msgid "Dashboard"
 msgstr "ダッシュボード"
 
+msgid "View chart"
+msgstr "チャートを見る"
+
 msgid "Recent journals"
 msgstr "最近の記録"
 
 msgid "Edit journal"
 msgstr "記録の編集"
+
+msgid "View all journals"
+msgstr "すべての記録を見る"
 
 msgid "Repayment"
 msgstr "返済"
