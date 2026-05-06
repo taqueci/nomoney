@@ -1,6 +1,6 @@
-Django==6.0.4
+Django==6.0.5
 beautifulsoup4==4.14.3
-django-environ==0.12.0
+django-environ==0.13.0
 django-filter==25.2
 django-tinymce==5.0.0
 django-user-g11n==0.4.4
@@ -11,6 +11,6 @@ drf-spectacular==0.29.0
 drf-spectacular-sidecar==2026.4.1
 fontawesomefree==6.6.0
 pillow==12.2.0
-psycopg[binary]==3.3.3
+psycopg[binary]==3.3.4
 python-dateutil==2.9.0.post0
-social-auth-app-django==5.7.0
+social-auth-app-django==5.9.0
