@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
             name='is_verified',
             field=models.BooleanField(
                 default=False,
-                help_text='Designates whether this user is allowed to use the system.'
+                help_text='Designates whether this user is verified and authorized for using the system.',
             ),
         ),
         migrations.RunPython(forwards_func, reverse_func),
