@@ -4,9 +4,13 @@ import calendar
 import datetime
 
 from dateutil.relativedelta import relativedelta
+from django.conf import settings
+
+FY_START_DAY = settings.FY_START_DAY
+FY_START_MONTH = settings.FY_START_MONTH
 
 
-def fy(date=None, month=4, day=1):
+def fy(date=None, month=FY_START_MONTH, day=FY_START_DAY):
     if not date:
         date = datetime.date.today()
 
