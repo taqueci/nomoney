@@ -298,7 +298,7 @@ $(function() {
   $('[data-bs-toggle="popover"]').popover();
 
   $('.datetimepicker').datetimepicker({format: 'YYYY-MM-DD'});
-  $('.select2').select2();
+  $('.select2').select2({theme: 'bootstrap-5'});
 
   // Prevents the submit before the item is selected/unselected
   $('.select2').on('change', function(e) { e.stopPropagation() });
