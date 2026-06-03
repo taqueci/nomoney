@@ -117,9 +117,9 @@
 <h5 class="border-bottom pb-2 mb-3"><i class="fas fa-filter fa-fw"></i> {% trans 'Filter' %}</h5>
 
 <div class="mb-3">
-  <label class="form-label">{% trans 'Start date' %}</label>
+  <label for="inputStart" class="form-label">{% trans 'Start date' %}</label>
   <div id="filter-start" class="input-group date datetimepicker" data-target-input="nearest">
-    <input type="text" name="start" value="{% url_param_value 'start' %}" class="form-control datetimepicker-input" data-target="#filter-start" />
+    <input type="text" id="inputStart" name="start" value="{% url_param_value 'start' %}" class="form-control datetimepicker-input" data-target="#filter-start" />
     <div class="input-group-text" data-target="#filter-start" data-toggle="datetimepicker">
       <i class="fas fa-calendar fa-fw"></i>
     </div>
@@ -127,9 +127,9 @@
 </div>
 
 <div class="mb-3">
-  <label class="form-label">{% trans 'End date' %}</label>
+  <label for="inputEnd" class="form-label">{% trans 'End date' %}</label>
   <div id="filter-end" class="input-group date datetimepicker" data-target-input="nearest">
-    <input type="text" name="end" value="{% url_param_value 'end' %}" class="form-control datetimepicker-input" data-target="#filter-end" />
+    <input type="text" id="inputEnd" name="end" value="{% url_param_value 'end' %}" class="form-control datetimepicker-input" data-target="#filter-end" />
     <div class="input-group-text" data-target="#filter-end" data-toggle="datetimepicker">
       <i class="fas fa-calendar fa-fw"></i>
     </div>

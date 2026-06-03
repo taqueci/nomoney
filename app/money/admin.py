@@ -27,6 +27,7 @@ class JournalAdmin(admin.ModelAdmin):
 
     autocomplete_fields = ['author', 'responsible']
     filter_horizontal = ('tags', 'attachments')
+    readonly_fields = ['created', 'updated']
 
 
 @admin.register(Tag)

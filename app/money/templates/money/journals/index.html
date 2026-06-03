@@ -177,17 +177,17 @@
 <form id="filter" method="get" action="{% url 'money:journals' %}">
 
 <div class="mb-3">
-  <label class="form-label">{% trans 'Keyword' %}</label>
+  <label for="inputKeyword" class="form-label">{% trans 'Keyword' %}</label>
   <div class="input-group">
-    <input type="text" name="keyword" value="{% url_param_value 'keyword' %}" class="form-control">
+    <input type="text" id="inputKeyword" name="keyword" value="{% url_param_value 'keyword' %}" class="form-control">
     <span class="input-group-text"><i class="fas fa-search fa-fw"></i></span>
   </div>
 </div>
 
 <div class="mb-3">
-  <label class="form-label">{% trans 'Start date' %}</label>
+  <label for="inputStart" class="form-label">{% trans 'Start date' %}</label>
   <div id="filter-start" class="input-group date datetimepicker" data-target-input="nearest">
-    <input type="text" name="start" value="{% url_param_value 'start' %}" class="form-control datetimepicker-input" data-target="#filter-start" />
+    <input type="text" id="inputStart" name="start" value="{% url_param_value 'start' %}" class="form-control datetimepicker-input" data-target="#filter-start" />
     <div class="input-group-text" data-target="#filter-start" data-toggle="datetimepicker">
       <i class="fas fa-calendar fa-fw"></i>
     </div>
@@ -195,9 +195,9 @@
 </div>
 
 <div class="mb-3">
-  <label class="form-label">{% trans 'End date' %}</label>
+  <label for="inputEnd" class="form-label">{% trans 'End date' %}</label>
   <div id="filter-end" class="input-group date datetimepicker" data-target-input="nearest">
-    <input type="text" name="end" value="{% url_param_value 'end' %}" class="form-control datetimepicker-input" data-target="#filter-end" />
+    <input type="text" id="inputEnd" name="end" value="{% url_param_value 'end' %}" class="form-control datetimepicker-input" data-target="#filter-end" />
     <div class="input-group-text" data-target="#filter-end" data-toggle="datetimepicker">
       <i class="fas fa-calendar fa-fw"></i>
     </div>
@@ -205,8 +205,8 @@
 </div>
 
 <div class="mb-3">
-  <label class="form-label">{% trans 'Entry' %} <small>({% trans 'Debit' %} / {% trans 'Credit' %})</small></label>
-  <select name="entry" class="form-control select2" multiple="multiple" size="1">
+  <label for="selectEntry" class="form-label">{% trans 'Entry' %} <small>({% trans 'Debit' %} / {% trans 'Credit' %})</small></label>
+  <select id="selectEntry" name="entry" class="form-control select2" multiple="multiple" size="1">
     {% for x in entry_sets %}
     <option value="{{ x.value }}" {% value_if_eq_query 'entry' x.value 'selected' %} style="visibility: hidden">{{ x.debit.label }} / {{ x.credit.label }}</option>
     {% endfor %}
@@ -214,8 +214,8 @@
 </div>
 
 <div class="mb-3">
-  <label class="form-label">{% trans 'Debit' %}</label>
-  <select name="debit" class="form-control select2" multiple="multiple" size="1">
+  <label for="selectDebit" class="form-label">{% trans 'Debit' %}</label>
+  <select id="selectDebit" name="debit" class="form-control select2" multiple="multiple" size="1">
     {% for x in accounts %}
     <optgroup label="{{ x.name }}" style="visibility: hidden">
       {% for y in x.data %}
@@ -227,8 +227,8 @@
 </div>
 
 <div class="mb-3">
-  <label class="form-label">{% trans 'Credit' %}</label>
-  <select name="credit" class="form-control select2" multiple="multiple" size="1">
+  <label for="selectCredit" class="form-label">{% trans 'Credit' %}</label>
+  <select id="selectCredit" name="credit" class="form-control select2" multiple="multiple" size="1">
     {% for x in accounts %}
     <optgroup label="{{ x.name }}" style="visibility: hidden">
       {% for y in x.data %}
@@ -240,18 +240,18 @@
 </div>
 
 <div class="mb-3">
-  <label class="form-label">{% trans 'Max amount' %}</label>
-  <input type="number" name="max" value="{% url_param_value 'max' %}" min="0" class="form-control">
+  <label for="inputMax" class="form-label">{% trans 'Max amount' %}</label>
+  <input type="number" id="inputMax" name="max" value="{% url_param_value 'max' %}" min="0" class="form-control">
 </div>
 
 <div class="mb-3">
-  <label class="form-label">{% trans 'Min amount' %}</label>
-  <input type="number" name="min" value="{% url_param_value 'min' %}" min="0" class="form-control">
+  <label for="inputMin" class="form-label">{% trans 'Min amount' %}</label>
+  <input type="number" id="inputMin" name="min" value="{% url_param_value 'min' %}" min="0" class="form-control">
 </div>
 
 <div class="mb-3">
-  <label class="form-label">{% trans 'Responsible person' %}</label>
-  <select name="responsible" class="form-control select2" multiple="multiple" size="1">
+  <label for="selectResponsible" class="form-label">{% trans 'Responsible person' %}</label>
+  <select id="selectResponsible" name="responsible" class="form-control select2" multiple="multiple" size="1">
     {% for x in users %}
     <option value="{{ x.id }}" {% value_if_eq_query 'responsible' x.id 'selected' %}>{{ x }}</option>
     {% endfor %}
@@ -260,8 +260,8 @@
 
 {% if tags %}
 <div class="mb-3">
-  <label class="form-label">{% trans 'Tag' %}</label>
-  <select name="tag" class="form-control select2" multiple="multiple" size="1">
+  <label for="selectTag" class="form-label">{% trans 'Tag' %}</label>
+  <select id="selectTag" name="tag" class="form-control select2" multiple="multiple" size="1">
     {% for x in tags %}
     <option value="{{ x.id }}" {% value_if_eq_query 'tag' x.id 'selected' %} style="visibility: hidden">{{ x.name }}</option>
     {% endfor %}
@@ -298,7 +298,7 @@ $(function() {
   $('[data-bs-toggle="popover"]').popover();
 
   $('.datetimepicker').datetimepicker({format: 'YYYY-MM-DD'});
-  $('.select2').select2();
+  $('.select2').select2({theme: 'bootstrap-5'});
 
   // Prevents the submit before the item is selected/unselected
   $('.select2').on('change', function(e) { e.stopPropagation() });

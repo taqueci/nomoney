@@ -54,9 +54,9 @@
 </div><!-- .d-flex -->
 
 <div class="mb-3 row">
-  <label class="col-sm-3 col-form-label">{% trans 'Debit' %} <span class="symbol-required"></span></label>
+  <label for="selectDebit" class="col-sm-3 col-form-label">{% trans 'Debit' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
-    <select name="debit" class="form-select">
+    <select id="selectDebit" name="debit" class="form-select">
       {% for x in accounts %}
       <optgroup label="{{ x.name }}">
         {% for y in x.data %}
@@ -69,9 +69,9 @@
 </div>
 
 <div class="mb-3 row">
-  <label class="col-sm-3 col-form-label">{% trans 'Credit' %} <span class="symbol-required"></span></label>
+  <label for="selectCredit" class="col-sm-3 col-form-label">{% trans 'Credit' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
-    <select name="credit" class="form-select">
+    <select id="selectCredit" name="credit" class="form-select">
       {% for x in accounts %}
       <optgroup label="{{ x.name }}">
         {% for y in x.data %}
@@ -84,10 +84,10 @@
 </div>
 
 <div class="mb-3 row">
-  <label class="col-sm-3 col-form-label">{% trans 'Date' %} <span class="symbol-required"></span></label>
+  <label for="inputDate" class="col-sm-3 col-form-label">{% trans 'Date' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
     <div id="date" class="input-group date datetimepicker" data-target-input="nearest">
-      <input type="text" name="date" value="{{ object.date|date:'Y-m-d' }}" class="form-control datetimepicker-input" data-target="#date" />
+      <input type="text" id="inputDate" name="date" value="{{ object.date|date:'Y-m-d' }}" class="form-control datetimepicker-input" data-target="#date" />
       <div class="input-group-text" data-target="#date" data-toggle="datetimepicker">
         <i class="fas fa-calendar fa-fw"></i>
       </div>
@@ -96,10 +96,10 @@
 </div>
 
 <div class="mb-3 row">
-  <label class="col-sm-3 col-form-label">{% trans 'Amount' %} <span class="symbol-required"></span></label>
+  <label for="inputAmount" class="col-sm-3 col-form-label">{% trans 'Amount' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
     <div class="input-group">
-      <input type="number" name="amount" value="{{ object.amount }}" class="form-control" required>
+      <input type="number" id="inputAmount" name="amount" value="{{ object.amount }}" class="form-control" required>
       <button type="button" class="btn btn-light border" data-bs-toggle="modal" data-bs-target="#calculator">
         <i class="fas fa-calculator fa-fw"></i>
       </button>
@@ -108,16 +108,16 @@
 </div>
 
 <div class="mb-3 row">
-  <label class="col-sm-3 col-form-label">{% trans 'Summary' %} <span class="symbol-required"></span></label>
+  <label for="inputSummary" class="col-sm-3 col-form-label">{% trans 'Summary' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
-    <input type="text" name="summary" value="{{ object.summary|default:'' }}" class="form-control" required>
+    <input type="text" id="inputSummary" name="summary" value="{{ object.summary|default:'' }}" class="form-control" required>
   </div>
 </div>
 
 <div class="mb-3 row">
-  <label class="col-sm-3 col-form-label">{% trans 'Responsible person' %} <span class="symbol-required"></span></label>
+  <label for="selectResponsible" class="col-sm-3 col-form-label">{% trans 'Responsible person' %} <span class="symbol-required"></span></label>
   <div class="col-sm-9">
-    <select name="responsible" class="form-select">
+    <select id="selectResponsible" name="responsible" class="form-select">
       {% with target_user=object.responsible|default:request.user %}
       {% for x in users %}
       <option value="{{ x.id }}" {% value_if_eq x target_user 'selected' %}>{{ x }}</option>
@@ -128,16 +128,16 @@
 </div>
 
 <div class="mb-3 row">
-  <label class="col-sm-3 col-form-label">{% trans 'Note' %}</label>
+  <label for="textareaNote" class="col-sm-3 col-form-label">{% trans 'Note' %}</label>
   <div class="col-sm-9">
-    <textarea name="note" class="form-control" rows="3">{{ object.note|default:'' }}</textarea>
+    <textarea id="textareaNote" name="note" class="form-control" rows="3">{{ object.note|default:'' }}</textarea>
   </div>
 </div>
 
 <div class="mb-3 row">
-  <label class="col-sm-3 col-form-label">{% trans 'Tags' %}</label>
+  <label for="selectTags" class="col-sm-3 col-form-label">{% trans 'Tags' %}</label>
   <div class="col-sm-9">
-    <select name="tags" class="form-control select2" multiple="multiple" size="1">
+    <select id="selectTags" name="tags" class="form-control select2" multiple="multiple" size="1">
       {% for x in tags %}
       <option value="{{ x.id }}" style="visibility: hidden" {{ object|journal_html_selected_if_has_tag:x }}>{{ x.name }}</option>
       {% endfor %}
@@ -195,6 +195,7 @@
 $(function() {
   $('.datetimepicker').datetimepicker({format: 'YYYY-MM-DD'});
   $('.select2').select2({
+    theme: 'bootstrap-5',
     tags: true,
     createTag: function(params) {
       var term = $.trim(params.term);

@@ -3,18 +3,25 @@
 {% load asset %}
 
 {% asset_load_css 'vendor/select2/css/select2.min.css' %}
-{% asset_load_css 'vendor/select2/css/select2-bootstrap4.min.css' %}
+{% asset_load_css 'vendor/select2/css/select2-bootstrap-5-theme.min.css' %}
 
 <style type="text/css">
-  .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__choice__remove {
-    float: right;
-  }
+.select2-container--bootstrap-5 .select2-selection {
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+}
 
-  .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__choice {
-    padding-left: 5px;
-    white-space: normal;
-  }
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
+  flex-direction: row-reverse;
+  padding: 0 .375em;
+  margin-left: -.375em;
+  margin-right: .75em;
+}
+
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice .select2-selection__choice__remove {
+  margin-right: 0;
+  margin-left: .375rem;
+}
 </style>
 
 {% asset_load_js 'vendor/select2/js/select2.min.js' %}
-<script>$.fn.select2.defaults.set('theme', 'bootstrap4');</script>
