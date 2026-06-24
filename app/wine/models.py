@@ -5,6 +5,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
 
+from money.models import Journal
 from system.models import Attachment
 
 UserModel = get_user_model()
@@ -110,6 +111,10 @@ class Bottle(models.Model):
     uncorked = models.DateTimeField(null=True, blank=True)
     score = models.IntegerField(null=True, blank=True)
     comment = models.TextField(default='', blank=True)
+
+    journal = models.ForeignKey(
+        Journal, on_delete=models.PROTECT, null=True, blank=True,
+    )
 
     owner = models.ForeignKey(UserModel, on_delete=models.PROTECT)
     created = models.DateTimeField(auto_now_add=True)

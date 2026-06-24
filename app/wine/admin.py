@@ -23,6 +23,6 @@ class WineAdmin(admin.ModelAdmin):
 class BottleAdmin(admin.ModelAdmin):
     search_fields = ['comment', 'description', 'shop', 'wine__display_name']
     list_display = ['id', 'wine', 'vintage', 'acquired', 'uncorked']
-    autocomplete_fields = ['wine']
+    autocomplete_fields = ['wine', 'journal']
     filter_horizontal = ['images']
     readonly_fields = ['created', 'updated']
