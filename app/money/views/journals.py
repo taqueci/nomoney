@@ -31,7 +31,7 @@ def index(request):
     q = Filter(request.GET, queryset=(
         Journal.objects.available().accessible_by(request.user)
         .order_by(*INDEX_DEFAULT_SORT)
-    )).qs.select_related().prefetch_related('tags')
+    )).qs.select_related('debit', 'credit').prefetch_related('tags')
 
     tags = Tag.objects.all()
     users = User.objects.all()

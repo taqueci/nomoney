@@ -34,7 +34,7 @@ class AttachmentViewSet(viewsets.ModelViewSet):
     filterset_class = Filter
     parser_classes = [MultiPartParser]
     permission_classes = [IsAuthenticated & HasPermission]
-    queryset = Attachment.objects.all().select_related()
+    queryset = Attachment.objects.all().select_related('author')
 
     def get_serializer_class(self):
         match self.request.method:

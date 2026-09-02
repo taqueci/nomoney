@@ -191,10 +191,17 @@ LOGOUT_REDIRECT_URL = 'system:login'
 
 ADMINS = env.list('N_ADMINS', default=[])
 
-EMAIL_HOST = env('N_EMAIL_HOST', default='')
-EMAIL_PORT = env('N_EMAIL_PORT', default=25)
-EMAIL_HOST_USER = env('N_EMAIL_HOST_USER', default='')
-EMAIL_HOST_PASSWORD = env('N_EMAIL_HOST_PASSWORD', default='')
+MAILERS = {
+    "default": {
+        "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+        "OPTIONS": {
+            "host": env('N_EMAIL_HOST', default=''),
+            "port": env('N_EMAIL_PORT', default=25),
+            "username": env('N_EMAIL_HOST_USER', default=''),
+            "password": env('N_EMAIL_HOST_PASSWORD', default=''),
+        },
+    },
+} if env('N_EMAIL_HOST', default=None) else {}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

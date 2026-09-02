@@ -1,8 +1,8 @@
 -r requirements.txt
-django-debug-toolbar==6.3.0
-django-stubs==6.0.5
+django-debug-toolbar==8.0.0
+django-stubs==6.1.0
 flake8==7.3.0
-isort==8.0.1
-mypy==2.1.0
-pylint==4.0.5
-pylint-django==2.7.0
+isort==9.0.1
+mypy==2.3.1
+pylint==4.0.8
+pylint-django==2.8.0
