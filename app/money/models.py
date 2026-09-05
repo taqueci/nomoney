@@ -112,7 +112,7 @@ class Journal(models.Model):
     objects = JournalQuerySet.as_manager()
 
     def __str__(self):
-        return f'#{self.pk}'
+        return f'#{self.pk} {self.summary} ({self.date})'
 
     def _entry_amount(self, entry):
         a_d = self.amount if self.debit.entry == entry else 0

@@ -41,7 +41,9 @@ class JournalViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated & HasPermission]
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES + [CsvRenderer]
 
-    queryset = Journal.objects.all().select_related().prefetch_related(
+    queryset = Journal.objects.all().select_related(
+        'debit', 'credit',
+    ).prefetch_related(
         'tags', 'attachments',
     )
 

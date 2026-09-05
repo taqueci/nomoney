@@ -7,6 +7,7 @@
 
 {% load access %}
 {% load journal %}
+{% load user %}
 {% load value %}
 
 {% block head %}
@@ -136,6 +137,12 @@
       <div>
         <h5>{{ x.date|date:'Y-m-d' }} <small class="text-muted">#{{ x.id }}</small></h5>
         <div>{{ x.summary }}</div>
+        <div class="text-muted mb-2">{{ x.note|truncatechars:100 }}</div>
+        <div class="mb-1">
+          {% for y in x.tags.all %}
+          <small><a href="{% querystring tag=y.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ y.name }}</a></small>
+          {% endfor %}
+        </div>
       </div>
       <div class="text-end">
         <div class="">
@@ -144,13 +151,10 @@
         <div class="">
           <span class="{{ x|journal_category_badge_class }}">{{ x|journal_category_text }}</span>
         </div>
+        <div class="mt-1">
+          <span><span class="me-2">{% user_avatar x.responsible %}</span>{{ x.responsible }}</span>
+        </div>
       </div>
-    </div>
-    <div class="text-muted mb-2">{{ x.note|truncatechars:100 }}</div>
-    <div class="mb-2">
-      {% for x in x.tags.all %}
-      <small><a href="{% url 'money:journals' %}{% querystring tag=x.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ x.name }}</a></small>
-      {% endfor %}
     </div>
     <div class="d-flex justify-content-between">
       <div>

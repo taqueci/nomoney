@@ -8,6 +8,7 @@
 {% load access %}
 {% load sort %}
 {% load url %}
+{% load user %}
 {% load value %}
 
 {% load journal %}
@@ -53,7 +54,7 @@
       <th class="text-end"><a href="?{% sort_url_params 'amount' %}" class="text-decoration-none">{% trans 'Amount' %}</a> {% sort_icon 'amount' %}</th>
       <th></th>
       <th><a href="?{% sort_url_params 'summary' %}" class="text-decoration-none">{% trans 'Summary' %}</a> {% sort_icon 'summary' %}</th>
-      <th colspan="3"></th>
+      <th colspan="4"></th>
     </tr>
   </thead>
   <tbody class="table-group-divider">
@@ -78,7 +79,10 @@
         <small><a href="{% querystring tag=y.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ y.name }}</a></small>
         {% endfor %}
       </td>
-      <td class="px-2">
+      <td class="px-1">
+        <span data-bs-toggle="tooltip" title="{{ x.responsible }}">{% user_avatar x.responsible %}</span>
+      </td>
+      <td class="px-1">
         {% if x.note %}
         <span class="mx-2 text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="top" title="{% trans 'Note' %}" data-bs-content="{{ x.note }}"><i class="fas fa-comment fa-fw"></i></span>
         {% endif %}
@@ -131,6 +135,12 @@
           {% endwith %}
           <small class="text-muted">#{{ x.id }}</small></h5>
         <div>{{ x.summary }}</div>
+        <div class="text-muted mb-2">{{ x.note|truncatechars:100 }}</div>
+        <div class="mb-1">
+          {% for y in x.tags.all %}
+          <small><a href="{% querystring tag=y.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ y.name }}</a></small>
+          {% endfor %}
+        </div>
       </div>
       <div class="text-end">
         <div class="">
@@ -139,13 +149,10 @@
         <div class="">
           <span class="{{ x|journal_category_badge_class }}">{{ x|journal_category_text }}</span>
         </div>
+        <div class="mt-1">
+          <span><span class="me-2">{% user_avatar x.responsible %}</span>{{ x.responsible }}</span>
+        </div>
       </div>
-    </div>
-    <div class="text-muted mb-2">{{ x.note|truncatechars:100 }}</div>
-    <div class="mb-2">
-      {% for y in x.tags.all %}
-      <small><a href="{% querystring tag=y.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ y.name }}</a></small>
-      {% endfor %}
     </div>
     <div class="d-flex justify-content-between">
       <div>

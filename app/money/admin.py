@@ -21,6 +21,7 @@ class AccountAdmin(admin.ModelAdmin):
 class JournalAdmin(admin.ModelAdmin):
     """The representation of journal model."""
 
+    search_fields = ['id', 'summary', 'date']
     list_display = (
         'date', 'debit', 'credit', 'amount', 'summary', 'enabled',
     )
