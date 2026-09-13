@@ -6,7 +6,7 @@ import json
 
 from django import template
 from django.urls import reverse
-from django.utils.safestring import mark_safe
+from django.utils.html import format_html
 
 from ..models import Page
 
@@ -33,7 +33,9 @@ def page_status_badge(obj):
 
     if klass:
         text = obj.get_status_display()
-        return mark_safe(f'<span class="{klass}">{text}</span>')
+        return format_html(
+            '<span class="{klass}">{text}</span>', klass=klass, text=text,
+        )
 
     return ''
 
