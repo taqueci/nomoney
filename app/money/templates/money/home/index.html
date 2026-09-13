@@ -152,7 +152,7 @@
           <span class="{{ x|journal_category_badge_class }}">{{ x|journal_category_text }}</span>
         </div>
         <div class="mt-1">
-          <span><span class="me-2">{% user_avatar x.responsible %}</span>{{ x.responsible }}</span>
+          <span><a href="{% url 'money:journals' %}{% querystring responsible=x.responsible.id %}" class="text-dark text-decoration-none"><span class="me-2">{% user_avatar x.responsible %}</span>{{ x.responsible }}</a></span>
         </div>
       </div>
     </div>

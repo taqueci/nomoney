@@ -76,11 +76,11 @@
         {% if forloop.first %}
         <span class="px-1"></span>
         {% endif %}
-        <small><a href="{% querystring tag=y.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ y.name }}</a></small>
+        <small><a href="{% url 'money:journals' %}{% querystring tag=y.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ y.name }}</a></small>
         {% endfor %}
       </td>
       <td class="px-1">
-        <span data-bs-toggle="tooltip" title="{{ x.responsible }}">{% user_avatar x.responsible %}</span>
+        <span data-bs-toggle="tooltip" title="{{ x.responsible }}"><a href="{% url 'money:journals'%}{% querystring responsible=x.responsible.id %}" class="text-decoration-none">{% user_avatar x.responsible %}</a></span>
       </td>
       <td class="px-1">
         {% if x.note %}
@@ -138,7 +138,7 @@
         <div class="text-muted mb-2">{{ x.note|truncatechars:100 }}</div>
         <div class="mb-1">
           {% for y in x.tags.all %}
-          <small><a href="{% querystring tag=y.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ y.name }}</a></small>
+          <small><a href="{% url 'money:journals' %}{% querystring tag=y.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ y.name }}</a></small>
           {% endfor %}
         </div>
       </div>
@@ -150,15 +150,15 @@
           <span class="{{ x|journal_category_badge_class }}">{{ x|journal_category_text }}</span>
         </div>
         <div class="mt-1">
-          <span><span class="me-2">{% user_avatar x.responsible %}</span>{{ x.responsible }}</span>
+          <span><a href="{% url 'money:journals' %}{% querystring responsible=x.responsible.id %}" class="text-dark text-decoration-none"><span class="me-2">{% user_avatar x.responsible %}</span>{{ x.responsible }}</a></span>
         </div>
       </div>
     </div>
     <div class="d-flex justify-content-between">
       <div>
-        <a href="{% querystring debit=x.debit.id %}" class="text-dark text-decoration-none">{{ x.debit.name }}</a>
+        <a href="{% url 'money:journals' %}{% querystring debit=x.debit.id %}" class="text-dark text-decoration-none">{{ x.debit.name }}</a>
         /
-        <a href="{% querystring credit=x.credit.id %}" class="text-dark text-decoration-none">{{ x.credit.name }}</a>
+        <a href="{% url 'money:journals' %}{% querystring credit=x.credit.id %}" class="text-dark text-decoration-none">{{ x.credit.name }}</a>
       </div>
       <div>
         {% if request.user|access_updatable %}
