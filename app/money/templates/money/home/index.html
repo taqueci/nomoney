@@ -140,7 +140,7 @@
         <div class="text-muted mb-2">{{ x.note|truncatechars:100 }}</div>
         <div class="mb-1">
           {% for y in x.tags.all %}
-          <small><a href="{% querystring tag=y.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ y.name }}</a></small>
+          <small><a href="{% url 'money:journals' %}{% querystring tag=y.id %}" class="badge rounded-pill bg-secondary text-decoration-none">{{ y.name }}</a></small>
           {% endfor %}
         </div>
       </div>
@@ -152,7 +152,7 @@
           <span class="{{ x|journal_category_badge_class }}">{{ x|journal_category_text }}</span>
         </div>
         <div class="mt-1">
-          <span><span class="me-2">{% user_avatar x.responsible %}</span>{{ x.responsible }}</span>
+          <span><a href="{% url 'money:journals' %}{% querystring responsible=x.responsible.id %}" class="text-dark text-decoration-none"><span class="me-2">{% user_avatar x.responsible %}</span>{{ x.responsible }}</a></span>
         </div>
       </div>
     </div>

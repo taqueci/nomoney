@@ -20,6 +20,7 @@ def asset_load_css(path):
 
     html_attr = ' '.join([f'{k}="{v}"' for k, v in attrs.items()])
 
+    # pylint: disable-next=mark-safe-interpolation
     return mark_safe(f'<link {html_attr}>')
 
 
@@ -35,4 +36,5 @@ def asset_load_js(path):
 
     html_attr = ' '.join([f'{k}="{v}"' for k, v in attrs.items()])
 
+    # pylint: disable-next=mark-safe-interpolation
     return mark_safe(f'<script {html_attr}></script>')

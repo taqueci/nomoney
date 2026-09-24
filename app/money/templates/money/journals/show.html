@@ -80,7 +80,7 @@
 
 <dl class="row mb-2">
   <dt class="col-4">{% trans 'Responsible person' %}</dt>
-  <dd class="col-8"><span class="me-2">{% user_avatar object.responsible %}</span>{{ object.responsible }}</dd>
+  <dd class="col-8"><a href="{% url 'money:journals'%}{% querystring responsible=object.responsible.id %}" class="text-dark text-decoration-none"><span class="me-2">{% user_avatar object.responsible %}</span>{{ object.responsible }}</a></dd>
 
   <dt class="col-4">{% trans 'Note' %}</dt>
   <dd class="col-8">{{ object.note|urlize|default:'-'|linebreaksbr }}</dd>
