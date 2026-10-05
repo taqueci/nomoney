@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 @receiver(user_logged_in)
 # pylint: disable-next=unused-argument
 def notify_admin_on_login(sender, request, user, **kwargs):
-    if not settings.EMAIL_HOST or user.is_verified:
+    if not settings.MAILERS or user.is_verified:
         return
 
     last_login = timezone.localtime(user.last_login)
