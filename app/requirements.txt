@@ -11,7 +11,7 @@ djangorestframework_simplejwt==5.5.1
 drf-spectacular==0.30.0
 drf-spectacular-sidecar==2026.10.1
 fontawesomefree==6.6.0
-pillow==12.3.0
+pillow==13.0.0
 psycopg[binary]==3.3.6
 python-dateutil==2.9.0.post0
 social-auth-app-django==6.0.1
